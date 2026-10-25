@@ -310,16 +310,6 @@ Android 建置與 USB 實機測試步驟見 [docs/engineering/development.md](..
 | 角色播放與語音 | [avatar-contract.md](../character/avatar-contract.md)、[voice-contract.md](../character/voice-contract.md) |
 | 介面文案與多語言 | [frontend-i18n.md](../frontend/frontend-i18n.md) |
 
-## 開發路線
-
-- [x] 5 個 Agent 工具、手動頁面與理事長室轉接
-- [x] 四層記憶、語意回想與訓練員端編輯
-- [x] 3D 角色狀態機、回覆提示與 2D 備援
-- [x] 三語介面、明暗主題、手機版面、Android App
-- [ ] 預約與申請的寫入，由訓練員確認後才送出
-- [ ] AI 語音回應（端點與資料表已預留，見 [voice-contract.md](../character/voice-contract.md)）
-- [ ] 公開註冊
-- [ ] 實機畫面更新率量測（目標：桌機 60 FPS、手機 30 FPS）
 
 變更紀錄見 [CHANGELOG.md](../../CHANGELOG.md)。
 
