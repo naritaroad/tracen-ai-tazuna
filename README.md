@@ -310,17 +310,6 @@ The project documents are written in Traditional Chinese; the index is [docs/REA
 | Character player and voice | [avatar-contract.md](docs/character/avatar-contract.md), [voice-contract.md](docs/character/voice-contract.md) |
 | Interface text and languages | [frontend-i18n.md](docs/frontend/frontend-i18n.md) |
 
-## Roadmap
-
-- [x] Five agent tools, manual pages and the Director's Office hand-over
-- [x] Four-layer memory with semantic recall and trainer-side editing
-- [x] 3D concierge with state machine, reply cues and 2D fallback
-- [x] Three-language interface, light and dark themes, phone layout, Android app
-- [ ] Booking and application writes that the trainer confirms before they are submitted
-- [ ] Spoken replies (endpoints and storage are reserved; see [voice-contract.md](docs/character/voice-contract.md))
-- [ ] Public sign-up
-- [ ] Frame-rate measurement on real phones (targets: 60 FPS desktop, 30 FPS phone)
-
 Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
