@@ -310,16 +310,6 @@ Android のビルドと USB 実機テストの手順は [docs/engineering/develo
 | キャラクタープレーヤーと音声 | [avatar-contract.md](../character/avatar-contract.md)、[voice-contract.md](../character/voice-contract.md) |
 | UI テキストと多言語対応 | [frontend-i18n.md](../frontend/frontend-i18n.md) |
 
-## ロードマップ
-
-- [x] 5 つのエージェントツール、手動ページ、理事長室への引き継ぎ
-- [x] 4 層の記憶、意味検索、トレーナー側での編集
-- [x] 3D キャラクターの状態機械、返信に応じた演出、2D への切り替え
-- [x] 3 言語の UI、ライト／ダークテーマ、スマートフォン表示、Android アプリ
-- [ ] トレーナーが確認してから送信する予約・申請の書き込み
-- [ ] AI の音声応答（エンドポイントと保存先は確保済み。[voice-contract.md](../character/voice-contract.md) を参照）
-- [ ] 一般向けのアカウント登録
-- [ ] 実機でのフレームレート計測（目標：PC 60 FPS、スマートフォン 30 FPS）
 
 変更履歴は [CHANGELOG.md](../../CHANGELOG.md) をご覧ください。
 
