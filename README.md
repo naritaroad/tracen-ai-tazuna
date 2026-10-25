@@ -30,6 +30,84 @@
   <img src="docs/assets/screenshots/chat.en.png" alt="Chat page: Tazuna answers a training-plan question, flags a clash with course maintenance, and the expanded trace shows the calculate_training_plan call" width="900" />
 </p>
 
+<!-- course-homework:start — Unit G homework section; remove this block after grading -->
+## Course Homework (Unit G)
+
+> Course homework: Unit G, My AI Customer Service Agent, with a Database and Tools
+> Student: F115118104 張任沂
+
+This section follows the course README template. The rest of this page describes the same project in more detail.
+
+### Who It Serves and When They Use It
+
+- **Who uses it:** trainers at Tracen Academy who coach their own Uma Musume; on the other side, staff answer hand-over cases as *Director Akikawa · human service* on a management site that uses no AI.
+- **When they use it:** before planning training (is a facility open, how long is a slot, how many people, what does it cost), when choosing a date (exams, academy events, maintenance), before a race (which forms, how many days ahead), and outside the Director's Secretary Office hours (weekdays 08:30–18:00, Saturdays 09:00–12:00 in the demo data).
+- **What problem it solves:** without it, trainers read notices, calendars and facility lists themselves or walk to the office, and add up times and fees by hand. Tazuna looks everything up in the database, lets the server do the arithmetic and clash checks, and opens a real case for a person when the data has no answer.
+
+### What It Can Do
+
+| Function | Example question | Tool it uses |
+|---|---|---|
+| Academy rules and procedures (office hours, curfew, race paperwork, documents, workshops) | "What time does the Secretary Office open?" | `get_academy_info` |
+| Academy calendar and G1/G2 race schedule | "What is on from 4 to 6 November?" | `list_academy_events` |
+| Find a facility or service, its slot length, capacity, demo fee and availability | "Can I book pool training now? How long is a slot?" | `search_training_services` |
+| Work out a training plan: total minutes, fees, end time and clashes | "From 18:00 on 2 November: stretching once, turf training twice, video review once. How long, how much, and when does it end?" | `calculate_training_plan` |
+| Hand over to a person (not in the data, exceptions, complaints) | "Does the academy offer horseshoe replacement?" / "Please pass this to Director Akikawa." | `transfer_to_director` |
+| Decline jobs outside its role, small talk | "Can you write an 800-word essay for me?" | no tool |
+
+### How It Works
+
+Every question goes to the agent first. The agent chooses a tool, the tool reads the database or calculates in code, and the agent answers only from what the tool returns. The chat page shows the tool trace (*What I did*: tool, arguments, result).
+
+- **Model:** `gemini-3.8-flash` (Google Gemini API through [rust-genai](https://github.com/jeremychone/rust-genai)); `MODEL=mock` runs offline without a key.
+- **Chat screen:** React + Vite + TypeScript front end; Rust (Axum) back end with REST and SSE. The API key, the agent loop, the tools and the database stay in the back end.
+- **Database:** PostgreSQL 18 (the course suggests SQLite). With `CATALOG_SEED_MODE=reset` the API rebuilds these tables from the CSV files every time it starts:
+
+  | Table | CSV file | What it holds | Rows |
+  |---|---|---|---|
+  | `academy_info` | [`data/seed/academy_info.csv`](data/seed/academy_info.csv) | Information topics: office hours, facility rules, booking, curfew, race paperwork … | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](data/seed/training_services.csv) | Facilities and services: slot length, capacity, demo fee, available or not, aliases | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](data/seed/academy_events.csv) | Classes, exams, events and maintenance, with the facilities they affect | 10 |
+  | `races` | [`data/seed/race_schedule.csv`](data/seed/race_schedule.csv) | G1/G2 race schedule from the game (GameTora, marked `community`) | 76 |
+
+- **Tools:**
+
+  | Tool | What it does |
+  |---|---|
+  | `get_academy_info(topic)` | Reads one topic from `academy_info` |
+  | `list_academy_events(date_from, date_to)` | Lists calendar entries and races between two dates (at most 62 days) |
+  | `search_training_services(query, category, only_available)` | Finds facilities in `training_services` by name or alias in any of the three languages |
+  | `calculate_training_plan(items, date, start_time)` | Minutes × sessions and fee × sessions, the schedule and clashes, calculated in code |
+  | `transfer_to_director(reason, summary)` | Opens a Director's Office case for a real person and returns the case number |
+
+### Sample Conversations
+
+![A training-plan question that uses the calculation tool](docs/assets/screenshots/chat.en.png)
+
+![A request the data cannot settle is handed to the Director's Office](docs/assets/screenshots/handoff.en.png)
+
+### Project Files
+
+```text
+backend/src/            Rust API: tools.rs (tools), agent/ (agent loop and system prompt), seed.rs (CSV import), catalog/ (queries and plan calculation)
+web/src/                React front end (chat page with the tool trace, manual pages, management site)
+data/seed/*.csv         The CSV files the database is built from
+data/eval/tool_choice.csv  Tool-choice test (16 questions): cd backend && cargo run -- eval-tools
+backend/Cargo.toml, web/package.json   Package lists
+.env.example            Sample settings (no real key)
+.gitignore              Keeps .env, *.db, node_modules/, target/ … out of git
+```
+
+### How to Install and Run It
+
+Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`, start PostgreSQL with Docker Compose, run the API with `cargo run`, run the web site with `npm run dev`, and open <http://localhost:5173>.
+
+### Notes
+
+- All academy rules, prices, people and bookings in the data are made up for this project (`source_type` `project` or `reference`); the race schedule is community game data. This is an unofficial doujin project; see [NOTICE.md](NOTICE.md).
+- `.env` holds the API keys and is not in this repository. Make your own from `.env.example`.
+<!-- course-homework:end -->
+
 ## Features
 
 - **Answers grounded in the database.** Tazuna runs a bounded agent loop (at most 6 model calls, 60 s per call, 120 s per run) over five whitelisted tools. Academy rules, the calendar, facilities and fees come from PostgreSQL, never from the model's memory, and every tool call is stored and shown under *What I did*.

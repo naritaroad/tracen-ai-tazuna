@@ -30,6 +30,84 @@
   <img src="../assets/screenshots/chat.zh-TW.png" alt="對話頁：駿川回答訓練計畫問題並指出與跑道維護時段衝突，展開的處理紀錄顯示 calculate_training_plan 呼叫" width="900" />
 </p>
 
+<!-- course-homework:start — Unit G 課程作業段落；評分後刪除此區塊 -->
+## 課程作業說明（Unit G）
+
+> 課程作業：Unit G，My AI Customer Service Agent, with a Database and Tools
+> 學生：F115118104 張任沂
+
+本節依課程的 README 範本撰寫；本頁其他段落是同一個專案更完整的說明。
+
+### 服務對象與使用時機
+
+- **誰會使用：**特雷森學園中帶領擔當馬娘的訓練員；另一端是理事長室的工作人員，在不使用 AI 的管理站以「秋川理事長・真人服務」身分接手轉接案件。
+- **什麼時候使用：**排訓練前（設施能不能用、一個時段多久、名額、費用）、挑日期時（考試、全校活動、設施維護）、出賽前（要準備哪些文件、幾天前提交），以及理事長秘書室不受理的時間（展示資料設定為平日 08:30–18:00、週六 09:00–12:00）。
+- **解決什麼問題：**沒有這個系統時，訓練員得自己翻公告、日曆與設施表，或跑到秘書室問人，並自己加總時間與費用。駿川先查資料庫、由伺服器計算並檢查衝突，資料沒有的事則真的建立案件交給真人。
+
+### 能做什麼
+
+| 功能 | 範例問題 | 使用的工具 |
+|---|---|---|
+| 校務規定與辦法（受理時間、門禁、出賽申請、文件、研習） | 「秘書室的受理時間是幾點到幾點？」 | `get_academy_info` |
+| 校務日曆與 G1／G2 賽事日程 | 「11 月 4 日到 6 日有什麼校務活動？」 | `list_academy_events` |
+| 查詢設施與服務：時段長度、名額、展示費用、是否可用 | 「泳池訓練現在可以預約嗎？一個時段多久？」 | `search_training_services` |
+| 試算訓練計畫：總分鐘、費用、結束時間與衝突 | 「11 月 2 日 18:00 開始，伸展空間 1 次、草地基本訓練 2 次，再做訓練影像檢視 1 次，總共要多久、費用多少？幾點會結束？」 | `calculate_training_plan` |
+| 轉接真人（資料外、例外申請、申訴） | 「學園有提供馬娘的蹄鐵更換服務嗎？」／「請幫我轉給秋川理事長。」 | `transfer_to_director` |
+| 婉拒業務外的大型請求、閒聊 | 「可以幫我寫一篇 800 字的英文作文嗎？」 | 不使用工具 |
+
+### 運作方式
+
+每個問題都先交給 Agent，由 Agent 選擇工具；工具查詢資料庫或在程式中計算，Agent 只依工具回傳的結果回答。對話頁的「處理紀錄」會顯示呼叫的工具、參數與回傳。
+
+- **模型：**`gemini-3.8-flash`（Google Gemini API，透過 [rust-genai](https://github.com/jeremychone/rust-genai) 呼叫）；`MODEL=mock` 可不用金鑰離線執行。
+- **聊天畫面：**React + Vite + TypeScript 前端；Rust（Axum）後端以 REST 與 SSE 提供 API。API 金鑰、Agent 迴圈、工具與資料庫都只在後端。
+- **資料庫：**PostgreSQL 18（課程建議使用 SQLite）。設定 `CATALOG_SEED_MODE=reset` 時，API 每次啟動都由 CSV 重建下列資料表：
+
+  | 資料表 | CSV 檔 | 內容 | 筆數 |
+  |---|---|---|---|
+  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 資訊主題：受理時間、設施規則、預約、門禁、出賽申請等 | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 設施與服務：時段長度、名額、展示費用、是否可用、別名 | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 課程、考試、活動與維護，以及受影響的設施 | 10 |
+  | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | 遊戲中的 G1／G2 賽事日程（GameTora，標示為 `community`） | 76 |
+
+- **工具：**
+
+  | 工具 | 用途 |
+  |---|---|
+  | `get_academy_info(topic)` | 讀取 `academy_info` 的一個主題 |
+  | `list_academy_events(date_from, date_to)` | 列出兩個日期之間的校務日曆與賽事（最多 62 天） |
+  | `search_training_services(query, category, only_available)` | 用中日英名稱或別名在 `training_services` 找設施 |
+  | `calculate_training_plan(items, date, start_time)` | 以程式計算分鐘 × 次數、費用 × 次數、時程與衝突 |
+  | `transfer_to_director(reason, summary)` | 建立理事長室案件交給真人，回傳案件編號 |
+
+### 對話範例
+
+![使用計算工具的訓練計畫問題](../assets/screenshots/chat.zh-TW.png)
+
+![資料無法處理的例外申請轉交理事長室](../assets/screenshots/handoff.zh-TW.png)
+
+### 專案檔案
+
+```text
+backend/src/            Rust API：tools.rs（工具）、agent/（Agent 迴圈與系統提示詞）、seed.rs（CSV 匯入）、catalog/（查詢與計畫計算）
+web/src/                React 前端（含處理紀錄的對話頁、手動頁面、管理站）
+data/seed/*.csv         建立資料庫用的 CSV 檔
+data/eval/tool_choice.csv  工具選擇測試（16 題）：cd backend && cargo run -- eval-tools
+backend/Cargo.toml、web/package.json   套件清單
+.env.example            設定檔範例（不含真實金鑰）
+.gitignore              讓 .env、*.db、node_modules/、target/ 等不進 git
+```
+
+### 安裝與執行
+
+請依下方[快速開始](#快速開始)：把 `.env.example` 複製成 `.env`、用 Docker Compose 啟動 PostgreSQL、以 `cargo run` 啟動 API、以 `npm run dev` 啟動網站，再開啟 <http://localhost:5173>。
+
+### 備註
+
+- 資料中的校規、價格、人物與預約都是本專案的展示設定（`source_type` 為 `project` 或 `reference`）；賽事日程為社群整理的遊戲資料。本專案為非官方同人作品，詳見 [NOTICE.md](../../NOTICE.md)。
+- `.env` 存放 API 金鑰，不在此 repository 中，請由 `.env.example` 自行建立。
+<!-- course-homework:end -->
+
 ## 功能特色
 
 - **答案來自資料庫。** 駿川以有上限的 Agent 迴圈（最多 6 次模型呼叫、單次 60 秒、整個 run 120 秒）呼叫 5 個白名單工具。校規、校務日曆、設施與費用一律查 PostgreSQL，不靠模型記憶；每次工具呼叫都會存檔，並在「處理紀錄」中展開檢視。

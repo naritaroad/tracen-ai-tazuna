@@ -30,6 +30,84 @@
   <img src="../assets/screenshots/chat.ja.png" alt="会話ページ：たづながトレーニング計画の質問に答え、コース整備との重なりを指摘している。展開した処理記録に calculate_training_plan の呼び出しが表示されている" width="900" />
 </p>
 
+<!-- course-homework:start — Unit G の課題セクション。採点後にこのブロックを削除 -->
+## コース課題（Unit G）
+
+> コース課題：Unit G、My AI Customer Service Agent, with a Database and Tools
+> 学生：F115118104 張任沂
+
+この節はコースの README テンプレートに沿っています。このページのほかの節は、同じプロジェクトの詳しい説明です。
+
+### 誰が、いつ使うか
+
+- **誰が使うか：** 担当ウマ娘を指導するトレセン学園のトレーナー。もう一方は理事長室の職員で、AI を使わない管理サイトから「秋川理事長・有人対応」として引き継ぎ案件を受けます。
+- **いつ使うか：** トレーニングを組む前（施設が使えるか、1 枠の長さ、定員、料金）、日付を選ぶとき（試験、全校行事、施設整備）、レース前（必要な書類、何日前に提出するか）、理事長秘書室が受け付けていない時間（デモデータでは平日 08:30–18:00、土曜 09:00–12:00）。
+- **何を解決するか：** このシステムがなければ、トレーナーは掲示、カレンダー、施設一覧を自分で調べるか秘書室まで行き、時間と料金も手で足し合わせます。たづなはデータベースを調べ、サーバーが計算と重なりの確認を行い、データにない用件は実際の案件として人に渡します。
+
+### できること
+
+| 機能 | 質問の例 | 使うツール |
+|---|---|---|
+| 校務の規則と手続き（受付時間、門限、レース申請、書類、研修） | 「秘書室の受付時間は何時から何時までですか？」 | `get_academy_info` |
+| 学園カレンダーと G1／G2 のレース日程 | 「11 月 4 日から 6 日まで、学園の予定は何がありますか？」 | `list_academy_events` |
+| 施設とサービスの検索：枠の長さ、定員、デモ料金、利用可否 | 「プールトレーニングは今予約できますか？ 1 枠はどのくらいですか？」 | `search_training_services` |
+| トレーニング計画の試算：合計分数、料金、終了時刻、重なり | 「11 月 2 日 18:00 開始で、ストレッチルーム 1 回、芝コース基礎トレーニング 2 回、トレーニング映像レビュー 1 回。合計時間と料金、終了時刻は？」 | `calculate_training_plan` |
+| 人への引き継ぎ（データにない用件、例外、苦情） | 「学園にウマ娘の蹄鉄交換はありますか？」／「秋川理事長に取り次いでください。」 | `transfer_to_director` |
+| 役割の外の大きな依頼は断る、雑談 | 「800 語の英作文を書いてもらえますか？」 | ツールは使わない |
+
+### 動き方
+
+質問はまずエージェントに渡します。エージェントがツールを選び、ツールがデータベースを読むかプログラムで計算し、エージェントはツールが返した内容だけを基に答えます。会話ページの「処理記録」には、使ったツール、引数、結果が表示されます。
+
+- **モデル：** `gemini-3.8-flash`（Google Gemini API。[rust-genai](https://github.com/jeremychone/rust-genai) 経由）。`MODEL=mock` なら API キーなしでオフライン実行できます。
+- **チャット画面：** React + Vite + TypeScript のフロントエンド。Rust（Axum）のバックエンドが REST と SSE で API を提供します。API キー、エージェントループ、ツール、データベースはバックエンドに置きます。
+- **データベース：** PostgreSQL 18（コースでは SQLite が示されています）。`CATALOG_SEED_MODE=reset` のとき、API は起動のたびに CSV から次のテーブルを作り直します。
+
+  | テーブル | CSV | 内容 | 行数 |
+  |---|---|---|---|
+  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 情報トピック：受付時間、施設の規則、予約、門限、レース申請など | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 施設とサービス：枠の長さ、定員、デモ料金、利用可否、別名 | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 授業、試験、行事、整備と、影響を受ける施設 | 10 |
+  | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | ゲームの G1／G2 レース日程（GameTora、`community`） | 76 |
+
+- **ツール：**
+
+  | ツール | 用途 |
+  |---|---|
+  | `get_academy_info(topic)` | `academy_info` から 1 つのトピックを読む |
+  | `list_academy_events(date_from, date_to)` | 2 つの日付の間の学園カレンダーとレースを一覧する（最大 62 日） |
+  | `search_training_services(query, category, only_available)` | 三言語の名称か別名で `training_services` の施設を探す |
+  | `calculate_training_plan(items, date, start_time)` | 分 × 回数、料金 × 回数、時間割と重なりをプログラムで計算する |
+  | `transfer_to_director(reason, summary)` | 理事長室の案件を作り、案件番号を返す |
+
+### 会話の例
+
+![計算ツールを使うトレーニング計画の質問](../assets/screenshots/chat.ja.png)
+
+![データでは対応できない依頼を理事長室へ引き継ぐ](../assets/screenshots/handoff.ja.png)
+
+### プロジェクトのファイル
+
+```text
+backend/src/            Rust API：tools.rs（ツール）、agent/（エージェントループとシステムプロンプト）、seed.rs（CSV の取り込み）、catalog/（検索と計画の計算）
+web/src/                React フロントエンド（処理記録のある会話ページ、手動ページ、管理サイト）
+data/seed/*.csv         データベースを作る CSV
+data/eval/tool_choice.csv  ツール選択テスト（16 問）：cd backend && cargo run -- eval-tools
+backend/Cargo.toml、web/package.json   パッケージ一覧
+.env.example            設定の見本（本物のキーは入っていません）
+.gitignore              .env、*.db、node_modules/、target/ などを git に入れない
+```
+
+### インストールと実行
+
+下の[はじめに](#はじめに)に従ってください。`.env.example` を `.env` にコピーし、Docker Compose で PostgreSQL を起動し、`cargo run` で API を、`npm run dev` でウェブサイトを起動して、<http://localhost:5173> を開きます。
+
+### 備考
+
+- データにある校則、料金、人物、予約は、このプロジェクトのデモ設定です（`source_type` は `project` または `reference`）。レース日程はコミュニティが整理したゲームデータです。本プロジェクトは非公式の同人プロジェクトです。詳しくは [NOTICE.md](../../NOTICE.md)。
+- `.env` には API キーを置き、このリポジトリには含めません。`.env.example` から自分で作ってください。
+<!-- course-homework:end -->
+
 ## 主な機能
 
 - **データベースに基づく回答。** たづなは上限付きのエージェントループ（モデル呼び出し最大 6 回、1 回 60 秒、1 run 120 秒）で、ホワイトリストに登録された 5 つのツールを使います。学園の規則、カレンダー、施設、料金はすべて PostgreSQL から取得し、モデルの記憶には頼りません。ツール呼び出しはすべて保存され、「処理記録」で確認できます。
