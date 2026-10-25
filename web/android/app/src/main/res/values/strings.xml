@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tracen AAS</string>
+    <string name="title_activity_main">Tracen AAS</string>
+    <string name="package_name">dev.tracen.aas</string>
+    <string name="custom_url_scheme">dev.tracen.aas</string>
+</resources>

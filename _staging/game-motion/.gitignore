@@ -1,0 +1,8 @@
+# 遊戲衍生資料（VRMA、內嵌動作包、清單）不進版本控制
+*
+!.gitignore
+!README.md
+!viewer/
+viewer/*
+!viewer/index.html
+!viewer/src/

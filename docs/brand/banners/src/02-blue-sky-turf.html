@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<!-- render.py reads these: output name, canvas size and the ?lang= variants to export. -->
+<meta name="banner-name" content="banner">
+<meta name="banner-size" content="1280x460">
+<meta name="banner-langs" content="zh-TW,ja,en">
+<title>Banner 02 · 青空ターフ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Huninn&family=Zen+Maru+Gothic:wght@500;700;900&display=block" rel="stylesheet">
+<style>
+  /* Anime key-visual look: summer sky, the grandstand, Uma Musume on the home stretch, a purple and gold footer.
+     ?lang=zh-TW|ja|en picks the copy; the logo is the academy crest (assets/brand/tracen-crest.svg); ?logo=mark, or a missing crest file, falls back to the horseshoe mark. */
+  html, body { margin: 0; width: 1280px; height: 460px; overflow: hidden; background: transparent; }
+  svg { display: block; border-radius: 20px; }
+  .maru { font-family: "Zen Maru Gothic", sans-serif; }
+  :lang(zh-Hant-TW) .maru { font-family: "Huninn", "Zen Maru Gothic", sans-serif; }
+  .script { font-family: "Cormorant Garamond", serif; font-style: italic; }
+</style>
+</head>
+<body>
+<svg width="1280" height="460" viewBox="0 0 1280 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3f8fe6"/><stop offset=".4" stop-color="#8cc8fb"/><stop offset=".6" stop-color="#e4f4ff"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="1130" cy="30" r="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".18" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="turf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fcf74"/><stop offset=".35" stop-color="#5fb15a"/><stop offset="1" stop-color="#2f8a45"/>
+    </linearGradient>
+    <linearGradient id="cloudShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#d4e8fb"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9cc0ea"/><stop offset="1" stop-color="#cfe2f7"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#44287f"/><stop offset=".6" stop-color="#5b3a9e"/><stop offset="1" stop-color="#6a47b0"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d07a"/><stop offset=".5" stop-color="#d4ad55"/><stop offset="1" stop-color="#b8902f"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.4"/></filter>
+    <filter id="haze"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="drop" x="-10%" y="-20%" width="120%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#3b2378" flood-opacity=".35"/></filter>
+    <filter id="badgeShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#1e3f73" flood-opacity=".35"/></filter>
+    <path id="star" d="M0 -10 C1 -2 2 -1 10 0 C2 1 1 2 0 10 C-1 2 -2 1 -10 0 C-2 -1 -1 -2 0 -10 Z"/>
+    <clipPath id="ground"><path d="M0 262 C300 258 900 262 1280 268 V400 H0 Z"/></clipPath>
+
+  </defs>
+
+  <!-- sky, sun, flare -->
+  <rect width="1280" height="400" fill="url(#sky)"/>
+  <rect width="1280" height="400" fill="url(#sun)"/>
+  <g fill="#fff">
+    <circle cx="1130" cy="30" r="26" opacity=".9" filter="url(#haze)"/>
+    <circle cx="1000" cy="110" r="14" opacity=".18"/><circle cx="930" cy="150" r="7" opacity=".22"/>
+  </g>
+  <g stroke="#fff" stroke-linecap="round" opacity=".55">
+    <path d="M800 40 L1010 10" stroke-width="1.5" opacity=".6"/><path d="M860 70 L1110 34" stroke-width="1"/>
+  </g>
+
+  <!-- clouds -->
+  <g filter="url(#soft)" fill="url(#cloudShade)">
+    <g transform="translate(860 232)">
+      <circle cx="0" cy="-10" r="34"/><circle cx="50" cy="-40" r="52"/><circle cx="118" cy="-58" r="64"/><circle cx="190" cy="-34" r="50"/><circle cx="250" cy="-14" r="36"/><circle cx="300" cy="-4" r="26"/>
+      <rect x="-30" y="-14" width="360" height="30"/>
+    </g>
+    <g transform="translate(470 210) scale(.42)" opacity=".85">
+      <circle cx="0" cy="0" r="30"/><circle cx="46" cy="-24" r="44"/><circle cx="104" cy="-12" r="40"/><circle cx="150" cy="4" r="28"/><rect x="-26" y="0" width="200" height="26"/>
+    </g>
+  </g>
+
+  <!-- tree line on the far side of the course -->
+  <path d="M0 266 C30 254 60 258 90 250 C120 243 150 254 180 248 C220 241 250 254 290 250 C330 246 360 255 400 251 C440 247 470 256 520 254 L560 256 L560 266 L0 268 Z
+           M960 256 C990 247 1020 254 1050 249 C1080 244 1110 254 1140 251 C1180 247 1230 257 1280 253 V270 L960 266 Z" fill="#4f8f60"/>
+  <path d="M0 266 C140 260 400 259 560 262 M960 262 C1100 262 1200 264 1280 266" stroke="#3f7a50" stroke-width="2" fill="none"/>
+
+  <!-- grandstand: crisp, slightly cool to sit in the distance -->
+  <g transform="translate(44 0)">
+    <rect x="590" y="250" width="372" height="14" fill="#c4cee2"/>
+    <path d="M596 250 V226 L956 221 V250 Z" fill="#eef2f9"/>
+    <g stroke="#b5c2da" stroke-width="1.6"><path d="M598 233 L954 228"/><path d="M598 239 L954 235"/><path d="M598 245 L954 242"/></g>
+    <path d="M610 222 L942 217 V208 L610 213 Z" fill="url(#glass)"/>
+    <g stroke="#eef2f9" stroke-width="1.2"><path d="M634 222 V212"/><path d="M660 222 V212"/><path d="M686 221 V211"/><path d="M712 221 V211"/><path d="M738 220 V210"/><path d="M764 220 V210"/><path d="M790 220 V210"/><path d="M816 219 V209"/><path d="M842 219 V209"/><path d="M868 218 V208"/><path d="M894 218 V208"/><path d="M920 218 V208"/></g>
+    <path d="M600 210 L950 204 L968 196 L592 202 Z" fill="#6f7fa8"/>
+    <path d="M592 202 L968 196" stroke="#fff" stroke-width="1.4"/>
+    <g stroke="#9fb0cc" stroke-width="2.2"><path d="M640 210 V250"/><path d="M700 209 V250"/><path d="M760 208 V250"/><path d="M820 207 V250"/><path d="M880 206 V250"/><path d="M940 205 V250"/></g>
+    <rect x="598" y="186" width="36" height="40" fill="#e3e9f4"/>
+    <path d="M594 188 L616 174 L638 188 Z" fill="#6f7fa8"/>
+    <circle cx="616" cy="200" r="7" fill="#fff" stroke="#6f7fa8" stroke-width="1.5"/>
+    <path d="M616 200 V195 M616 200 L620 202" stroke="#44507a" stroke-width="1.2" stroke-linecap="round"/>
+    <g stroke="#7d8aa8" stroke-width="1.4"><path d="M700 205 V180"/><path d="M790 203 V178"/><path d="M880 201 V176"/></g>
+    <path d="M700 180 Q712 182 722 179 L700 189 Z" fill="#5b3a9e"/>
+    <path d="M790 178 Q802 180 812 177 L790 187 Z" fill="#d4ad55"/>
+    <path d="M880 176 Q892 178 902 175 L880 185 Z" fill="#2f8f5b"/>
+  </g>
+
+  <!-- turf with mowing stripes along the home stretch -->
+  <path d="M0 262 C300 258 900 262 1280 268 V400 H0 Z" fill="url(#turf)"/>
+  <g clip-path="url(#ground)" fill="none" stroke="#fff">
+    <path d="M1320 300 C980 286 560 274 -40 270" stroke-width="5" opacity=".07"/>
+    <path d="M1320 322 C980 300 560 282 -40 274" stroke-width="9" opacity=".08"/>
+    <path d="M1320 352 C980 320 560 292 -40 280" stroke-width="14" opacity=".08"/>
+    <path d="M1320 392 C980 346 560 306 -40 288" stroke-width="20" opacity=".08"/>
+    <path d="M1320 446 C980 382 560 324 -40 298" stroke-width="28" opacity=".08"/>
+  </g>
+  <!-- inner rail with posts -->
+  <g stroke="#fff" stroke-linecap="round">
+    <path d="M1300 318 C1000 296 600 278 -20 271" fill="none" stroke-width="4"/>
+    <path d="M1300 326 C1000 303 600 284 -20 274" fill="none" stroke-width="2" opacity=".7"/>
+    <g stroke-width="3">
+      <path d="M1250 314 V340"/><path d="M1160 308 V330"/><path d="M1078 302 V321"/><path d="M1004 298 V314"/><path d="M936 294 V308"/>
+      <path d="M874 290 V303"/><path d="M818 288 V299"/><path d="M766 286 V296"/><path d="M718 284 V293"/>
+    </g>
+    <g stroke-width="2" opacity=".85">
+      <path d="M674 282 V290"/><path d="M632 281 V288"/><path d="M592 280 V286"/><path d="M552 279 V285"/><path d="M512 278 V283"/>
+    </g>
+  </g>
+  <!-- furlong pole (ハロン棒) -->
+  <g transform="translate(1160 0)">
+    <rect x="-5" y="150" width="10" height="160" fill="#fff"/>
+    <g fill="#d6362e"><rect x="-5" y="168" width="10" height="16"/><rect x="-5" y="200" width="10" height="16"/><rect x="-5" y="232" width="10" height="16"/><rect x="-5" y="264" width="10" height="16"/><rect x="-5" y="296" width="10" height="14"/></g>
+    <rect x="-24" y="128" width="48" height="26" rx="3" fill="#fff" stroke="#d6362e" stroke-width="2"/>
+    <text x="0" y="147" text-anchor="middle" font-family="Zen Maru Gothic" font-weight="900" font-size="17" fill="#d6362e">400</text>
+    <ellipse cx="2" cy="312" rx="16" ry="3" fill="#1f5f30" opacity=".35"/>
+  </g>
+
+  <!-- the field: far runners first; lighter with distance -->
+  <g id="field"></g>
+
+  <!-- sparkles -->
+  <g fill="#fff" filter="url(#glow)">
+    <use href="#star" transform="translate(820 66) scale(1.5)"/>
+    <use href="#star" transform="translate(856 104) scale(.8)"/>
+    <use href="#star" transform="translate(40 300) scale(.9)"/>
+    <use href="#star" transform="translate(640 30) scale(1)"/>
+  </g>
+  <g fill="#ffd66b" filter="url(#glow)">
+    <use href="#star" transform="translate(842 88) scale(.6)"/>
+    <use href="#star" transform="translate(676 52) scale(.55)"/>
+  </g>
+
+  <!-- logo badge -->
+  <g transform="translate(118 150)" filter="url(#badgeShadow)">
+    <circle r="63" fill="none" stroke="url(#gold)" stroke-width="4"/>
+    <circle r="58" fill="#fff"/>
+    <circle r="52" fill="none" stroke="#5b3a9e" stroke-width="1.5"/>
+    <g id="mark" display="none">
+      <circle r="46" fill="#5b3a9e"/>
+      <path d="M-15 21 V-1 a15 15 0 0 1 30 0 V21" fill="none" stroke="url(#gold)" stroke-width="9" stroke-linecap="round"/>
+    </g>
+    <image id="logo" x="-42" y="-44" width="84" height="88" href="../../../../assets/brand/tracen-crest.svg"/>
+  </g>
+
+  <!-- title -->
+  <g class="maru" id="copy">
+    <g transform="translate(200 46)">
+      <rect id="pillBg" width="200" height="32" rx="16" fill="#2f8f5b"/>
+      <text id="pill" x="100" y="22" text-anchor="middle" font-weight="700" font-size="15" fill="#fff" letter-spacing="1.5"></text>
+    </g>
+    <text id="tiis" x="412" y="68" font-weight="700" font-size="14" fill="#fff" letter-spacing="3" opacity=".95">TIIS</text>
+    <text id="titleBack" x="194" y="148" font-weight="900" font-size="70" fill="#fff" stroke="#4a2c8f" stroke-width="12" stroke-linejoin="round" paint-order="stroke" filter="url(#drop)"></text>
+    <text id="title" x="194" y="148" font-weight="900" font-size="70" fill="#fff" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"></text>
+    <text id="sub" x="198" y="196" font-weight="900" font-size="28" fill="#3a2479" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke" letter-spacing="3"></text>
+    <text id="small" x="200" y="228" font-weight="700" font-size="14" fill="#2c4f86" letter-spacing="1.4"></text>
+  </g>
+
+  <!-- footer: purple band, gold rule, gold sash with the motto -->
+  <rect y="400" width="1280" height="60" fill="url(#violet)"/>
+  <rect y="400" width="1280" height="3" fill="url(#gold)"/>
+  <path d="M948 403 H1280 V460 H912 Z" fill="url(#gold)"/>
+  <path d="M940 403 L904 460" stroke="#f6e3a8" stroke-width="2" opacity=".8"/>
+  <g transform="translate(40 431)">
+    <path d="M0 9 V1 a6 6 0 0 1 12 0 V9" fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round" transform="translate(0 -6)"/>
+    <text id="features" x="26" y="6" class="maru" font-weight="700" font-size="15" fill="#fff" letter-spacing="1"></text>
+  </g>
+  <text x="1250" y="438" text-anchor="end" class="script" font-size="22" fill="#3a2479" letter-spacing=".4">Eclipse first, the rest nowhere.</text>
+</svg>
+<script>
+  const COPY = {
+    "zh-TW": { lang: "zh-Hant-TW", pill: "AI 秘書 駿川手綱", title: "特雷森學園", sub: "校務資訊系統",
+      small: "Tracen Academy Administrative Information System",
+      features: ["校務資訊", "校務日曆", "訓練設施", "訓練計畫試算", "理事長室"] },
+    ja: { lang: "ja", pill: "AI秘書 駿川たづな", title: "トレセン学園", sub: "校務情報システム",
+      small: "Tracen Academy Administrative Information System",
+      features: ["校務案内", "学園カレンダー", "トレーニング施設", "トレーニング計画試算", "理事長室"] },
+    en: { lang: "en", pill: "AI Secretary · Hayakawa Tazuna", title: "Tracen Academy", sub: "Administrative Information System",
+      small: "トレセン学園 校務情報システム · 特雷森學園 校務資訊系統",
+      features: ["Academy information", "Academy calendar", "Training facilities", "Training plans", "Director's Office"] },
+  };
+  const q = new URLSearchParams(location.search);
+  const c = COPY[q.get("lang")] || COPY["zh-TW"];
+  document.documentElement.lang = c.lang;
+  const $ = (id) => document.getElementById(id);
+  for (const k of ["pill", "title", "sub", "small"]) $(k).textContent = c[k];
+  $("titleBack").textContent = c.title;
+  const useMark = () => { $("logo").setAttribute("display", "none"); $("mark").removeAttribute("display"); };
+  if (q.get("logo") === "mark") useMark();
+  $("logo").addEventListener("error", useMark);
+  // The English subtitle is long: smaller so it stays clear of the grandstand.
+  if (c.lang === "en") {
+    $("sub").setAttribute("font-size", "21");
+    $("sub").setAttribute("letter-spacing", "1");
+  }
+  // Huninn has one weight: a thinner outline keeps the counters of 學 and 園 open.
+  if (c.lang === "zh-Hant-TW") {
+    $("titleBack").setAttribute("stroke-width", "9");
+    $("title").setAttribute("stroke-width", "0");
+  }
+
+  // Footer features with gold separators.
+  const NS = "http://www.w3.org/2000/svg";
+  c.features.forEach((f, i) => {
+    if (i) { const sep = document.createElementNS(NS, "tspan"); sep.setAttribute("fill", "#e3bf5c"); sep.textContent = "  ·  "; $("features").appendChild(sep); }
+    const t = document.createElementNS(NS, "tspan"); t.textContent = f; $("features").appendChild(t);
+  });
+
+  // Fit the green pill to its text once the web fonts are in.
+  document.fonts.ready.then(() => {
+    const w = $("pill").getComputedTextLength() + 36;
+    $("pillBg").setAttribute("width", w.toFixed(0));
+    $("pill").setAttribute("x", (w / 2).toFixed(0));
+    $("tiis").setAttribute("x", (200 + w + 12).toFixed(0));
+  });
+
+  // Uma Musume runners, built from joints facing right with the feet on y=0 (about 130 units tall):
+  // tapered limbs, a fluttering skirt, hair and a horse tail streaming back, ears on top, a race bib.
+  // Limbs are round-capped strokes, thicker at the thigh and upper arm.
+  const chain = (pts, ws) => pts.slice(1).map((p, i) =>
+    `<line x1="${pts[i][0]}" y1="${pts[i][1]}" x2="${p[0]}" y2="${p[1]}" stroke-width="${ws[i]}"/>`).join("");
+  const STRIDES = {
+    A: { front: [[4, -56], [21, -43], [15, -21], [23, -18]], back: [[-2, -56], [-8, -31], [-22, -12], [-27, -4]],
+         armFront: [[13, -88], [23, -78], [30, -88]], armBack: [[5, -88], [-8, -80], [-12, -69]], tail: -62 },
+    B: { front: [[4, -56], [17, -34], [28, -16], [35, -14]], back: [[-2, -56], [-15, -41], [-29, -49], [-33, -41]],
+         armFront: [[13, -88], [3, -79], [-4, -70]], armBack: [[6, -88], [19, -80], [26, -90]], tail: -56 },
+  };
+  const HAIR = {
+    long: "M10 -117 C0 -121 -14 -116 -22 -106 C-30 -96 -40 -90 -52 -88 C-44 -84 -36 -84 -28 -88 C-32 -80 -38 -74 -46 -70 C-34 -70 -22 -76 -14 -86 C-8 -92 0 -96 8 -97 Z",
+    pony: "M10 -117 C2 -120 -6 -118 -10 -113 C-18 -118 -30 -116 -42 -108 C-50 -103 -56 -102 -62 -103 C-54 -96 -44 -95 -34 -99 C-26 -102 -18 -104 -12 -104 C-8 -100 0 -97 8 -97 Z",
+  };
+  function runner(stride, hair, colour, bib) {
+    const s = STRIDES[stride], tl = s.tail;
+    const legW = [10, 6.5, 5], armW = [6, 4.8];
+    return `<g fill="${colour}" stroke="${colour}" stroke-linecap="round" stroke-linejoin="round">` +
+      chain(s.armBack, armW) +
+      chain(s.back, legW) +
+      `<path stroke="none" d="M-8 -57 C-18 ${tl + 2} -30 ${tl + 4} -40 ${tl} C-48 ${tl - 3} -54 ${tl - 2} -58 ${tl + 2} C-52 ${tl + 4} -48 ${tl + 8} -40 ${tl + 10} C-30 ${tl + 12} -18 -51 -8 -51 Z"/>` +
+      `<path stroke="none" d="${HAIR[hair]}"/>` +
+      `<path stroke="none" d="M2 -94 C8 -97 14 -95 17 -90 C20 -84 19 -78 15 -73 C12 -69 10 -65 10 -60 L-8 -60 C-7 -66 -5 -71 -4 -77 C-3 -85 -2 -91 2 -94 Z"/>` +
+      `<path stroke="none" d="M-9 -64 L10 -62 C12 -58 14 -53 16 -49 L10 -47 L5 -50 L0 -46 L-6 -49 L-13 -46 L-24 -50 C-18 -55 -14 -59 -9 -64 Z"/>` +
+      chain(s.front, legW) +
+      `<line x1="11" y1="-95" x2="13" y2="-99" stroke-width="5"/>` +
+      `<circle stroke="none" cx="16" cy="-106" r="10.5"/>` +
+      `<path stroke="none" d="M10 -112 C6 -118 5 -126 8 -133 C12 -128 15 -121 15 -114 Z"/>` +
+      `<path stroke="none" d="M19 -114 C21 -121 24 -128 30 -131 C30 -124 27 -117 23 -111 Z"/>` +
+      chain(s.armFront, armW) +
+      `<circle stroke="none" cx="${s.armFront[2][0]}" cy="${s.armFront[2][1]}" r="3.2"/>` +
+      `<g transform="rotate(12 9 -80)" stroke="none"><rect x="3" y="-86" width="11" height="12" rx="1.5" fill="#fff"/>` +
+      `<text x="8.5" y="-77" text-anchor="middle" font-family="Zen Maru Gothic" font-weight="900" font-size="8" fill="${colour}">${bib}</text></g>` +
+      `</g>`;
+  }
+
+  // The field: [x, ground y, scale, stride, hair, colour, bib]; drawn far to near, lighter with distance.
+  const field = [
+    [592, 318, .4, "B", "pony", "#8576b0", 3],
+    [700, 334, .54, "A", "long", "#66569a", 8],
+    [1016, 346, .62, "B", "long", "#53428a", 1],
+    [836, 374, .82, "A", "pony", "#33245f", 6],
+  ];
+  for (const [x, y, s, stride, hair, colour, bib] of field) {
+    const g = document.createElementNS(NS, "g");
+    g.setAttribute("transform", `translate(${x} ${y})`);
+    g.innerHTML =
+      `<ellipse cx="0" cy="2" rx="${32 * s}" ry="${4.5 * s}" fill="#1f5f30" opacity=".3"/>` +
+      `<g stroke="#fff" stroke-linecap="round" opacity=".55">` +
+        `<path d="M${-80 * s} ${-84 * s} H${-128 * s}" stroke-width="${2 * s}"/>` +
+        `<path d="M${-78 * s} ${-58 * s} H${-146 * s}" stroke-width="${2.4 * s}"/>` +
+        `<path d="M${-50 * s} ${-30 * s} H${-98 * s}" stroke-width="${1.8 * s}"/></g>` +
+      `<g fill="#2e6b33" opacity=".7"><circle cx="${-34 * s}" cy="${-6 * s}" r="${1.6 * s}"/><circle cx="${-42 * s}" cy="${-12 * s}" r="${1.2 * s}"/><circle cx="${-48 * s}" cy="${-4 * s}" r="${1.4 * s}"/></g>` +
+      `<g transform="scale(${s})">${runner(stride, hair, colour, bib)}</g>`;
+    $("field").appendChild(g);
+  }
+</script>
+</body>
+</html>

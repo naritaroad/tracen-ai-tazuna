@@ -1,0 +1,11 @@
+id,title,title_ja,title_en,kind,starts_at,ends_at,affects,source_type
+ev_turf_maint_1029,第一草地跑道整地,第一芝コース整備,Turf course 1 maintenance,maintenance,2026-10-29T13:00:00+09:00,2026-10-29T17:00:00+09:00,turf_basic|turf_pace|gate,project
+ev_slope_drain,坡道排水工程,坂路排水工事,Uphill slope drainage work,maintenance,2026-10-26T08:00:00+09:00,2026-11-01T18:00:00+09:00,slope,project
+ev_class_week,一般課程（平日下午）,通常授業（平日午後）,Regular classes (weekday afternoons),class,2026-10-26T13:00:00+09:00,2026-10-26T15:30:00+09:00,all,project
+ev_midterm_eve,期中考前一日（停止一般預約）,中間試験前日（通常予約停止）,Day before mid-term exams (general bookings closed),exam,2026-11-03T00:00:00+09:00,2026-11-03T23:59:00+09:00,all,project
+ev_midterm,期中考,中間試験,Mid-term exams,exam,2026-11-04T08:30:00+09:00,2026-11-06T15:00:00+09:00,all,project
+ev_workshop_1031,新任訓練員研習：訓練安全,新任トレーナー研修：トレーニングの安全,New trainer workshop: training safety,workshop,2026-10-31T09:30:00+09:00,2026-10-31T11:30:00+09:00,workshop,project
+ev_festival_prep,秋季活動籌備,秋の行事準備,Autumn event preparation,event,2026-11-09T09:00:00+09:00,2026-11-13T19:00:00+09:00,event_room|rehearsal,project
+ev_autumn_festival,秋季學園祭,秋の学園祭,Autumn academy festival,event,2026-11-14T09:00:00+09:00,2026-11-15T18:00:00+09:00,all,project
+ev_live_rehearsal,勝利演唱會聯合排練,ウイニングライブ合同リハーサル,Winning Live joint rehearsal,event,2026-11-07T16:00:00+09:00,2026-11-07T19:00:00+09:00,rehearsal,project
+ev_pool_clean,泳池清潔,プール清掃,Pool cleaning,maintenance,2026-10-30T07:00:00+09:00,2026-10-30T10:00:00+09:00,pool,project

@@ -1,0 +1,82 @@
+{
+ "version": 1,
+ "note": "角色行為對照（docs/character/avatar-behavior-design.md）。情緒 → 本模型 VRM 表情的權重（強度 1 時）；狀態的底層表情；語意手勢的替代順序；動作組的圖。改這裡不用改程式。",
+ "emotions": {
+  "neutral": { "smile": 0.08 },
+  "gentle": { "smile": 0.5, "relaxed": 0.12 },
+  "happy": { "smile": 0.6, "happy": 0.3 },
+  "excited": { "happy": 0.55, "grin": 0.3, "surprised": 0.12 },
+  "sincere": { "smile": 0.28, "relaxed": 0.22 },
+  "apologetic": { "troubled": 0.65, "sad": 0.15 },
+  "troubled": { "troubled": 0.85 },
+  "surprised": { "surprised": 0.75 },
+  "serious": { "serious": 0.6 },
+  "playful": { "smug": 0.35, "smile": 0.35 }
+ },
+ "state_expressions": {
+  "idle": { "smile": 0.12 },
+  "listening": { "relaxed": 0.25, "smile": 0.18 },
+  "thinking": { "thinking": 0.6 },
+  "working": { "serious": 0.3, "thinking": 0.25 }
+ },
+ "gesture_fallbacks": {
+  "greet": ["bow", "wave", "hand_chest"],
+  "bow": ["hand_chest"],
+  "wave": ["present", "hand_chest"],
+  "present": ["hand_chest", "explain"],
+  "guide": ["present", "hand_chest"],
+  "explain": ["present", "hand_chest"],
+  "hand_chest": ["present"],
+  "think": [],
+  "hope": ["hand_chest"],
+  "raise_hand": ["happy", "present", "hand_chest"],
+  "happy": ["clap", "present", "hand_chest"],
+  "clap": ["happy", "present", "hand_chest"]
+ },
+ "oneshot": { "bow": 0.3, "greet": 0.3, "wave": 1.0, "clap": 1.0, "happy": 0.8, "raise_hand": 0.6 },
+ "postures": {
+  "neutral": ["hand_chest", "present"],
+  "gentle": ["present", "hand_chest", "explain"],
+  "happy": ["present", "hand_chest"],
+  "excited": ["present", "hand_chest"],
+  "sincere": ["hand_chest", "explain"],
+  "apologetic": ["hand_chest"],
+  "troubled": ["hand_chest"],
+  "surprised": ["hand_chest"],
+  "serious": ["explain", "hand_chest"],
+  "playful": ["present", "hand_chest"]
+ },
+ "motion_sets": {
+  "video_fit": {
+   "rest": "idle_polite",
+   "loops": {
+    "idle_polite": [],
+    "chest_hold": ["hand_chest", "present", "explain", "hope", "guide"],
+    "chin_hold": ["think", "emotion:playful"]
+   },
+   "transitions": [
+    { "clip": "idle_to_chest", "from": "idle_polite", "to": "chest_hold" },
+    { "clip": "chest_to_idle", "from": "chest_hold", "to": "idle_polite" },
+    { "clip": "chest_to_chin", "from": "chest_hold", "to": "chin_hold" },
+    { "clip": "chin_to_idle", "from": "chin_hold", "to": "idle_polite" },
+    { "clip": "idle_to_chin", "from": "idle_polite", "to": "chin_hold" }
+   ]
+  },
+  "game": {
+   "rest": "idle",
+   "gestures": {
+    "present": ["present"],
+    "hope": ["hope"],
+    "raise_hand": ["raise_hand"],
+    "bow": ["bow", "greet"],
+    "wave": ["wave", "greet"],
+    "hand_chest": ["hand_chest"],
+    "think": ["think"],
+    "guide": ["guide"],
+    "explain": ["explain"],
+    "happy": ["happy"],
+    "clap": ["clap"]
+   }
+  }
+ }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "9001_hayakawa_tazuna_mini",
+  "variantOf": "9001_hayakawa_tazuna",
+  "displayName": { "ja": "駿川たづな（ミニ）", "zhTW": "駿川たづな（Q 版）", "en": "Hayakawa Tazuna (mini)" },
+  "vrm": {
+    "path": "assets/characters/9001_hayakawa_tazuna_mini/vrm/HayakawaTazunaMini.vrm",
+    "specVersion": "1.0",
+    "sizeBytes": 1203652,
+    "sha256": "13a41b9459984f4014d0623e57756709da2f57c28d1510314e741a9a881d9cdf",
+    "heightMeters": 1.13,
+    "facing": "+Z",
+    "thumbnail": "assets/characters/9001_hayakawa_tazuna_mini/renders/thumbnail.jpg"
+  },
+  "stats": { "triangles": 10576, "materials": 9, "morphTargets": 0, "skinJoints": 69, "humanBones": 31 },
+  "expressions": {
+    "method": "textureTransform",
+    "note": "Q 版的眼、眉、嘴是貼圖集，表情以 VRM 1.0 的 textureTransformBinds 切換貼圖格；全部為二元（isBinary）表情，不能部分混合。",
+    "preset": ["happy", "angry", "sad", "relaxed", "surprised", "aa", "ih", "ou", "ee", "oh", "blink", "blinkLeft", "blinkRight"],
+    "custom": ["mini_WaraiA", "mini_WaraiB", "mini_WaraiC", "mini_WaraiD", "mini_WaraiE", "mini_PrizeA", "mini_OdorokiA", "mini_OdorokiB", "mini_KusyoA", "mini_KusyoB", "mini_GuruguruA", "mini_GuruguruB", "mini_GuruguruC", "mini_HarapekoA", "mini_BoobooA", "mini_SleepA", "mini_SleepB", "mini_IkariA", "mini_IkariB", "mini_IkariC", "mini_IkariD", "mini_IkariE", "mini_KomariA", "mini_KomariB", "mini_KomariC", "mini_HawawaA", "mini_KiriA", "mini_KiriB", "mini_KiriC", "mini_KanasiA", "mini_KanasiB", "mini_KanasiC", "mini_KanasiD", "mini_KanasiE", "mini_KanasiF", "mini_FightA"],
+    "lipSync": { "aa": "aa", "ih": "ih", "ou": "ou", "ee": "ee", "oh": "oh" },
+    "suggestedForSupportChat": { "greeting": "happy", "answering": "mini_WaraiA", "apology": "mini_KomariA", "confirm": "mini_WaraiC", "warning": "mini_KiriA" }
+  },
+  "lookAt": { "type": "expression", "note": "眼睛是貼圖，不做視線轉動" },
+  "springBone": { "chains": 12, "joints": 30, "colliders": 10, "colliderGroups": ["Head", "Body", "Arms", "Legs"] },
+  "attachPoints": ["Hand_Attach_L", "Hand_Attach_R"],
+  "license": {
+    "avatarPermission": "onlyAuthor",
+    "commercialUsage": "personalNonProfit",
+    "allowRedistribution": false,
+    "note": "原始模型版權屬 Cygames；公開部署前需確認權利。"
+  }
+}

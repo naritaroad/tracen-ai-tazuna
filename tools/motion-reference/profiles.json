@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "character": "9001_Hayakawa Tazuna",
+  "defaults": {
+    "target_region": [0.0, 0.0, 1.0, 1.0],
+    "target_selection": "green_uniform_then_temporal_continuity",
+    "pose_hz": 10,
+    "mask_hz": 2,
+    "ocr_hz": 2,
+    "overview_hz": 1,
+    "text_region": [0.0, 0.42, 1.0, 1.0],
+    "shot_cut_threshold": 0.23,
+    "max_window_seconds": 12
+  },
+  "videos": {
+    "-WzWAQbzEHY": {"target_region": [0.22, 0.0, 0.82, 1.0], "text_region": [0.0, 0.68, 1.0, 1.0], "dialogue_panel_region": [0.14, 0.82, 0.86, 0.97], "notes": ["Opening frames contain background only; absent target must not be fabricated.", "Narration text is not always spoken by Tazuna."]},
+    "8TePqY44h_M": {"target_region": [0.43, 0.0, 1.0, 1.0], "dialogue_panel_region": [0.12, 0.675, 0.90, 0.84], "notes": ["Two characters; target is the green-uniform character on screen right.", "Dialogue UI occludes body parts. Do not infer hidden finger or leg motion."]},
+    "jetPSQGVnU8": {"target_region": [0.43, 0.0, 1.0, 1.0], "dialogue_panel_region": [0.10, 0.675, 0.91, 0.85], "notes": ["Two characters; target is the green-uniform character on screen right.", "Speaker may be the other character. Preserve speaker text separately."]},
+    "mKNl_wQwpn0": {"text_region": [0.0, 0.0, 1.0, 1.0], "detect_dialogue_ui": false, "shot_cut_threshold": 0.15, "notes": ["Edited montage with title cards, cuts, zooms and transitions.", "Do not interpolate motion across cuts or interpret camera motion as body motion."]},
+    "qQ40c6kgV8M": {"dialogue_panel_region": [0.055, 0.685, 0.945, 0.85], "notes": ["Single target character; lower-body motion is partly covered by dialogue UI."]}
+  }
+}

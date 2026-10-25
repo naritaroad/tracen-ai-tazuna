@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRM 測試窗口｜駿川たづな</title>
+<style>
+  :root { --bg:#eef3f7; --panel:#ffffff; --ink:#1d2b36; --muted:#5f7280; --line:#d6e0e8; --accent:#2f9e5b; --bad:#c94141; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font:14px/1.5 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif; }
+  .app { display:grid; grid-template-columns: 300px 1fr 320px; height:100vh; }
+  aside { background:var(--panel); border-right:1px solid var(--line); overflow:auto; padding:14px; }
+  aside.right { border-right:0; border-left:1px solid var(--line); }
+  h1 { font-size:16px; margin:0 0 4px; } h2 { font-size:13px; margin:16px 0 6px; color:var(--muted); letter-spacing:.04em; }
+  .stage { position:relative; } canvas { width:100%; height:100%; display:block; }
+  #perf { position:absolute; left:10px; bottom:10px; background:rgba(255,255,255,.85); border:1px solid var(--line); border-radius:6px; padding:3px 8px; font-size:12px; }
+  #hint { position:absolute; right:10px; bottom:10px; font-size:12px; color:var(--muted); }
+  #info div { display:flex; justify-content:space-between; gap:8px; padding:3px 0; border-bottom:1px dashed var(--line); font-size:12.5px; }
+  #info span { color:var(--muted); white-space:nowrap; } #info b { font-weight:600; text-align:right; }
+  .row { display:flex; flex-wrap:wrap; gap:6px; }
+  button { border:1px solid var(--line); background:#f7fafc; border-radius:6px; padding:5px 10px; cursor:pointer; font:inherit; font-size:13px; }
+  button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+  label.chk { display:flex; align-items:center; gap:6px; margin:3px 0; }
+  .slider { display:grid; grid-template-columns: 92px 1fr; align-items:center; gap:6px; font-size:12.5px; }
+  .slider.custom span { color:#7a5a00; }
+  #tests div { padding:3px 0; font-size:12.5px; border-bottom:1px dashed var(--line); }
+  #tests small { display:block; color:var(--muted); margin-left:18px; }
+  #tests .pass { color:var(--accent); } #tests .fail { color:var(--bad); }
+  #tests .sum { font-weight:700; font-size:14px; }
+  #log { white-space:pre-wrap; font:11.5px/1.45 ui-monospace,Consolas,monospace; background:#f4f7f9; border:1px solid var(--line); border-radius:6px; padding:6px; max-height:140px; overflow:auto; }
+  @media (max-width: 1000px) { .app { grid-template-columns: 1fr; grid-template-rows: auto 60vh auto; height:auto; } aside { border:0; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>VRM 測試窗口</h1>
+    <div style="color:var(--muted);font-size:12px">tracen-aas-tsr ｜ 模型加工驗收用</div>
+    <h2>模型資訊</h2><div id="info">載入中…</div>
+    <h2>自動驗收</h2><div id="tests">執行中…</div>
+    <div class="row" style="margin-top:6px"><button id="rerun">重新驗收</button><button id="shot">擷取畫面</button></div>
+    <h2>紀錄</h2><div id="log"></div>
+  </aside>
+  <div class="stage">
+    <canvas id="c"></canvas>
+    <div id="perf">—</div>
+    <div id="hint">拖曳旋轉・滾輪縮放・可拖入其他 .vrm</div>
+  </div>
+  <aside class="right">
+    <h2>動畫（VRMA）</h2>
+    <div class="row" id="clips"><span style="color:var(--muted);font-size:12px">載入中…</span></div>
+    <div class="row" style="margin-top:6px"><button id="stopClip">停止動畫</button><button id="camRef">原片視角</button></div>
+    <label class="slider"><span>淡入淡出</span><input type="range" id="fade" min="0" max="1" step="0.05" value="0.3"></label>
+    <div style="font-size:12px;color:var(--muted)">淡化 <b id="fadeV">0.30 s</b>・<select id="speed"><option value="1">1.0×</option><option value="0.5">0.5×</option><option value="0.25">0.25×</option></select></div>
+    <div id="animTime" style="font:12px ui-monospace,Consolas,monospace;margin-top:4px">—</div>
+    <label class="chk"><input type="checkbox" id="refShow"> 同步顯示原片（對照用）</label>
+    <label class="chk"><input type="checkbox" id="refAudio"> 原片聲音</label>
+    <div id="refWrap" style="display:none"><video id="refVideo" playsinline muted style="width:100%;border-radius:6px;border:1px solid var(--line)"></video></div>
+    <h2>姿勢</h2>
+    <div class="row">
+      <button data-pose="tpose">T 字</button>
+      <button data-pose="idle" class="on">待機</button>
+      <button data-pose="bow">鞠躬</button>
+      <button data-pose="wave">揮手</button>
+      <button data-pose="range">關節活動</button>
+    </div>
+    <h2>次級動作</h2>
+    <div class="row"><button id="spin">轉身測試</button><button id="jump">跳躍測試</button></div>
+    <label class="chk"><input type="checkbox" id="helpers"> 顯示彈簧骨與碰撞體</label>
+    <h2>自動控制</h2>
+    <label class="chk"><input type="checkbox" id="autoBlink" checked> 自動眨眼</label>
+    <label class="chk"><input type="checkbox" id="lipSync"> 對嘴示範（A/I/U/E/O）</label>
+    <label class="chk"><input type="checkbox" id="lookMouse" checked> 視線跟隨滑鼠</label>
+    <label class="chk"><input type="checkbox" id="breathing" checked> 呼吸</label>
+    <h2>表情 <button id="resetExpr" style="float:right;padding:1px 8px">歸零</button></h2>
+    <div id="expr"></div>
+  </aside>
+</div>
+<script src="dist/vrm-data.js" onerror="console.info('no embedded vrm-data.js')"></script>
+<script src="dist/vrma-data.js" onerror="console.info('no embedded vrma-data.js')"></script>
+<script src="dist/viewer.js"></script>
+</body>
+</html>

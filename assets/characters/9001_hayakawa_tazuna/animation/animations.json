@@ -1,0 +1,160 @@
+{
+ "version": 1,
+ "fps": 30,
+ "model": "../vrm/HayakawaTazuna.vrm",
+ "clips": [
+  {
+   "label": "禮貌待機",
+   "loop": true,
+   "emotion": "平靜、親切",
+   "usage": "待命、聆聽使用者輸入",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 2.5
+   },
+   "description": "雙手輕疊於下腹前、手肘微張，頭部隨呼吸細微擺動；7.0 秒無縫循環。",
+   "interrupt": "任意時點",
+   "id": "idle_polite",
+   "file": "vrma/idle_polite.vrma",
+   "frames": 210,
+   "duration": 6.9667
+  },
+  {
+   "label": "胸前停留",
+   "loop": true,
+   "emotion": "真誠、溫柔",
+   "usage": "說明、安撫、表達同理時的說話姿勢",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 13.9
+   },
+   "description": "右手輕放胸口、頭部微傾並有點頭變化；5.2 秒循環。",
+   "interrupt": "任意時點（接 chest_to_idle 或 chest_to_chin）",
+   "id": "chest_hold",
+   "file": "vrma/chest_hold.vrma",
+   "frames": 156,
+   "duration": 5.1667
+  },
+  {
+   "label": "托腮微笑",
+   "loop": true,
+   "emotion": "俏皮、愉快",
+   "usage": "輕鬆話題、玩笑後的停頓",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 31.2
+   },
+   "description": "彎曲的食指托住下巴、頭部微傾；2.8 秒循環。",
+   "interrupt": "任意時點",
+   "id": "chin_hold",
+   "file": "vrma/chin_hold.vrma",
+   "frames": 84,
+   "duration": 2.7667
+  },
+  {
+   "label": "抬手至胸前",
+   "loop": false,
+   "next": "chest_hold",
+   "emotion": "真誠、自我表白",
+   "usage": "「我也能理解」「請相信我」等表達心意的回答開頭",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 12.2
+   },
+   "description": "右手由交握處抬到胸口，左手同時放下垂於身側，頭向右微傾。",
+   "interrupt": "結束後自動進入胸前停留",
+   "id": "idle_to_chest",
+   "file": "vrma/idle_to_chest.vrma",
+   "frames": 40,
+   "duration": 1.3
+  },
+  {
+   "label": "胸前→待機",
+   "loop": false,
+   "next": "idle_polite",
+   "emotion": "收尾",
+   "usage": "胸前說話結束回到待機",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 12.2,
+    "reverse": true,
+    "rate": 0.8695652173913044
+   },
+   "description": "由抬手動作反向補製（原片無此段），速度放慢 15%。",
+   "interrupt": "建議播放完畢",
+   "id": "chest_to_idle",
+   "file": "vrma/chest_to_idle.vrma",
+   "frames": 46,
+   "duration": 1.5
+  },
+  {
+   "label": "胸前→托腮",
+   "loop": false,
+   "next": "chin_hold",
+   "emotion": "俏皮、莞爾",
+   "usage": "開玩笑、自嘲（「なんて……ふふっ」）",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 30.05
+   },
+   "description": "右手由胸口移到下巴，左手移到左髖旁。",
+   "interrupt": "結束後自動進入托腮停留",
+   "id": "chest_to_chin",
+   "file": "vrma/chest_to_chin.vrma",
+   "frames": 29,
+   "duration": 0.9333
+  },
+  {
+   "label": "托腮→待機",
+   "loop": false,
+   "next": "idle_polite",
+   "emotion": "收尾",
+   "usage": "玩笑後回到正題",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 34.05
+   },
+   "description": "放下右手回到雙手交疊待機。",
+   "interrupt": "建議播放完畢",
+   "id": "chin_to_idle",
+   "file": "vrma/chin_to_idle.vrma",
+   "frames": 39,
+   "duration": 1.2667
+  },
+  {
+   "label": "待機→托腮",
+   "loop": false,
+   "next": "chin_hold",
+   "emotion": "俏皮",
+   "usage": "直接進入玩笑語氣",
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 34.05,
+    "reverse": true
+   },
+   "description": "由「托腮→待機」反向補製（原片無此段）。",
+   "interrupt": "建議播放完畢",
+   "id": "idle_to_chin",
+   "file": "vrma/idle_to_chin.vrma",
+   "frames": 39,
+   "duration": 1.2667
+  },
+  {
+   "label": "完整台詞表演",
+   "loop": false,
+   "emotion": "親切→真誠→俏皮→親切",
+   "usage": "與原片同步比對、展示用",
+   "face": true,
+   "source": {
+    "video": "qQ40c6kgV8M",
+    "start": 0.3
+   },
+   "description": "原片 0.3–42.0 秒完整還原：身體、眨眼、閉眼、嘴型與微笑（含表情軌道）。",
+   "interrupt": "展示用",
+   "id": "talk_full_qQ40",
+   "file": "vrma/talk_full_qQ40.vrma",
+   "frames": 1252,
+   "duration": 41.7
+  }
+ ]
+}

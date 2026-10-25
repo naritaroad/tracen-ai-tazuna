@@ -1,0 +1,77 @@
+id,name,name_ja,name_en,grade,racecourse,surface,distance_m,direction,month,half,classes,source_type,source_ref
+race_nikkei_shinshun_hai,日經新春盃,日経新春杯,Nikkei Shinshun Hai,G2,kyoto,turf,2400,right,1,1,senior,community,https://gametora.com/umamusume/races
+race_tokai_stakes,東海錦標賽,東海ステークス,Tokai Stakes,G2,chukyo,dirt,1800,left,1,2,senior,community,https://gametora.com/umamusume/races
+race_american_jcc,美國JCC,アメリカJCC,American JCC,G2,nakayama,turf,2200,right,1,2,senior,community,https://gametora.com/umamusume/races
+race_kawasaki_kinen,川崎紀念,川崎記念,Kawasaki Kinen,G1,kawasaki,dirt,2100,left,2,1,senior,community,https://gametora.com/umamusume/races
+race_kyoto_kinen,京都紀念,京都記念,Kyoto Kinen,G2,kyoto,turf,2200,right,2,1,senior,community,https://gametora.com/umamusume/races
+race_february_stakes,二月錦標賽,フェブラリーステークス,February Stakes,G1,tokyo,dirt,1600,left,2,2,senior,community,https://gametora.com/umamusume/races
+race_nakayama_kinen,中山紀念,中山記念,Nakayama Kinen,G2,nakayama,turf,1800,right,2,2,senior,community,https://gametora.com/umamusume/races
+race_yayoi_sho,彌生賞,弥生賞,Yayoi Sho,G2,nakayama,turf,2000,right,3,1,classic,community,https://gametora.com/umamusume/races
+race_kinko_sho,金鯱賞,金鯱賞,Kinko Sho,G2,chukyo,turf,2000,left,3,1,senior,community,https://gametora.com/umamusume/races
+race_fillies_revue,賽馬娘賽,フィリーズレビュー,Fillies' Revue,G2,hanshin,turf,1400,right,3,1,classic,community,https://gametora.com/umamusume/races
+race_empress_hai,皇后盃,エンプレス杯,Empress Hai,G2,kawasaki,dirt,2100,left,3,1,senior,community,https://gametora.com/umamusume/races
+race_tulip_sho,鬱金香賞,チューリップ賞,Tulip Sho,G2,hanshin,turf,1600,right,3,1,classic,community,https://gametora.com/umamusume/races
+race_takamatsunomiya_kinen,高松宮紀念,高松宮記念,Takamatsunomiya Kinen,G1,chukyo,turf,1200,left,3,2,senior,community,https://gametora.com/umamusume/races
+race_osaka_hai,大阪盃,大阪杯,Osaka Hai,G1,hanshin,turf,2000,right,3,2,senior,community,https://gametora.com/umamusume/races
+race_hanshin_daishoten,阪神大賞典,阪神大賞典,Hanshin Daishoten,G2,hanshin,turf,3000,right,3,2,senior,community,https://gametora.com/umamusume/races
+race_spring_stakes,春季錦標賽,スプリングステークス,Spring Stakes,G2,nakayama,turf,1800,right,3,2,classic,community,https://gametora.com/umamusume/races
+race_nikkei_sho,日經賞,日経賞,Nikkei Sho,G2,nakayama,turf,2500,right,3,2,senior,community,https://gametora.com/umamusume/races
+race_diolite_kinen,閃長岩紀念,ダイオライト記念,Diolite Kinen,G2,funabashi,dirt,2400,left,3,2,senior,community,https://gametora.com/umamusume/races
+race_oka_sho,櫻花賞,桜花賞,Oka Sho,G1,hanshin,turf,1600,right,4,1,classic,community,https://gametora.com/umamusume/races
+race_satsuki_sho,皋月賞,皐月賞,Satsuki Sho,G1,nakayama,turf,2000,right,4,1,classic,community,https://gametora.com/umamusume/races
+race_hanshin_umamusume_stakes,阪神賽馬娘錦標賽,阪神ウマ娘ステークス,Hanshin Umamusume Stakes,G2,hanshin,turf,1600,right,4,1,senior,community,https://gametora.com/umamusume/races
+race_new_zealand_trophy,紐西蘭盃,ニュージーランドトロフィー,New Zealand Trophy,G2,nakayama,turf,1600,right,4,1,classic,community,https://gametora.com/umamusume/races
+race_tenno_sho_spring,天皇賞（春）,天皇賞（春）,Tenno Sho (Spring),G1,kyoto,turf,3200,right,4,2,senior,community,https://gametora.com/umamusume/races
+race_milers_cup,一哩跑者盃,マイラーズカップ,Milers Cup,G2,kyoto,turf,1600,right,4,2,senior,community,https://gametora.com/umamusume/races
+race_flora_stakes,花仙錦標賽,フローラステークス,Flora Stakes,G2,tokyo,turf,2000,left,4,2,classic,community,https://gametora.com/umamusume/races
+race_aoba_sho,青葉賞,青葉賞,Aoba Sho,G2,tokyo,turf,2400,left,4,2,classic,community,https://gametora.com/umamusume/races
+race_nhk_mile_cup,NHK一哩賽,NHKマイルカップ,NHK Mile Cup,G1,tokyo,turf,1600,left,5,1,classic,community,https://gametora.com/umamusume/races
+race_victoria_mile,維多利亞一哩賽,ヴィクトリアマイル,Victoria Mile,G1,tokyo,turf,1600,left,5,1,senior,community,https://gametora.com/umamusume/races
+race_kashiwa_kinen,柏紀念,かしわ記念,Kashiwa Kinen,G1,funabashi,dirt,1600,left,5,1,senior,community,https://gametora.com/umamusume/races
+race_kyoto_shimbun_hai,京都新聞盃,京都新聞杯,Kyoto Shimbun Hai,G2,kyoto,turf,2200,right,5,1,classic,community,https://gametora.com/umamusume/races
+race_keio_hai_spring_cup,京王盃春季盃,京王杯スプリングカップ,Keio Hai Spring Cup,G2,tokyo,turf,1400,left,5,1,senior,community,https://gametora.com/umamusume/races
+race_oaks,奧克斯,オークス,Japanese Oaks,G1,tokyo,turf,2400,left,5,2,classic,community,https://gametora.com/umamusume/races
+race_tokyo_yushun,東京優駿（日本打比）,東京優駿（日本ダービー）,Tokyo Yushun (Japanese Derby),G1,tokyo,turf,2400,left,5,2,classic,community,https://gametora.com/umamusume/races
+race_meguro_kinen,目黑紀念,目黒記念,Meguro Kinen,G2,tokyo,turf,2500,left,5,2,senior,community,https://gametora.com/umamusume/races
+race_yasuda_kinen,安田紀念,安田記念,Yasuda Kinen,G1,tokyo,turf,1600,left,6,1,classic|senior,community,https://gametora.com/umamusume/races
+race_kanto_oaks,關東奧克斯,関東オークス,Kanto Oaks,G2,kawasaki,dirt,2100,left,6,1,classic,community,https://gametora.com/umamusume/races
+race_takarazuka_kinen,寶塚紀念,宝塚記念,Takarazuka Kinen,G1,hanshin,turf,2200,right,6,2,classic|senior,community,https://gametora.com/umamusume/races
+race_teio_sho,帝王賞,帝王賞,Teio Sho,G1,oi,dirt,2000,right,6,2,senior,community,https://gametora.com/umamusume/races
+race_japan_dirt_derby,日本沙地打比,ジャパンダートダービー,Japan Dirt Derby,G1,oi,dirt,2000,right,7,1,classic,community,https://gametora.com/umamusume/races
+race_sapporo_kinen,札幌紀念,札幌記念,Sapporo Kinen,G2,sapporo,turf,2000,right,8,2,classic|senior,community,https://gametora.com/umamusume/races
+race_centaur_stakes,人馬錦標賽,セントウルステークス,Centaur Stakes,G2,hanshin,turf,1200,right,9,1,classic|senior,community,https://gametora.com/umamusume/races
+race_rose_stakes,玫瑰錦標賽,ローズステークス,Rose Stakes,G2,hanshin,turf,1800,right,9,1,classic,community,https://gametora.com/umamusume/races
+race_sprinters_stakes,短途跑者錦標賽,スプリンターズステークス,Sprinters Stakes,G1,nakayama,turf,1200,right,9,2,classic|senior,community,https://gametora.com/umamusume/races
+race_st_lite_kinen,聖烈特紀念,セントライト記念,St. Lite Kinen,G2,nakayama,turf,2200,right,9,2,classic,community,https://gametora.com/umamusume/races
+race_kobe_shimbun_hai,神戶新聞盃,神戸新聞杯,Kobe Shimbun Hai,G2,hanshin,turf,2400,right,9,2,classic,community,https://gametora.com/umamusume/races
+race_all_comers,產經賞,オールカマー,All Comers,G2,nakayama,turf,2200,right,9,2,classic|senior,community,https://gametora.com/umamusume/races
+race_sazanka_tv_hai,茶梅電視台盃,さざんかテレビ杯,Sazanka TV Hai,G2,funabashi,dirt,1800,left,9,2,classic|senior,community,https://gametora.com/umamusume/races
+race_nambu_hai,一哩冠軍賽南部盃,マイルチャンピオンシップ南部杯,Mile Championship Nambu Hai,G1,morioka,dirt,1600,left,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_mainichi_okan,每日王冠,毎日王冠,Mainichi Okan,G2,tokyo,turf,1800,left,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_kyoto_daishoten,京都大賞典,京都大賞典,Kyoto Daishoten,G2,kyoto,turf,2400,right,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_fuchu_umamusume_stakes,府中賽馬娘錦標賽,府中ウマ娘ステークス,Fuchu Umamusume Stakes,G2,tokyo,turf,1800,left,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_ladies_prelude,女士預賽,レディスプレリュード,Ladies' Prelude,G2,oi,dirt,1800,right,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_tokyo_hai,東京盃,東京盃,Tokyo Hai,G2,oi,dirt,1200,right,10,1,classic|senior,community,https://gametora.com/umamusume/races
+race_shuka_sho,秋華賞,秋華賞,Shuka Sho,G1,kyoto,turf,2000,right,10,2,classic,community,https://gametora.com/umamusume/races
+race_kikuka_sho,菊花賞,菊花賞,Kikuka Sho,G1,kyoto,turf,3000,right,10,2,classic,community,https://gametora.com/umamusume/races
+race_tenno_sho_autumn,天皇賞（秋）,天皇賞（秋）,Tenno Sho (Autumn),G1,tokyo,turf,2000,left,10,2,classic|senior,community,https://gametora.com/umamusume/races
+race_swan_stakes,天鵝錦標賽,スワンステークス,Swan Stakes,G2,kyoto,turf,1400,right,10,2,classic|senior,community,https://gametora.com/umamusume/races
+race_fuji_stakes,富士錦標賽,富士ステークス,Fuji Stakes,G2,tokyo,turf,1600,left,10,2,classic|senior,community,https://gametora.com/umamusume/races
+race_queen_elizabeth_cup,伊麗莎白女王盃,エリザベス女王杯,Queen Elizabeth II Cup,G1,kyoto,turf,2200,right,11,1,classic|senior,community,https://gametora.com/umamusume/races
+race_jbc_ladies_classic,JBC女士經典賽,JBCレディスクラシック,JBC Ladies' Classic,G1,oi,dirt,1800,right,11,1,classic|senior,community,https://gametora.com/umamusume/races
+race_jbc_sprint,JBC短途賽,JBCスプリント,JBC Sprint,G1,oi,dirt,1200,right,11,1,classic|senior,community,https://gametora.com/umamusume/races
+race_jbc_classic,JBC經典賽,JBCクラシック,JBC Classic,G1,oi,dirt,2000,right,11,1,classic|senior,community,https://gametora.com/umamusume/races
+race_keio_hai_junior_stakes,京王盃新手級錦標賽,京王杯ジュニアステークス,Keio Hai Junior Stakes,G2,tokyo,turf,1400,left,11,1,junior,community,https://gametora.com/umamusume/races
+race_copa_republica_argentina,阿根廷共和國盃,アルゼンチン共和国杯,Copa Republica Argentina,G2,tokyo,turf,2500,left,11,1,classic|senior,community,https://gametora.com/umamusume/races
+race_daily_hai_junior_stakes,每日盃新手級錦標賽,デイリー杯ジュニアステークス,Daily Hai Junior Stakes,G2,kyoto,turf,1600,right,11,1,junior,community,https://gametora.com/umamusume/races
+race_mile_championship,一哩冠軍賽,マイルチャンピオンシップ,Mile Championship,G1,kyoto,turf,1600,right,11,2,classic|senior,community,https://gametora.com/umamusume/races
+race_japan_cup,日本盃,ジャパンカップ,Japan Cup,G1,tokyo,turf,2400,left,11,2,classic|senior,community,https://gametora.com/umamusume/races
+race_champions_cup,日本冠軍盃,チャンピオンズカップ,Champions Cup,G1,chukyo,dirt,1800,left,12,1,classic|senior,community,https://gametora.com/umamusume/races
+race_hanshin_juvenile_fillies,阪神新手級賽馬娘賽,阪神ジュベナイルフィリーズ,Hanshin Juvenile Fillies,G1,hanshin,turf,1600,right,12,1,junior,community,https://gametora.com/umamusume/races
+race_asahi_hai_futurity_stakes,朝日盃未來錦標賽,朝日杯フューチュリティステークス,Asahi Hai Futurity Stakes,G1,hanshin,turf,1600,right,12,1,junior,community,https://gametora.com/umamusume/races
+race_stayers_stakes,長途跑者錦標賽,ステイヤーズステークス,Stayers Stakes,G2,nakayama,turf,3600,right,12,1,classic|senior,community,https://gametora.com/umamusume/races
+race_arima_kinen,有馬紀念,有馬記念,Arima Kinen,G1,nakayama,turf,2500,right,12,2,classic|senior,community,https://gametora.com/umamusume/races
+race_hopeful_stakes,希望錦標賽,ホープフルステークス,Hopeful Stakes,G1,nakayama,turf,2000,right,12,2,junior,community,https://gametora.com/umamusume/races
+race_tokyo_daishoten,東京大賞典,東京大賞典,Tokyo Daishoten,G1,oi,dirt,2000,right,12,2,classic|senior,community,https://gametora.com/umamusume/races
+race_zen_nippon_junior_yushun,全日本新手級優駿,全日本ジュニア優駿,Zen-Nippon Junior Yushun,G1,kawasaki,dirt,1600,left,12,2,junior,community,https://gametora.com/umamusume/races
+race_hanshin_cup,阪神盃,阪神カップ,Hanshin Cup,G2,hanshin,turf,1400,right,12,2,classic|senior,community,https://gametora.com/umamusume/races

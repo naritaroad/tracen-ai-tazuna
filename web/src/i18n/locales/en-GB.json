@@ -1,0 +1,545 @@
+{
+  "app": {
+    "name": "Tracen Academy Administrative Information System",
+    "short": "Tracen Office"
+  },
+  "nav": {
+    "chat": "Ask Tazuna",
+    "info": "Academy information",
+    "calendar": "Academy calendar",
+    "services": "Training facilities",
+    "planner": "Training plan calculator",
+    "director": "Director's Office",
+    "memory": "My details",
+    "admin": "Management",
+    "trainerSite": "Back to the trainer site",
+    "logout": "Sign out",
+    "inbox": "Case inbox",
+    "catalog": "Demo data",
+    "runs": "AI run log",
+    "users": "Accounts",
+    "settings": "AI settings and budget"
+  },
+  "shell": {
+    "sidebar": "Sidebar",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "search": "Search conversations",
+    "searchHint": "Search conversations ({{keys}})",
+    "newChatHint": "New conversation ({{keys}})",
+    "noMatch": "No matching conversations",
+    "noHistory": "No conversations yet",
+    "pages": "Pages",
+    "account": "Account and settings",
+    "bubble": "Go to another page",
+    "bubbleClose": "Close the page menu",
+    "pinned": "Pinned",
+    "pin": "Pin conversation",
+    "unpin": "Unpin",
+    "whoSub": "{{name}} · {{role}}"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match system"
+  },
+  "login": {
+    "title": "Trainer sign-in",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "failed": "Wrong username or password.",
+    "hint": "Test accounts are listed in the project's .env.example."
+  },
+  "source": {
+    "official": "Official setting",
+    "anime": "Official anime",
+    "community": "Community source",
+    "reference": "Real-world reference",
+    "project": "Demo setting"
+  },
+  "chat": {
+    "newChat": "New conversation",
+    "history": "Conversations",
+    "untitled": "(new conversation)",
+    "greeting": "Welcome to Tracen Academy, Trainer! I'm Hayakawa Tazuna, secretary to the Director. Ask me about academy rules, training facilities, training plans, or anything you'd like sent to the Director's Office.",
+    "placeholder": "Ask Tazuna about rules, facilities or training plans…",
+    "send": "Send",
+    "stop": "Stop",
+    "samples": "Try asking",
+    "sample1": "What are the opening hours of the secretary's office?",
+    "sample2": "Can I use the uphill slope now?",
+    "sample3": "One stretching session and five turf basic training sessions: how many minutes in total?",
+    "sample4": "If I start two turf basic sessions at 14:00 on 29 October, does anything clash?",
+    "sample5": "Please put me through to Director Akikawa. I'd like to report a problem with the pool.",
+    "thinking": "Tazuna is checking…",
+    "traceEmpty": "No tools were used for this reply.",
+    "arguments": "Arguments",
+    "result": "Result",
+    "model": "Model",
+    "tazuna": "Hayakawa Tazuna",
+    "director": "Director Akikawa (staffed)",
+    "handoffWaiting": "Sent to the Director's Office ({{no}}). A person will pick it up; until then Tazuna can still help with other things.",
+    "handoffActive": "Director Akikawa (a real person) is handling case {{no}}. Your messages go straight to the Director, and Tazuna will not reply.",
+    "failed": "Reply failed: {{message}}",
+    "traceSummary": "What I did ({{count}})",
+    "traceModel": "Model: {{model}}",
+    "stepMeta": "Step {{step}} · {{duration}}",
+    "resultPending": "(waiting for the result)",
+    "heroTitle": "What can I help you with today, Trainer?",
+    "composerHint": "Enter to send · Shift+Enter for a new line",
+    "copy": "Copy",
+    "copied": "Copied",
+    "jumpLatest": "Jump to the latest message",
+    "handoffTag": "Sent to the Director's Office"
+  },
+  "concierge": {
+    "label": "Ask Tazuna",
+    "open": "Ask Tazuna",
+    "close": "Minimise",
+    "openChat": "Open in the chat page",
+    "newTopic": "New topic",
+    "greeting": "Trainer, if anything on this page is unclear, just ask me!",
+    "placeholder": "Ask Tazuna…",
+    "asked": "You asked: {{q}}",
+    "working": "Checking: {{tool}}…",
+    "noReply": "Message sent. See the chat page for the full conversation.",
+    "handoff": "Sent to the Director's Office — see its progress",
+    "more": "See the full answer and what I did in the chat page",
+    "ask": {
+      "info": {
+        "1": "What are the opening hours of the secretary's office?",
+        "2": "How do I book a training facility?",
+        "3": "What time is curfew?"
+      },
+      "calendar": {
+        "1": "What academy events are on this week?",
+        "2": "Is anything scheduled on the afternoon of 29 October?",
+        "3": "Are any facilities closed soon?"
+      },
+      "services": {
+        "1": "Can I use the uphill slope now?",
+        "2": "When is the pool open?",
+        "3": "Which facilities are under maintenance?"
+      },
+      "planner": {
+        "1": "One stretching session and five turf basic sessions: how many minutes in total?",
+        "2": "What should I watch for when planning training?",
+        "3": "What if a training slot runs into curfew?"
+      },
+      "director": {
+        "1": "When should something go to the Director's Office?",
+        "2": "How is the Director's Office different from the secretary's office?",
+        "3": "How soon will the Director's Office reply?"
+      },
+      "memory": {
+        "1": "Which of my preferences do you remember?",
+        "2": "What can I do on the My details page?",
+        "3": "From now on, please keep your answers short."
+      }
+    }
+  },
+  "notice": {
+    "director": {
+      "accepted": "A person at the Director's Office has taken over.",
+      "resolved": "The Director's Office has closed the case. Tazuna is back to help.",
+      "returned": "The Director's Office has handed the conversation back to Tazuna."
+    },
+    "run": {
+      "failed": {
+        "max_steps": "This took too many steps, so it was stopped.",
+        "timeout": "The reply timed out.",
+        "model_error": "The model could not reply just now.",
+        "internal": "System error.",
+        "not_configured": "No model is set up.",
+        "budget": "This month's AI budget is used up. Please use the manual pages."
+      }
+    }
+  },
+  "tools": {
+    "get_academy_info": "Checked academy information",
+    "list_academy_events": "Checked the academy calendar",
+    "search_training_services": "Searched training facilities",
+    "calculate_training_plan": "Calculated the training plan",
+    "transfer_to_director": "Sent to the Director's Office"
+  },
+  "status": {
+    "ok": "OK",
+    "rejected": "Refused",
+    "error": "Error"
+  },
+  "info": {
+    "title": "Academy information",
+    "updated": "Updated {{date}}"
+  },
+  "calendar": {
+    "title": "Academy calendar",
+    "from": "From",
+    "to": "To",
+    "search": "Show",
+    "empty": "Nothing on in this period.",
+    "affects": "Affects",
+    "all": "Whole academy",
+    "races": "Races",
+    "none": "No facility closed",
+    "raceFilter": {
+      "all": "G1 and G2",
+      "g1": "G1 only",
+      "none": "Hide"
+    }
+  },
+  "kind": {
+    "class": "Class",
+    "exam": "Exam",
+    "event": "Event",
+    "maintenance": "Maintenance",
+    "workshop": "Workshop",
+    "race": "Race"
+  },
+  "race": {
+    "detail": "{{racecourse}}, {{surface}} {{distance}} m, {{direction}}",
+    "classes": "Open to: {{classes}}",
+    "source": "Race data source",
+    "halfNote": "Races are placed by the game's first or second half of the month: the 1st–15th or the 16th to the month end. Check academy notices for exact dates.",
+    "surface": {
+      "turf": "turf",
+      "dirt": "dirt"
+    },
+    "direction": {
+      "right": "right-handed",
+      "left": "left-handed",
+      "straight": "straight"
+    },
+    "class": {
+      "junior": "Junior",
+      "classic": "Classic",
+      "senior": "Senior"
+    }
+  },
+  "racecourse": {
+    "sapporo": "Sapporo",
+    "hakodate": "Hakodate",
+    "niigata": "Niigata",
+    "fukushima": "Fukushima",
+    "nakayama": "Nakayama",
+    "tokyo": "Tokyo",
+    "chukyo": "Chukyo",
+    "kyoto": "Kyoto",
+    "hanshin": "Hanshin",
+    "kokura": "Kokura",
+    "oi": "Oi",
+    "kawasaki": "Kawasaki",
+    "funabashi": "Funabashi",
+    "morioka": "Morioka"
+  },
+  "services": {
+    "title": "Training facilities and resources",
+    "query": "Name or keyword",
+    "category": "Category",
+    "anyCategory": "All categories",
+    "onlyAvailable": "Available only",
+    "unit": "{{n}} min per slot",
+    "capacity": "Capacity {{n}}",
+    "fee": "¥{{n}} per slot",
+    "free": "Free",
+    "available": "Available",
+    "unavailable": "Closed for now",
+    "empty": "No matching facilities."
+  },
+  "category": {
+    "track": "Track",
+    "equipment": "Equipment",
+    "analysis": "Analysis",
+    "room": "Room",
+    "workshop": "Workshop",
+    "support": "Support"
+  },
+  "planner": {
+    "title": "Training plan calculator",
+    "intro": "Choose facilities and sessions. The system calculates the total time, demo fees and clashes with the academy calendar in code.",
+    "service": "Facility",
+    "sessions": "Sessions",
+    "minutes": "Minutes per session (optional)",
+    "add": "Add an item",
+    "remove": "Remove",
+    "date": "Date (optional)",
+    "start": "Start time (optional)",
+    "calculate": "Calculate",
+    "total": "Total {{min}} min ({{h}})",
+    "fee": "Demo fees in total: ¥{{n}}",
+    "schedule": "Schedule",
+    "conflicts": "Clashes and reminders",
+    "noConflicts": "No clashes found.",
+    "problems": "Please check these items",
+    "formula": "Formula"
+  },
+  "conflict": {
+    "event": "Clashes with an academy event",
+    "same_day_event": "A related event is on that day",
+    "service_unavailable": "The facility is closed",
+    "after_hours": "Runs past the 20:30 last use"
+  },
+  "director": {
+    "title": "Director's Office",
+    "intro": "For anything not on this site, write a message to Director Akikawa.",
+    "reason": "Type",
+    "summary": "Details",
+    "submit": "Send case",
+    "sent": "Case {{no}} has been sent.",
+    "mine": "My cases",
+    "empty": "No cases yet.",
+    "events": "History"
+  },
+  "reason": {
+    "not_in_data": "Not in the data",
+    "exception_request": "Exception request",
+    "complaint": "Feedback or complaint",
+    "asked_for_director": "Asked for the Director",
+    "other": "Other"
+  },
+  "ticketStatus": {
+    "waiting": "Waiting",
+    "in_progress": "In progress",
+    "resolved": "Closed",
+    "returned": "Back with Tazuna"
+  },
+  "ticketEvent": {
+    "created": "Created",
+    "accepted": "Taken by a person",
+    "reply": "Reply",
+    "trainer_message": "Trainer message",
+    "resolved": "Closed",
+    "returned": "Handed back",
+    "note": "Note"
+  },
+  "memory": {
+    "title": "My details",
+    "intro": "Tazuna uses these details for how she addresses you, which language she replies in and her tone. They are never treated as academy rules. You can change or delete them at any time.",
+    "preferredName": "What to call you",
+    "replyLocale": "Reply language",
+    "auto": "Detect from my message",
+    "save": "Save",
+    "saved": "Saved.",
+    "items": "Things Tazuna remembers",
+    "add": "Add",
+    "kindPreference": "Preference",
+    "kindFact": "About me",
+    "delete": "Delete",
+    "edit": "Edit",
+    "empty": "Nothing remembered yet.",
+    "sourceAgent": "Remembered by Tazuna",
+    "sourceTrainer": "Added by me",
+    "events": "Past events",
+    "eventsIntro": "Tazuna looks up past events related to your new question for context. Academy rules and availability are always checked again in the database.",
+    "eventsEmpty": "No events yet.",
+    "avatarTitle": "Profile picture",
+    "avatarIntro": "Shown on the account button in the sidebar. After choosing a picture you can move and zoom it to crop the part you want; only you can see it.",
+    "avatarUpload": "Upload a picture",
+    "avatarChange": "Change picture",
+    "avatarRemove": "Remove picture",
+    "avatarSaving": "Uploading…",
+    "avatarBadFile": "That file could not be read. Choose a PNG, JPEG or WebP picture.",
+    "avatarAlt": "{{name}}'s profile picture",
+    "cropTitle": "Crop your picture",
+    "cropHint": "Drag the picture to place it; zoom with the slider, the mouse wheel or a pinch. What is inside the circle becomes your picture.",
+    "cropLabel": "Crop area (arrow keys move, + and - zoom)",
+    "cropZoom": "Zoom",
+    "cropCancel": "Cancel",
+    "cropConfirm": "Use this crop"
+  },
+  "voice": {
+    "record": "Voice input",
+    "stop": "Stop recording",
+    "recording": "Recording {{s}} s",
+    "transcribing": "Turning speech into text…",
+    "denied": "The microphone is not available. Please allow it in your browser or app settings.",
+    "unsupported": "This browser cannot record audio. Please type instead.",
+    "failed": "Speech to text failed: {{message}}",
+    "review": "Here is the text. Please check it before sending."
+  },
+  "settingsPage": {
+    "title": "AI settings and budget",
+    "intro": "Changes here apply from the next conversation, without a restart. Use the provider's current model ids; mock is the offline test router.",
+    "models": "Models",
+    "chatModel": "Conversation (agent)",
+    "memoryModel": "Memory curation and summaries",
+    "embedModel": "Semantic memory embeddings (768 dimensions)",
+    "transcribeModel": "Speech to text",
+    "memoryEnabled": "Turn on long-term memory (automatic curation and recall)",
+    "budget": "Monthly budget",
+    "monthlyBudget": "Monthly limit (USD; empty = no limit)",
+    "policy": "When the limit is reached",
+    "policyBlock": "Stop AI replies (manual pages keep working)",
+    "policyWarn": "Warn only",
+    "prices": "Prices (USD per million tokens; take them from the provider's price list)",
+    "model": "Model",
+    "input": "Input",
+    "output": "Output",
+    "addPrice": "Add a model price",
+    "save": "Save settings",
+    "saved": "Saved.",
+    "usage": "Usage this month",
+    "since": "Since {{date}}",
+    "spent": "{{spent}} USD spent",
+    "limit": "Limit {{limit}} USD",
+    "noLimit": "No limit",
+    "blocked": "The limit is reached; AI replies are stopped.",
+    "purpose": "Purpose",
+    "calls": "Calls",
+    "tokens": "Tokens (in / out)",
+    "cost": "Cost (USD)",
+    "unpriced": "{{n}} calls have no price set and are not counted",
+    "conversation": "Conversation style and thinking",
+    "conversationIntro": "How Tazuna chats, how long her replies are and how deeply the model thinks. Academy facts still come only from tool results; these settings never relax that.",
+    "replyLength": "Reply length",
+    "replyLengthBrief": "Brief (one to three sentences)",
+    "replyLengthNatural": "Natural (fits the question, no fixed limit)",
+    "replyLengthDetailed": "Detailed (steps and caveats in full)",
+    "smallTalk": "Small talk",
+    "smallTalkOff": "Off (one sentence, then back to academy matters)",
+    "smallTalkBalanced": "Balanced (chat a little, then steer back)",
+    "smallTalkRelaxed": "Relaxed (chat as long as the trainer likes)",
+    "smallTalkHint": "With Balanced, after about three off-topic exchanges in a row Tazuna bridges back to work in one sentence. Big jobs such as essays, code or homework are declined in every mode.",
+    "reasoning": "Thinking depth",
+    "reasoningAuto": "Auto (model default)",
+    "reasoningLow": "Low (faster, cheaper)",
+    "reasoningMedium": "Medium",
+    "reasoningHigh": "High (slower, dearer)",
+    "reasoningHint": "Maps to the Gemini 3 thinking level. Choose Auto for models without thinking. Thinking tokens are billed too.",
+    "temperature": "Temperature (empty = model default)",
+    "temperatureHint": "Google recommends keeping Gemini 3 at its default of 1.0; lower values can cause looping or weaker answers.",
+    "maxOutputTokens": "Output limit per call (tokens)",
+    "maxOutputTokensHint": "On Gemini the limit includes thinking tokens; too small a value cuts the reply off mid-thought.",
+    "maxSteps": "Model calls per message",
+    "maxStepsHint": "Counts tool round trips and the final reply. More handles harder questions but takes longer and costs more.",
+    "adminOnly": "Only admins can change settings; staff can see the usage."
+  },
+  "admin": {
+    "inboxTitle": "Director's Office cases",
+    "persona": "You reply as 'Director Akikawa (staffed)'. The real operator is kept in the audit log.",
+    "accept": "Take case",
+    "reply": "Reply",
+    "replyPlaceholder": "Reply as Director Akikawa…",
+    "resolve": "Close case",
+    "hand_back": "Hand back to Tazuna",
+    "requester": "Requester",
+    "assignee": "Handled by",
+    "origin": "Origin",
+    "originAgent": "From the AI",
+    "originForm": "Form",
+    "select": "Choose a case on the left.",
+    "catalogTitle": "Demo data",
+    "seedNote": "With CATALOG_SEED_MODE=reset, the CSV files rebuild this data at the next start.",
+    "save": "Save",
+    "runsTitle": "AI run log",
+    "usersTitle": "Accounts",
+    "trainer": "Trainer",
+    "steps": "Steps",
+    "tools": "Tools",
+    "role": "Role",
+    "disabled": "Disabled",
+    "field": {
+      "id": "Code",
+      "capacity": "Capacity",
+      "fee_jpy": "Fee (yen)",
+      "content": "Text (Traditional Chinese)",
+      "content_ja": "Text (Japanese)",
+      "content_en": "Text (English)"
+    }
+  },
+  "avatar": {
+    "label": "Character",
+    "placeholder": "Simple view",
+    "loading": "Loading the character…",
+    "noAssets": "3D character files are not provided here",
+    "noMotion": "The server sent no motion data for the character; restart the API and try again",
+    "noWebgl": "This browser cannot show 3D, so the simple view is used",
+    "failed": "The 3D character could not be loaded, so the simple view is used",
+    "collapse": "Hide character",
+    "expand": "Show character",
+    "state": {
+      "idle": "Standing by",
+      "listening": "Listening",
+      "thinking": "Thinking",
+      "working": "Checking the data",
+      "explaining": "Explaining",
+      "confirming": "Waiting for your confirmation",
+      "handoff": "Sending to the Director's Office",
+      "apologizing": "Nothing found",
+      "error": "Something went wrong"
+    },
+    "monogram": "たづな",
+    "tapLabel": "Say hello to Tazuna",
+    "tap": {
+      "body1": "Yes, Trainer? How can I help?",
+      "body2": "I'm right here! Ask me anything about the academy.",
+      "body3": "Thank you for all your hard work today!",
+      "body4": "Need a facility or a schedule checked? Just say the word.",
+      "head1": "Oh my… a pat on the head?",
+      "head2": "Hehe, really now, Trainer.",
+      "shy": "P-please, that's enough… I'm getting embarrassed.",
+      "page": {
+        "chat": "Ask me anything — just type below.",
+        "info": "Is anything in the academy rules unclear?",
+        "calendar": "Which day shall we check?",
+        "services": "Which facility do you need? I'll check how it stands.",
+        "planner": "I can work out the times for your training plan.",
+        "director": "If it needs the Director's Office, I'll pass it on.",
+        "memory": "I keep your preferences safely noted."
+      }
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong: {{message}}",
+    "minutes": "{{n}} min",
+    "none": "—",
+    "hoursMinutes": "{{h}} h {{m}} min",
+    "durationMs": "{{n}} ms"
+  },
+  "planProblem": {
+    "not_found": "No facility called “{{item}}”.",
+    "ambiguous": "“{{item}}” could be: {{candidates}}"
+  },
+  "runStatus": {
+    "running": "Running",
+    "completed": "Completed",
+    "failed": "Failed"
+  },
+  "runError": {
+    "max_steps": "Too many steps",
+    "timeout": "Timed out",
+    "model_error": "Model error",
+    "internal": "System error",
+    "not_configured": "No model set",
+    "budget": "Over budget"
+  },
+  "purpose": {
+    "chat": "Conversation",
+    "memory": "Memory curation",
+    "summary": "Conversation summary",
+    "embed": "Embeddings",
+    "transcribe": "Speech to text"
+  },
+  "role": {
+    "trainer": "Trainer",
+    "staff": "Staff",
+    "admin": "Administrator"
+  },
+  "apiError": {
+    "unauthorized": "Please sign in again.",
+    "forbidden": "You do not have permission to do that.",
+    "not_found": "That could not be found.",
+    "bad_request": "Something in the request is not right ({{detail}}).",
+    "conflict": "This has changed in the meantime; please reload ({{detail}}).",
+    "not_implemented": "This is not available yet.",
+    "internal": "A system error occurred. Please try again shortly.",
+    "http_error": "The server did not respond ({{detail}}).",
+    "stream_error": "The reply was cut off ({{detail}}).",
+    "network": "Cannot reach the server. Please check your connection."
+  }
+}

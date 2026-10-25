@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README 橫幅提案</title>
+<style>
+  /* Each banner at GitHub's README width, on GitHub's light and dark page colours. */
+  :root { --bg: #f6f8fa; --text: #1f2328; --muted: #59636e; --line: #d0d7de; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.75 "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; }
+  main { max-width: 1840px; margin: 0 auto; padding: 48px 16px 80px; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: .04em; }
+  .lead { color: var(--muted); margin: 0 0 36px; max-width: 900px; }
+  section { padding: 32px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 20px; margin: 0; }
+  h2 small { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 10px; letter-spacing: .1em; }
+  .about { color: var(--muted); margin: 6px 0 16px; max-width: 980px; }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 880px), 1fr)); gap: 16px; }
+  .gh { padding: 24px; border: 1px solid var(--line); border-radius: 6px; }
+  .gh.light { background: #ffffff; }
+  .gh.dark { background: #0d1117; border-color: #30363d; }
+  .gh img { display: block; width: 100%; height: auto; }
+  .gh span { display: block; font-size: 12px; margin-top: 8px; color: #59636e; }
+  .gh.dark span { color: #9198a1; }
+  pre { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>README 橫幅提案</h1>
+  <p class="lead">五款原創橫幅，主題取自賽馬與《賽馬娘》的學園生活。畫面裡沒有官方角色圖；02 依使用者決定放了特雷森校徽，其他四款沒有官方標誌。每款都放在 GitHub 的淺色與深色背景上，寬度和 README 相同。原始檔在 <code>src/</code>，用 <code>python docs/brand/banners/render.py</code> 重新輸出 2560×800 的 WebP。</p>
+
+  <section>
+    <h2>01 出馬表<small>RACE CARD</small></h2>
+    <p class="about">仿日本賽馬報紙的出馬表：系統功能就是出賽馬，依枠番八色由右往左排，「印」欄用 ◎○▲△ 標本命，騎手欄寫的是各功能用的技術。賽名「トレセン校務ステークス」，芝 2400m 左回り（學園在府中），1 着獎金是「快適な学園生活」。資訊量最大，最能說明專案內容。</p>
+    <div class="pair"><div class="gh light"><img src="01-race-card.webp" alt=""><span>Light</span></div><div class="gh dark"><img src="01-race-card.webp" alt=""><span>Dark</span></div></div>
+  </section>
+
+  <section>
+    <h2>02 青空ターフ<small>BLUE SKY TURF · 三語版</small></h2>
+    <p class="about">動畫主視覺風格：夏日藍天、積雲、看台、主直線的草地與內欄，右邊是紅白相間的「ハロン棒」（剩 400m）。跑道上四位馬娘衝刺，身上有號碼布，越遠顏色越淡。左邊是圓形徽章裡的特雷森校徽，底部是紫色功能列與金色校訓帶。三個語言各一張：繁中用粉圓體（Huninn），日文、英文用 Zen Maru Gothic。</p>
+    <div class="pair"><div class="gh light"><img src="banner.zh-TW.webp" alt=""><span>繁體中文 · Light</span></div><div class="gh dark"><img src="banner.zh-TW.webp" alt=""><span>繁體中文 · Dark</span></div></div>
+    <div class="pair" style="margin-top:16px"><div class="gh light"><img src="banner.ja.webp" alt=""><span>日本語 · Light</span></div><div class="gh dark"><img src="banner.en.webp" alt=""><span>English · Dark</span></div></div>
+    <p class="about" style="margin-top:12px">校徽取自 <code>assets/brand/tracen-crest.svg</code>；找不到這個檔案時輸出會改用蹄鐵標誌。</p>
+  </section>
+
+  <section>
+    <h2>03 ウイニングライブ<small>WINNING LIVE</small></h2>
+    <p class="about">比賽後的勝利演唱會：聚光燈、蹄鐵形的燈泡拱門、彩帶，觀眾的螢光棒是枠番八色。左邊的 SET LIST 是功能清單，右邊 STARRING 駿川たづな、BACK BAND 是技術。深色版面在 GitHub 深色模式下最融合。</p>
+    <div class="pair"><div class="gh light"><img src="03-winning-live.webp" alt=""><span>Light</span></div><div class="gh dark"><img src="03-winning-live.webp" alt=""><span>Dark</span></div></div>
+  </section>
+
+  <section>
+    <h2>04 藤と和紙<small>WISTERIA &amp; WASHI</small></h2>
+    <p class="about">和風現代：和紙纖維底紋上垂下一整排紫藤，右邊是明朝體直排「トレセン学園」與金色蹄鐵小印，英文用古典襯線字。和網站現有的江戸紫、藤色、金色一致，最安靜、最有質感。</p>
+    <div class="pair"><div class="gh light"><img src="04-wisteria-washi.webp" alt=""><span>Light</span></div><div class="gh dark"><img src="04-wisteria-washi.webp" alt=""><span>Dark</span></div></div>
+  </section>
+
+  <section>
+    <h2>05 着順掲示板<small>RESULT BOARD</small></h2>
+    <p class="about">賽馬場的著順揭示板：點陣 LED 字、紅色「確定」燈。1 着是駿川たづな，2 到 5 着是各功能，著差用「1/2・クビ・ハナ」，馬番旁的色塊沿用出馬表的枠色。下方跑馬燈是「本日の校務はすべて確定しました」。最有梗，和 01 可以當成一組。</p>
+    <div class="pair"><div class="gh light"><img src="05-result-board.webp" alt=""><span>Light</span></div><div class="gh dark"><img src="05-result-board.webp" alt=""><span>Dark</span></div></div>
+  </section>
+
+  <section>
+    <h2>放進 README</h2>
+    <p class="about">GitHub 會照原圖比例縮到內容寬度；圖片本身有圓角與透明邊，淺色、深色模式都不用另做版本。</p>
+<pre>&lt;p align="center"&gt;
+  &lt;img src="docs/brand/banners/banner.zh-TW.webp" alt="特雷森學園 校務資訊系統 · AI 秘書 駿川手綱" width="100%"&gt;
+&lt;/p&gt;
+
+&lt;!-- 日文、英文 README 改用 banner.ja.webp、banner.en.webp --&gt;</pre>
+  </section>
+</main>
+</body>
+</html>

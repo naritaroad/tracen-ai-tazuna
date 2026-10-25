@@ -1,0 +1,545 @@
+{
+  "app": {
+    "name": "トレセン学園 校務情報システム",
+    "short": "トレセン校務"
+  },
+  "nav": {
+    "chat": "たづなに相談",
+    "info": "校務案内",
+    "calendar": "学園カレンダー",
+    "services": "トレーニング施設",
+    "planner": "トレーニング計画試算",
+    "director": "理事長室",
+    "memory": "マイデータ",
+    "admin": "管理サイト",
+    "trainerSite": "トレーナーサイトへ戻る",
+    "logout": "ログアウト",
+    "inbox": "案件受信箱",
+    "catalog": "デモデータ",
+    "runs": "AI 実行記録",
+    "users": "アカウント",
+    "settings": "AI 設定と予算"
+  },
+  "shell": {
+    "sidebar": "サイドバー",
+    "expand": "サイドバーを開く",
+    "collapse": "サイドバーを閉じる",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる",
+    "search": "会話を検索",
+    "searchHint": "会話を検索（{{keys}}）",
+    "newChatHint": "新しい会話（{{keys}}）",
+    "noMatch": "一致する会話はありません",
+    "noHistory": "まだ会話はありません",
+    "pages": "ページ",
+    "account": "アカウントと設定",
+    "bubble": "ほかのページへ",
+    "bubbleClose": "ページメニューを閉じる",
+    "pinned": "ピン留め",
+    "pin": "会話をピン留め",
+    "unpin": "ピン留めを外す",
+    "whoSub": "{{name}}・{{role}}"
+  },
+  "settings": {
+    "language": "言語",
+    "theme": "テーマ",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システムに合わせる"
+  },
+  "login": {
+    "title": "トレーナーログイン",
+    "username": "アカウント",
+    "password": "パスワード",
+    "submit": "ログイン",
+    "failed": "アカウントまたはパスワードが違います。",
+    "hint": "テスト用アカウントはプロジェクトの .env.example を参照してください。"
+  },
+  "source": {
+    "official": "公式設定",
+    "anime": "公式アニメ",
+    "community": "コミュニティ",
+    "reference": "現実の参考",
+    "project": "本システムの設定"
+  },
+  "chat": {
+    "newChat": "新しい会話",
+    "history": "会話履歴",
+    "untitled": "（新しい会話）",
+    "greeting": "トレセン学園へようこそ、トレーナーさん♪ 理事長秘書の駿川たづなです。学園の規則、トレーニング施設、トレーニング計画、理事長室へのご相談など、何でもお尋ねください。",
+    "placeholder": "学園の規則・施設・トレーニング計画について駿川さんに質問…",
+    "send": "送信",
+    "stop": "停止",
+    "samples": "質問の例",
+    "sample1": "秘書室の受付時間は何時から何時までですか？",
+    "sample2": "坂路トレーニングは今使えますか？",
+    "sample3": "ストレッチ 1 回と芝コース基礎トレーニング 5 回で、合計何分ですか？",
+    "sample4": "10 月 29 日 14:00 から芝コース基礎トレーニングを 2 回すると、何かと重なりますか？",
+    "sample5": "秋川理事長につないでください。プールの設備について伝えたいです。",
+    "thinking": "たづなが確認しています…",
+    "traceEmpty": "この返信ではツールを使っていません。",
+    "arguments": "引数",
+    "result": "結果",
+    "model": "モデル",
+    "tazuna": "駿川たづな",
+    "director": "秋川理事長・有人対応",
+    "handoffWaiting": "理事長室へお送りしました（{{no}}）。担当者の対応をお待ちください。それまでは、たづなが他のご用件をお手伝いします。",
+    "handoffActive": "秋川理事長（有人）が案件 {{no}} を対応中です。メッセージは理事長へ直接届き、たづなは返信を控えます。",
+    "failed": "返信に失敗しました：{{message}}",
+    "traceSummary": "処理記録（{{count}}）",
+    "traceModel": "モデル：{{model}}",
+    "stepMeta": "ステップ {{step}} · {{duration}}",
+    "resultPending": "（結果待ち）",
+    "heroTitle": "トレーナーさん、今日は何をお調べしますか？",
+    "composerHint": "Enter で送信・Shift+Enter で改行",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "jumpLatest": "最新のメッセージへ",
+    "handoffTag": "理事長室へ送付済み"
+  },
+  "concierge": {
+    "label": "たづなに相談",
+    "open": "たづなに聞く",
+    "close": "たたむ",
+    "openChat": "会話ページで開く",
+    "newTopic": "話題を変える",
+    "greeting": "トレーナーさん、このページで分からないことがあれば、何でも聞いてくださいね♪",
+    "placeholder": "たづなに質問…",
+    "asked": "質問：{{q}}",
+    "working": "確認中：{{tool}}…",
+    "noReply": "メッセージを送りました。内容は会話ページでご確認ください。",
+    "handoff": "理事長室へ送付済み。進み具合を見る",
+    "more": "会話ページで全文と処理記録を見る",
+    "ask": {
+      "info": {
+        "1": "秘書室の受付時間は何時から何時までですか？",
+        "2": "トレーニング施設はどう予約しますか？",
+        "3": "門限は何時ですか？"
+      },
+      "calendar": {
+        "1": "今週はどんな学園行事がありますか？",
+        "2": "10 月 29 日の午後は何か予定がありますか？",
+        "3": "近いうちに施設が使えない日はありますか？"
+      },
+      "services": {
+        "1": "坂路トレーニングは今使えますか？",
+        "2": "プールはいつ開いていますか？",
+        "3": "メンテナンス中の施設はありますか？"
+      },
+      "planner": {
+        "1": "ストレッチ 1 回と芝コース基礎トレーニング 5 回で、合計何分ですか？",
+        "2": "トレーニング計画を立てるときの注意点は？",
+        "3": "トレーニングの時間が門限と重なったら？"
+      },
+      "director": {
+        "1": "どんなときに理事長室へ送るのですか？",
+        "2": "理事長室と秘書室はどう違いますか？",
+        "3": "理事長室に送ったら、返事はいつ来ますか？"
+      },
+      "memory": {
+        "1": "私の好みで、覚えていることは？",
+        "2": "「マイデータ」ページでは何ができますか？",
+        "3": "これからは短めに答えてください。"
+      }
+    }
+  },
+  "notice": {
+    "director": {
+      "accepted": "理事長室の担当者が対応を始めました。",
+      "resolved": "理事長室の案件が完了しました。たづながお手伝いを再開します。",
+      "returned": "理事長室から、たづなへ会話が戻されました。"
+    },
+    "run": {
+      "failed": {
+        "max_steps": "手順が多すぎたため停止しました。",
+        "timeout": "応答がタイムアウトしました。",
+        "model_error": "モデルが一時的に応答できません。",
+        "internal": "システムエラーです。",
+        "not_configured": "モデルが設定されていません。",
+        "budget": "今月の AI 利用枠を使い切りました。手動ページをご利用ください。"
+      }
+    }
+  },
+  "tools": {
+    "get_academy_info": "校務案内を確認",
+    "list_academy_events": "学園カレンダーを確認",
+    "search_training_services": "トレーニング施設を検索",
+    "calculate_training_plan": "トレーニング計画を計算",
+    "transfer_to_director": "理事長室へ送付"
+  },
+  "status": {
+    "ok": "成功",
+    "rejected": "拒否",
+    "error": "エラー"
+  },
+  "info": {
+    "title": "校務案内",
+    "updated": "更新：{{date}}"
+  },
+  "calendar": {
+    "title": "学園カレンダー",
+    "from": "開始",
+    "to": "終了",
+    "search": "検索",
+    "empty": "この期間の予定はありません。",
+    "affects": "影響する施設",
+    "all": "全校",
+    "races": "レース",
+    "none": "施設への影響なし",
+    "raceFilter": {
+      "all": "G1・G2",
+      "g1": "G1 のみ",
+      "none": "表示しない"
+    }
+  },
+  "kind": {
+    "class": "授業",
+    "exam": "試験",
+    "event": "行事",
+    "maintenance": "整備",
+    "workshop": "研修",
+    "race": "レース"
+  },
+  "race": {
+    "detail": "{{racecourse}}・{{surface}} {{distance}}m・{{direction}}",
+    "classes": "出走可能：{{classes}}",
+    "source": "レース情報の出典",
+    "halfNote": "レースはゲーム内の「前半・後半」をもとに掲載しています（前半は1〜15日、後半は16日〜月末）。正式な日程は学園のお知らせで確認してください。",
+    "surface": {
+      "turf": "芝",
+      "dirt": "ダート"
+    },
+    "direction": {
+      "right": "右回り",
+      "left": "左回り",
+      "straight": "直線"
+    },
+    "class": {
+      "junior": "ジュニア級",
+      "classic": "クラシック級",
+      "senior": "シニア級"
+    }
+  },
+  "racecourse": {
+    "sapporo": "札幌",
+    "hakodate": "函館",
+    "niigata": "新潟",
+    "fukushima": "福島",
+    "nakayama": "中山",
+    "tokyo": "東京",
+    "chukyo": "中京",
+    "kyoto": "京都",
+    "hanshin": "阪神",
+    "kokura": "小倉",
+    "oi": "大井",
+    "kawasaki": "川崎",
+    "funabashi": "船橋",
+    "morioka": "盛岡"
+  },
+  "services": {
+    "title": "トレーニング施設・リソース",
+    "query": "名前のキーワード",
+    "category": "区分",
+    "anyCategory": "すべての区分",
+    "onlyAvailable": "利用可能のみ",
+    "unit": "1 枠 {{n}} 分",
+    "capacity": "定員 {{n}}",
+    "fee": "1 枠 {{n}} 円",
+    "free": "無料",
+    "available": "利用可",
+    "unavailable": "利用停止中",
+    "empty": "該当する施設はありません。"
+  },
+  "category": {
+    "track": "コース",
+    "equipment": "設備",
+    "analysis": "分析",
+    "room": "部屋",
+    "workshop": "研修",
+    "support": "サポート"
+  },
+  "planner": {
+    "title": "トレーニング計画試算",
+    "intro": "施設と回数を選ぶと、合計時間・デモ費用・学園カレンダーとの重なりをプログラムで計算します。",
+    "service": "施設",
+    "sessions": "回数",
+    "minutes": "1 回の分数（任意）",
+    "add": "項目を追加",
+    "remove": "削除",
+    "date": "日付（任意）",
+    "start": "開始時刻（任意）",
+    "calculate": "計算する",
+    "total": "合計 {{min}} 分（{{h}}）",
+    "fee": "デモ費用 合計 {{n}} 円",
+    "schedule": "スケジュール",
+    "conflicts": "重なりと注意",
+    "noConflicts": "重なりは見つかりませんでした。",
+    "problems": "確認が必要な項目",
+    "formula": "計算式"
+  },
+  "conflict": {
+    "event": "学園の予定と重なっています",
+    "same_day_event": "当日に関連する予定があります",
+    "service_unavailable": "施設が利用停止中です",
+    "after_hours": "最終利用時刻 20:30 を過ぎています"
+  },
+  "director": {
+    "title": "理事長室",
+    "intro": "ウェブサイトにない情報は、秋川理事長へメッセージでお問い合わせください。",
+    "reason": "種類",
+    "summary": "内容",
+    "submit": "案件を送信",
+    "sent": "案件 {{no}} を送信しました。",
+    "mine": "自分の案件",
+    "empty": "案件はありません。",
+    "events": "対応履歴"
+  },
+  "reason": {
+    "not_in_data": "データで分からない",
+    "exception_request": "例外の申請",
+    "complaint": "ご意見・苦情",
+    "asked_for_director": "理事長を指名",
+    "other": "その他"
+  },
+  "ticketStatus": {
+    "waiting": "対応待ち",
+    "in_progress": "対応中",
+    "resolved": "完了",
+    "returned": "たづなへ戻し"
+  },
+  "ticketEvent": {
+    "created": "作成",
+    "accepted": "担当開始",
+    "reply": "返信",
+    "trainer_message": "トレーナーのメッセージ",
+    "resolved": "完了",
+    "returned": "たづなへ戻し",
+    "note": "メモ"
+  },
+  "memory": {
+    "title": "マイデータ",
+    "intro": "たづなはこの情報を呼び方・返信言語・話し方に使います。学園の規則としては扱いません。いつでも変更・削除できます。",
+    "preferredName": "呼んでほしい名前",
+    "replyLocale": "返信の言語",
+    "auto": "メッセージから自動判定",
+    "save": "保存",
+    "saved": "保存しました。",
+    "items": "覚えていること",
+    "add": "追加",
+    "kindPreference": "好み",
+    "kindFact": "自分について",
+    "delete": "削除",
+    "edit": "変更",
+    "empty": "覚えていることはまだありません。",
+    "sourceAgent": "たづなが自動で記憶",
+    "sourceTrainer": "自分で追加",
+    "events": "過去の出来事",
+    "eventsIntro": "新しい質問に関係する過去の出来事を参考にします。学園の規則や空き状況は毎回データベースで確認します。",
+    "eventsEmpty": "出来事はまだありません。",
+    "avatarTitle": "アイコン",
+    "avatarIntro": "サイドバーのアカウントボタンに表示されます。画像を選んだら、位置と大きさを調整して使う部分を切り抜けます。表示されるのはあなただけです。",
+    "avatarUpload": "画像をアップロード",
+    "avatarChange": "画像を変更",
+    "avatarRemove": "アイコンを削除",
+    "avatarSaving": "アップロード中…",
+    "avatarBadFile": "このファイルは読み込めません。PNG、JPEG、WebP の画像を選んでください。",
+    "avatarAlt": "{{name}}のアイコン",
+    "cropTitle": "アイコンを切り抜く",
+    "cropHint": "画像をドラッグして位置を、スライダー・ホイール・ピンチで大きさを調整します。丸の中がアイコンになります。",
+    "cropLabel": "切り抜き範囲（矢印キーで移動、+／- で拡大縮小）",
+    "cropZoom": "拡大縮小",
+    "cropCancel": "キャンセル",
+    "cropConfirm": "この範囲を使う"
+  },
+  "voice": {
+    "record": "音声入力",
+    "stop": "録音を停止",
+    "recording": "録音中 {{s}} 秒",
+    "transcribing": "文字に変換中…",
+    "denied": "マイクを使えません。ブラウザまたはアプリの設定でマイクを許可してください。",
+    "unsupported": "このブラウザは録音に対応していません。文字で入力してください。",
+    "failed": "音声の文字変換に失敗しました：{{message}}",
+    "review": "文字に変換しました。確認してから送信してください。"
+  },
+  "settingsPage": {
+    "title": "AI 設定と予算",
+    "intro": "ここでの設定は次の会話からすぐ反映され、再起動は不要です。モデル名には提供元の現在のモデル ID を使ってください。mock はオフラインのテスト用です。",
+    "models": "モデル",
+    "chatModel": "会話（エージェント）",
+    "memoryModel": "記憶の整理と要約",
+    "embedModel": "意味検索用の埋め込み（768 次元）",
+    "transcribeModel": "音声の文字変換",
+    "memoryEnabled": "長期記憶を有効にする（自動整理と意味検索）",
+    "budget": "月間予算",
+    "monthlyBudget": "月の上限（米ドル、空欄＝上限なし）",
+    "policy": "上限を超えたとき",
+    "policyBlock": "AI の返信を止める（手動ページは利用可）",
+    "policyWarn": "通知のみ（止めない）",
+    "prices": "価格（米ドル／100 万トークン。提供元の価格表に合わせて入力）",
+    "model": "モデル",
+    "input": "入力",
+    "output": "出力",
+    "addPrice": "モデル価格を追加",
+    "save": "設定を保存",
+    "saved": "保存しました。",
+    "usage": "今月の利用量",
+    "since": "{{date}} から",
+    "spent": "{{spent}} 米ドル使用",
+    "limit": "上限 {{limit}} 米ドル",
+    "noLimit": "上限なし",
+    "blocked": "上限に達したため、AI の返信を停止しています。",
+    "purpose": "用途",
+    "calls": "回数",
+    "tokens": "トークン（入力／出力）",
+    "cost": "費用（米ドル）",
+    "unpriced": "{{n}} 回は価格未設定のため費用に含まれていません",
+    "conversation": "会話スタイルと思考",
+    "conversationIntro": "たづなの話し方、返信の長さ、モデルの思考の深さを調整します。学園の事実は引き続きツールの結果だけに基づき、この設定で緩むことはありません。",
+    "replyLength": "返信の長さ",
+    "replyLengthBrief": "短め（1〜3 文）",
+    "replyLengthNatural": "自然（質問に合わせる、上限なし）",
+    "replyLengthDetailed": "詳しく（手順や注意点まで説明）",
+    "smallTalk": "雑談",
+    "smallTalkOff": "しない（一言で学園の話に戻す）",
+    "smallTalkBalanced": "ほどほど（少し話してから自然に戻す）",
+    "smallTalkRelaxed": "自由（トレーナーさんが望むだけ付き合う）",
+    "smallTalkHint": "「ほどほど」では雑談が 3 往復ほど続くと、たづなが一言で仕事の話へつなぎます。作文、プログラム、宿題などの大きな依頼はどのモードでもお断りします。",
+    "reasoning": "思考の深さ",
+    "reasoningAuto": "自動（モデルの既定値）",
+    "reasoningLow": "低（速い・安い）",
+    "reasoningMedium": "中",
+    "reasoningHigh": "高（遅い・高い）",
+    "reasoningHint": "Gemini 3 の thinking level に対応します。思考に対応しないモデルでは「自動」を選んでください。思考に使ったトークンも課金されます。",
+    "temperature": "温度（空欄＝モデルの既定値）",
+    "temperatureHint": "Google は Gemini 3 を既定値 1.0 のまま使うよう推奨しています。下げるとループや品質低下が起こることがあります。",
+    "maxOutputTokens": "1 回の呼び出しの出力上限（トークン）",
+    "maxOutputTokensHint": "Gemini の上限には思考のトークンも含まれます。小さすぎると思考の途中で打ち切られます。",
+    "maxSteps": "1 メッセージあたりのモデル呼び出し上限",
+    "maxStepsHint": "ツールの往復と最後の返信を含みます。多いほど複雑な質問に対応できますが、時間と費用も増えます。",
+    "adminOnly": "設定を変更できるのは管理者のみです。スタッフは利用量を確認できます。"
+  },
+  "admin": {
+    "inboxTitle": "理事長室の案件",
+    "persona": "「秋川理事長・有人対応」として返信します。実際の操作者は監査記録に残ります。",
+    "accept": "担当する",
+    "reply": "返信",
+    "replyPlaceholder": "秋川理事長として返信…",
+    "resolve": "完了にする",
+    "hand_back": "たづなへ戻す",
+    "requester": "申請者",
+    "assignee": "担当",
+    "origin": "経路",
+    "originAgent": "AI から転送",
+    "originForm": "フォーム",
+    "select": "左の案件を選んでください。",
+    "catalogTitle": "デモデータの管理",
+    "seedNote": "CATALOG_SEED_MODE=reset の場合、次回起動時に CSV から作り直されます。",
+    "save": "保存",
+    "runsTitle": "AI 実行記録",
+    "usersTitle": "アカウント",
+    "trainer": "トレーナー",
+    "steps": "ステップ数",
+    "tools": "ツール",
+    "role": "役割",
+    "disabled": "停止中",
+    "field": {
+      "id": "コード",
+      "capacity": "定員",
+      "fee_jpy": "料金（円）",
+      "content": "内容（繁体字中国語）",
+      "content_ja": "内容（日本語）",
+      "content_en": "内容（英語）"
+    }
+  },
+  "avatar": {
+    "label": "キャラクター",
+    "placeholder": "簡易表示",
+    "loading": "キャラクターを読み込み中…",
+    "noAssets": "この環境には 3D キャラクターの素材がありません",
+    "noMotion": "サーバーからキャラクターの動作データが届いていません。API を再起動してください",
+    "noWebgl": "このブラウザーでは 3D を表示できないため、簡易表示にしています",
+    "failed": "3D キャラクターを読み込めなかったため、簡易表示にしています",
+    "collapse": "キャラクターをたたむ",
+    "expand": "キャラクターを表示",
+    "state": {
+      "idle": "待機中",
+      "listening": "聞いています",
+      "thinking": "考えています",
+      "working": "データを確認中",
+      "explaining": "説明中",
+      "confirming": "確認待ち",
+      "handoff": "理事長室へ送付",
+      "apologizing": "情報なし",
+      "error": "問題が発生しました"
+    },
+    "monogram": "たづな",
+    "tapLabel": "たづなに声をかける",
+    "tap": {
+      "body1": "はい、トレーナーさん。何かお手伝いしましょうか？",
+      "body2": "ここにいますよ♪ 学園のことなら何でもどうぞ。",
+      "body3": "今日のトレーニングもお疲れさまです！",
+      "body4": "施設や予定の確認なら、お任せください。",
+      "head1": "あら……頭を撫でられてしまいました。",
+      "head2": "ふふ、トレーナーさんったら。",
+      "shy": "そ、そんなに撫でられると……恥ずかしいです。",
+      "page": {
+        "chat": "何でも聞いてくださいね。下の欄に入力してください。",
+        "info": "学園の規則で分かりにくいところはありますか？",
+        "calendar": "どの日の予定を確認しましょうか？",
+        "services": "どの施設を使いますか？状況を確認しますね。",
+        "planner": "トレーニング計画の時間計算、お手伝いしますよ。",
+        "director": "理事長室へのご用件は、私がお取り次ぎします。",
+        "memory": "トレーナーさんの好みは、ちゃんと覚えていますよ。"
+      }
+    }
+  },
+  "common": {
+    "loading": "読み込み中…",
+    "error": "エラーが発生しました：{{message}}",
+    "minutes": "{{n}} 分",
+    "none": "—",
+    "hoursMinutes": "{{h}} 時間 {{m}} 分",
+    "durationMs": "{{n}} ミリ秒"
+  },
+  "planProblem": {
+    "not_found": "「{{item}}」という施設が見つかりません。",
+    "ambiguous": "「{{item}}」の候補：{{candidates}}"
+  },
+  "runStatus": {
+    "running": "実行中",
+    "completed": "完了",
+    "failed": "失敗"
+  },
+  "runError": {
+    "max_steps": "手順超過",
+    "timeout": "タイムアウト",
+    "model_error": "モデルエラー",
+    "internal": "システムエラー",
+    "not_configured": "モデル未設定",
+    "budget": "予算超過"
+  },
+  "purpose": {
+    "chat": "会話",
+    "memory": "記憶の整理",
+    "summary": "会話の要約",
+    "embed": "意味検索用の埋め込み",
+    "transcribe": "音声の文字変換"
+  },
+  "role": {
+    "trainer": "トレーナー",
+    "staff": "スタッフ",
+    "admin": "管理者"
+  },
+  "apiError": {
+    "unauthorized": "もう一度ログインしてください。",
+    "forbidden": "この操作を行う権限がありません。",
+    "not_found": "データが見つかりません。",
+    "bad_request": "送信内容に誤りがあります（{{detail}}）。",
+    "conflict": "状態が変わりました。再読み込みしてください（{{detail}}）。",
+    "not_implemented": "この機能はまだ利用できません。",
+    "internal": "システムエラーが発生しました。しばらくしてからお試しください。",
+    "http_error": "サーバーから応答がありません（{{detail}}）。",
+    "stream_error": "応答が途切れました（{{detail}}）。",
+    "network": "サーバーに接続できません。ネットワークをご確認ください。"
+  }
+}

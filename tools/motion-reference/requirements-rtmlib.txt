@@ -1,0 +1,2 @@
+# Install --no-deps: headless OpenCV above supplies cv2 without three conflicting OpenCV wheels.
+rtmlib==0.0.16

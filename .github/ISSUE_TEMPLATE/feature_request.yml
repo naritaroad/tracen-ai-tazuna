@@ -1,0 +1,34 @@
+name: Feature request / 功能建議
+description: Suggest a trainer service or an improvement. / 建議新的訓練員服務或改進。
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What does the trainer need? / 訓練員需要什麼？
+      description: Describe the situation at Tracen Academy, not only the solution. / 描述在特雷森學園的情境，而不只是解法。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behaviour / 建議的行為
+      description: Which tool, page or character state would change? / 會改變哪個工具、頁面或角色狀態？
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source of any setting facts / 作品設定的來源
+      description: See docs/product/worldbuilding.md. / 見 docs/product/worldbuilding.md。
+      options:
+        - No setting facts involved / 不涉及作品設定
+        - official
+        - anime
+        - community
+        - reference
+        - project
+  - type: textarea
+    id: references
+    attributes:
+      label: Links / 參考連結

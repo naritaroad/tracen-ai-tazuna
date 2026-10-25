@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>遊戲動作測試｜駿川たづな</title>
+<style>
+  :root { --bg:#f4f6f8; --panel:#ffffff; --ink:#1f2a33; --sub:#6a7884; --line:#dbe2e8; --acc:#2f8f5b; --acc-soft:#e3f3ea; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family: "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  .wrap { display:grid; grid-template-columns: 1fr 380px; height:100vh; }
+  #c { width:100%; height:100%; display:block; }
+  .stage { position:relative; }
+  .hud { position:absolute; left:16px; top:14px; background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:10px; padding:10px 14px; min-width:240px; }
+  .hud .now { font-size:18px; font-weight:700; }
+  .hud .sub { font-size:13px; color:var(--sub); margin-top:2px; min-height:18px; }
+  .cams { position:absolute; left:16px; bottom:14px; display:flex; gap:6px; }
+  .cams button { border:1px solid var(--line); background:#fff; border-radius:8px; padding:6px 10px; cursor:pointer; }
+  aside { background:var(--panel); border-left:1px solid var(--line); padding:16px; overflow:auto; }
+  h1 { font-size:16px; margin:0 0 4px; } .note { font-size:12px; color:var(--sub); margin:0 0 12px; line-height:1.5; }
+  #motions { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+  #motions button { text-align:left; border:1px solid var(--line); background:#fff; border-radius:10px; padding:8px 10px; cursor:pointer; }
+  #motions button b { display:block; font-size:14px; } #motions button small { color:var(--sub); font-size:12px; }
+  #motions button.on { border-color:var(--acc); background:var(--acc-soft); }
+  .opts { margin:14px 0; display:grid; gap:8px; font-size:13px; }
+  .opts label { display:flex; align-items:center; gap:8px; }
+  .exprs { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+  .exprs button { border:1px solid var(--line); background:#fff; border-radius:6px; padding:3px 7px; font-size:12px; cursor:pointer; }
+  .exprs button.on { border-color:var(--acc); background:var(--acc-soft); }
+  #log { font: 12px/1.45 ui-monospace,Consolas,monospace; background:#f7f9fa; border:1px solid var(--line); border-radius:8px; padding:8px; height:200px; overflow:auto; white-space:pre-wrap; }
+  @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; grid-template-rows: 60vh auto; height:auto; } aside { border-left:none; border-top:1px solid var(--line); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage">
+    <canvas id="c"></canvas>
+    <div class="hud"><div class="now" id="now">載入中…</div><div class="sub" id="pending"></div><div class="sub" id="t"></div></div>
+    <div class="cams"><button data-cam="full">全身</button><button data-cam="upper">半身</button><button data-cam="side">側面</button></div>
+  </div>
+  <aside>
+    <h1>遊戲原始動作（暫存區）</h1>
+    <p class="note">直接由遊戲資料轉出的 VRMA。切換方式照遊戲原生設計：目前循環播完 → 該動作的「結束」回到中立站姿 → 目標的「開始」→ 目標循環。尚未整合進專案。</p>
+    <div id="motions"></div>
+    <h1 style="margin-top:14px">表情</h1>
+    <div id="exprs" class="exprs"></div>
+    <div class="opts">
+      <label><input type="checkbox" id="wait" checked> 等目前循環播完再切換（遊戲做法）</label>
+      <label><input type="checkbox" id="demo"> 自動展示（輪流播放所有動作）</label>
+      <label><input type="checkbox" id="lookcam" checked> 視線跟隨鏡頭</label>
+      <label>速度 <input type="range" id="speed" min="0.25" max="1.5" step="0.05" value="1"> <span id="speedv">1.00×</span></label>
+    </div>
+    <div id="log"></div>
+  </aside>
+</div>
+<script src="../../../tools/vrm-test-viewer/dist/vrm-data.js" onerror="console.info('no embedded vrm-data.js')"></script>
+<script src="game-pack.js" onerror="console.info('no game-pack.js')"></script>
+<script src="game-viewer.js"></script>
+</body>
+</html>

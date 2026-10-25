@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>たづな｜動作參考與校對</title>
+<style>
+:root{color-scheme:dark;font:15px/1.6 system-ui,sans-serif;background:#11171b;color:#edf2ed}*{box-sizing:border-box}body{margin:0}header{padding:24px 4vw;border-bottom:1px solid #344139}h1{font-size:24px;margin:0}p{margin:6px 0;color:#bac8c0}main{max-width:1500px;margin:auto;padding:24px 4vw}button,select,input,textarea{font:inherit;background:#202c25;color:inherit;border:1px solid #56675b;border-radius:5px;padding:7px 10px}button{cursor:pointer}button:hover,button.active{border-color:#b9df85;background:#30432e}label{display:inline-flex;align-items:center;gap:8px}.controls{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{background:#19221d;padding:14px;border:1px solid #344139;border-radius:8px}video{display:block;width:100%;height:480px;background:#080c0a;object-fit:contain}.reference{height:480px;width:100%;object-fit:contain;background:#080c0a}.time{font-variant-numeric:tabular-nums;color:#c0e692}input[type=range]{padding:0;width:100%}.caption{white-space:pre-wrap;font-size:17px;color:#f0eee0}.warn{color:#e8ba79;font-size:13px}.window{padding:12px 0;border-top:1px solid #38483c}.window button{margin-right:8px}.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.thumbs img{width:100%;height:170px;object-fit:contain;background:#101712;cursor:pointer}.thumbs small{display:block}a{color:#bbdf9c}textarea{width:100%;min-height:90px}details{margin:12px 0}summary{cursor:pointer;color:#c6dfad}#filter{width:min(100%,450px)}.muted{font-size:13px;color:#a7b4ab}@media(max-width:800px){.grid{grid-template-columns:1fr}video,.reference{height:360px}.thumbs{grid-template-columns:repeat(2,1fr)}}
+</style></head><body>
+<header><h1>たづな｜動作參考與校對</h1><p id="summary"></p><p class="warn">骨架、遮罩與文字為機器辨識結果。請核對原片；字幕遮擋與畫面外的姿勢仍屬未知。</p></header>
+<main><div class="controls"><label>來源影片 <select id="videoSelect"></select></label><label>檢視 <select id="mode"><option value="body_image">角色</option><option value="overlay">骨架疊圖</option><option value="mask_preview">角色遮罩</option><option value="overview">完整畫面</option><option value="face">臉部</option><option value="left_hand">左手</option><option value="right_hand">右手</option></select></label></div>
+<div class="grid"><section class="panel"><p>原始參考影片</p><video id="source" controls preload="metadata"></video></section><section class="panel"><p id="viewLabel">對應影格</p><img id="reference" class="reference" alt="對應時間的參考影格"><p id="imageNote" class="warn"></p></section></div>
+<div class="panel" style="margin-top:16px"><div class="controls"><button id="back">前一影格</button><button id="forward">後一影格</button><span id="time" class="time"></span></div><input id="seek" type="range" min="0" step="0.001"><p id="dialogue" class="caption"></p><p id="confidence" class="muted"></p></div>
+<details class="panel"><summary>載入 Blender 算圖影片同步比較</summary><p>選擇本機影片，不會上傳。設定算圖片段在原片對應的開始時間。</p><div class="controls"><input id="renderFile" type="file" accept="video/*"><label>原片開始秒數 <input id="renderOffset" type="number" value="0" min="0" step="0.001"></label></div><video id="render" controls preload="metadata"></video><p class="muted">此比較協助檢查姿勢與節奏；請先在 Blender 對齊鏡頭及角色大小。</p></details>
+<details class="panel"><summary>記錄人工審閱結果</summary><p>註記只存在此頁面，請按匯出保存。</p><textarea id="note" placeholder="時間區間、動作名稱、適用情境、待修正部位…"></textarea><div class="controls"><button id="addNote">記錄目前時間</button><button id="downloadNotes">匯出註記 JSON</button></div><p id="noteCount" class="muted"></p></details>
+<div class="controls"><input id="filter" type="search" placeholder="搜尋 OCR 台詞或影片名稱"><button id="showAll">顯示此片所有區間</button></div><p class="muted">以下為候選參考區間，尚未確認為完整動作。點選時間跳轉原片，或下載獨立片段。</p><section id="windows"></section>
+<footer><p><a id="startHere" hidden href="START_HERE.md">建議先做的三段</a> · <a href="CLAUDE_HANDOFF.md">Claude 交接說明</a> · <a href="summary.json">處理摘要</a> · <a href="verification.json">資料驗證</a> · <a href="provenance.json">工具與模型來源</a></p></footer></main>
+<script src="catalog.js"></script><script>
+const $=s=>document.querySelector(s), data=window.REFERENCE_DATA, source=$('#source'), render=$('#render');
+if(data.start_here)$('#startHere').hidden=false;
+let current, notes=[], renderURL=null;
+const format=t=>`${Math.floor(t/60)}:${(t%60).toFixed(3).padStart(6,'0')}`;
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const asset=p=>encodeURIComponent(current.id)+'/'+p;
+$('#summary').textContent=`${data.videos.length} 支影片，${data.videos.reduce((n,v)=>n+v.manifest.pose_samples,0).toLocaleString()} 組姿勢樣本。先選區間，再展開局部細節。`;
+for(const v of data.videos){const o=document.createElement('option');o.value=v.id;o.textContent=`${v.id} · ${v.manifest.duration.toFixed(1)} 秒`;$('#videoSelect').append(o);}
+function activeEvents(t){return current.dialogue.filter(d=>t>=d.start&&t<d.end);}
+function showFrame(){
+ if(!current)return;const t=source.currentTime;$('#seek').value=t;$('#time').textContent=`${format(t)} / ${format(current.manifest.duration)}`;
+ const mode=$('#mode').value;const shot=current.shots.find(s=>t>=s.start&&t<s.end);let candidates=current.samples.filter(p=>(!shot||p.shot===shot.id)&&(['face','left_hand','right_hand'].includes(mode)?p.details?.[mode]:p[mode]));
+ const p=candidates.reduce((best,p)=>!best||Math.abs(p.t-t)<Math.abs(best.t-t)?p:best,null);
+ if(p){const path=p.details?.[mode]?.image||p[mode];$('#reference').src=asset(path);$('#imageNote').textContent=`影格 ${p.frame} · 取樣 ${p.t.toFixed(3)} 秒 · 距播放位置 ${Math.abs(p.t-t).toFixed(3)} 秒${Math.abs(p.t-t)>.6?' · 此處沒有可靠的近距離辨識結果':''}`;}
+ else{$('#reference').removeAttribute('src');$('#imageNote').textContent='此區間沒有可用的辨識結果，請查看原片。';}
+ $('#viewLabel').textContent=$('#mode').selectedOptions[0].textContent+'參考';
+ const events=activeEvents(t);$('#dialogue').textContent=events.map(e=>e.text).join('\n');$('#confidence').textContent=events.length?events.map(e=>`OCR 信心 ${(e.confidence*100).toFixed(0)}% · 尚待逐字複核`).join('；'):'此時沒有 OCR 文字事件';
+ syncRender();
+}
+function syncRender(){if(!renderURL)return;const t=source.currentTime-Number($('#renderOffset').value);if(t>=0&&(!Number.isFinite(render.duration)||t<=render.duration)){if(Math.abs(render.currentTime-t)>.08)render.currentTime=t;render.playbackRate=source.playbackRate;if(!source.paused&&render.paused)render.play().catch(()=>{});}else render.pause();}
+function seek(t){source.currentTime=Math.max(0,Math.min(current.manifest.duration,t));showFrame();}
+function windows(){
+ const query=$('#filter').value.trim().toLowerCase();const root=$('#windows');root.replaceChildren();
+ for(const w of current.windows){const events=current.dialogue.filter(d=>w.dialogue_events.includes(d.id));const txt=events.map(d=>d.text).join('\n');if(query&&!`${current.id} ${txt}`.toLowerCase().includes(query))continue;
+  const div=document.createElement('article');div.className='window';const jump=document.createElement('button');jump.textContent=`${format(w.start)} → ${format(w.end)}`;jump.onclick=()=>{source.pause();seek(w.start);$('#renderOffset').value=w.start;};div.append(jump);
+  if(w.clip){const a=document.createElement('a');a.href=asset(w.clip);a.textContent='獨立片段';a.download='';div.append(a);}
+  const para=document.createElement('p');para.textContent=txt||'此區間未辨識到完整台詞';div.append(para);
+  const warning=document.createElement('p');warning.className='warn';warning.textContent=w.flags.includes('dialogue_ui_occlusion_candidate')?'部分身體可能被對話框遮住；請核對手部與下半身。':'候選動作，請確認起收、鏡頭與細節。';div.append(warning);
+  const detail=document.createElement('details');const sum=document.createElement('summary');sum.textContent='展開關鍵影格與接觸表';detail.append(sum);
+  const grid=document.createElement('div');grid.className='thumbs';for(const id of w.keyframes.slice(0,16)){const p=current.samples.find(p=>p.id===id);if(!p)continue;const cell=document.createElement('div');const img=document.createElement('img');img.loading='lazy';img.src=asset(p.body_image);img.alt=p.t.toFixed(3)+' 秒';img.onclick=()=>{source.pause();seek(p.t);};const small=document.createElement('small');small.textContent=p.t.toFixed(3)+' 秒';cell.append(img,small);grid.append(cell);}detail.append(grid);
+  for(const sheet of w.sheets){const a=document.createElement('a');a.href=asset(sheet);a.textContent='開啟整張接觸表';a.target='_blank';detail.append(a);}div.append(detail);root.append(div);
+ }
+}
+function select(){current=data.videos.find(v=>v.id===$('#videoSelect').value);source.src=current.source_url;$('#seek').max=current.manifest.duration;windows();source.addEventListener('loadedmetadata',()=>seek(Math.min(current.manifest.duration,(current.samples.find(p=>p.target_present)?.t||0)+.5)),{once:true});}
+source.addEventListener('timeupdate',showFrame);source.addEventListener('seeked',showFrame);source.addEventListener('ratechange',syncRender);
+source.addEventListener('play',()=>{if(renderURL){syncRender();render.play().catch(()=>{});}});source.addEventListener('pause',()=>render.pause());
+$('#seek').oninput=e=>seek(Number(e.target.value));$('#mode').onchange=showFrame;$('#videoSelect').onchange=select;
+function step(direction){source.pause();const times=current.frame_times;let lo=0,hi=times.length-1;while(lo<hi){const mid=(lo+hi)>>1;if(times[mid]<source.currentTime-.00001)lo=mid+1;else hi=mid;}const index=direction<0?lo-1:(Math.abs(times[lo]-source.currentTime)<.002?lo+1:lo);seek(times[Math.max(0,Math.min(times.length-1,index))]);}
+$('#back').onclick=()=>step(-1);$('#forward').onclick=()=>step(1);
+$('#filter').oninput=windows;$('#showAll').onclick=()=>{$('#filter').value='';windows();};
+$('#renderFile').onchange=e=>{if(renderURL)URL.revokeObjectURL(renderURL);const f=e.target.files[0];if(f){renderURL=URL.createObjectURL(f);render.src=renderURL;render.muted=true;render.addEventListener('loadedmetadata',syncRender,{once:true});}};
+$('#renderOffset').oninput=syncRender;
+$('#addNote').onclick=()=>{if(!$('#note').value.trim())return;notes.push({video:current.id,t:source.currentTime,note:$('#note').value,created_at:new Date().toISOString()});$('#note').value='';$('#noteCount').textContent=`已記錄 ${notes.length} 則，尚未匯出。`;};
+$('#downloadNotes').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({schema_version:'1.0',notes},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='animation-review-notes.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+if(data.videos.some(v=>v.id==='qQ40c6kgV8M'))$('#videoSelect').value='qQ40c6kgV8M';select();
+</script></body></html>

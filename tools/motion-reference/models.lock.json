@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-10-25",
+  "anime_segmentation": {
+    "repository": "https://github.com/SkyTNT/anime-segmentation",
+    "model_repository": "https://huggingface.co/skytnt/anime-seg",
+    "revision": "493cb60893f47441b26ec4fb9a306bce9e342982",
+    "file": "isnetis.onnx",
+    "url": "https://huggingface.co/skytnt/anime-seg/resolve/493cb60893f47441b26ec4fb9a306bce9e342982/isnetis.onnx",
+    "sha256": "f15622d853e8260172812b657053460e20806f04b9e05147d49af7bed31a6e99",
+    "bytes": 176069933,
+    "license": "Apache-2.0"
+  },
+  "pose": {"library": "rtmlib==0.0.16", "model": "Wholebody balanced", "format": "COCO-WholeBody-133", "license": "Apache-2.0"},
+  "ocr": {"library": "rapidocr==3.10.0", "language": "japan", "recognizer": "PP-OCRv4 mobile Japanese", "license": "Apache-2.0"},
+  "expected_artifacts": {
+    "isnetis.onnx": "f15622d853e8260172812b657053460e20806f04b9e05147d49af7bed31a6e99",
+    "yolox_m_8xb8-300e_humanart-c2c7a14a.onnx": "3dea6513388889f0fff4b77bf7a26013600321b9eb9ceb0e9a400a82572f5f23",
+    "rtmw-dw-x-l_simcc-cocktail14_270e-256x192_20231122.onnx": "9a9bc17c13ff0a1e37507f45a037a21bc410cd08374b0e664c57d0080843aa58",
+    "ch_PP-OCRv5_det_mobile.onnx": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+    "japan_PP-OCRv4_rec_mobile.onnx": "e1075a67dba758ecfc7ebc78a10ae61c95ac8fb66a9c86fab5541e33f085cb7a"
+  }
+}

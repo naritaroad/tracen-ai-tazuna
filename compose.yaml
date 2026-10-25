@@ -1,0 +1,48 @@
+# Development: `docker compose up -d db` (PostgreSQL only; the Rust API is compiled and run locally).
+# Acceptance / deployment: `docker compose --profile app up -d --build` (adds the release API image).
+# See docs/engineering/architecture.md.
+
+services:
+  db:
+    # PostgreSQL 18 with pgvector (semantic memory, Q08); same data layout as the official image.
+    image: pgvector/pgvector:0.8.7-pg18-trixie
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tracen
+      POSTGRES_USER: tracen
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # PostgreSQL 18 images keep data under /var/lib/postgresql/<major>/; mount the parent.
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tracen -d tracen"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://tracen:${POSTGRES_PASSWORD}@db:5432/tracen
+      BIND_ADDR: 0.0.0.0:8080
+      WEB_DIR: /app/web
+      SEED_DIR: /app/data/seed
+      CHARACTERS_DIR: /app/assets/characters
+      # Character runtime files are not in the image (not redistributable).
+      AVATAR_ASSET_DIR: ""
+      BRAND_CREST_FILE: /app/assets/brand/tracen-crest.svg
+    ports:
+      - "127.0.0.1:8080:8080"
+
+volumes:
+  pgdata:

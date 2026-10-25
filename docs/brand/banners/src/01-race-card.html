@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Banner 01 · 出馬表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=Oswald:wght@500;600;700&family=Shippori+Mincho+B1:wght@700;800&display=block" rel="stylesheet">
+<style>
+  /* A newspaper race card (出馬表): the system's features are the runners, read right to left. */
+  :root {
+    --paper: #f6f1e4; --ink: #241d36; --ink-2: #5d5470; --rule: #241d36; --violet: #5b3a9e; --gold: #a17a26;
+    --mincho: "Shippori Mincho B1", serif; --tc: "Noto Serif TC", serif; --sans: "Noto Sans JP", sans-serif; --num: "Oswald", sans-serif;
+  }
+  html, body { margin: 0; width: 1280px; height: 400px; overflow: hidden; background: transparent; }
+  .banner { position: relative; width: 1280px; height: 400px; border-radius: 20px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  .grain { position: absolute; inset: 0; opacity: .5; mix-blend-mode: multiply; pointer-events: none; }
+  .frame { position: absolute; inset: 14px; border: 2px solid var(--rule); border-radius: 8px; }
+  .frame::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--rule); border-radius: 5px; }
+
+  .left { position: absolute; left: 44px; top: 36px; width: 470px; height: 328px; display: flex; flex-direction: column; }
+  .meet { display: flex; align-items: stretch; gap: 12px; }
+  .race-no { font: 700 44px/1 var(--num); background: var(--ink); color: var(--paper); padding: 6px 12px 4px; border-radius: 4px; letter-spacing: .02em; }
+  .meet-text { display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.5; color: var(--ink-2); letter-spacing: .08em; }
+  .meet-text b { color: var(--ink); font-weight: 700; font-size: 15px; letter-spacing: .12em; }
+  .name { margin-top: 18px; display: flex; align-items: center; gap: 12px; }
+  .name h1 { margin: 0; font: 800 34px/1.1 var(--mincho); letter-spacing: .02em; white-space: nowrap; }
+  .grade { font: 700 20px/1 var(--num); color: #fff; background: #1f5bb5; padding: 6px 8px 5px; border-radius: 4px; letter-spacing: .04em; }
+  .cond { margin-top: 10px; font-size: 14px; letter-spacing: .1em; color: var(--ink-2); }
+  .cond span { display: inline-block; padding: 0 8px; border-left: 1px solid #b9b0a0; }
+  .cond span:first-child { padding-left: 0; border-left: 0; }
+  .cond b { color: #2f7a3a; font-weight: 700; }
+  .note { margin-top: 22px; padding: 10px 14px; border: 1px solid #c9bfab; border-radius: 6px; background: rgb(255 255 255 / .45); font: 600 14px/1.65 var(--tc); color: var(--ink); }
+  .note b { font-family: var(--sans); font-size: 12px; letter-spacing: .2em; color: #fff; background: var(--ink); padding: 1px 7px; border-radius: 3px; margin-right: 8px; }
+  .note .fav { color: #c0392b; }
+  .en { margin-top: auto; border-top: 2px solid var(--ink); padding-top: 12px; }
+  .en .t1 { font: 600 25px/1.15 var(--num); letter-spacing: .08em; text-transform: uppercase; }
+  .en .t2 { font: 500 15px/1.4 var(--num); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+  .en .t3 { margin-top: 8px; font-size: 13px; letter-spacing: .06em; display: flex; justify-content: space-between; }
+  .en .t3 em { font-style: normal; color: var(--gold); font-weight: 700; }
+
+  /* Card: label column on the left, eight runners from 8 (left) to 1 (right) as in Japanese papers. */
+  .card { position: absolute; left: 548px; top: 36px; width: 688px; height: 328px; display: grid; grid-template-columns: 40px repeat(8, 1fr); grid-template-rows: 34px 34px 32px 1fr 46px; border: 2px solid var(--rule); background: rgb(255 255 255 / .35); }
+  .card > div { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; place-items: center; }
+  .card > div:nth-child(9n) { border-right: 0; }
+  .card > div.last { border-bottom: 0; }
+  .label { writing-mode: vertical-rl; font: 700 12px/1 var(--sans); letter-spacing: .3em; color: var(--ink-2); background: rgb(36 29 54 / .06); }
+  .waku { font: 700 19px/1 var(--num); }
+  .ban { font: 700 22px/1 var(--num); }
+  .mark { font: 700 22px/1 var(--sans); color: #c0392b; }
+  .mark.dim { color: var(--ink-2); font-weight: 500; }
+  .horse { writing-mode: vertical-rl; font: 700 27px/1 var(--tc); letter-spacing: .12em; padding: 10px 0; }
+  .horse.jp { font-family: var(--mincho); font-weight: 800; }
+  .horse.fav { color: var(--violet); }
+  .jockey { font: 500 12px/1.25 var(--num); letter-spacing: .06em; text-align: center; color: var(--ink-2); text-transform: uppercase; }
+  .jockey b { display: block; color: var(--ink); font-weight: 600; font-size: 12.5px; letter-spacing: .02em; }
+</style>
+</head>
+<body>
+<div class="banner">
+  <svg class="grain" width="1280" height="400" aria-hidden="true">
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .42  0 0 0 .55 0"/></filter>
+    <rect width="1280" height="400" filter="url(#g)" opacity=".35"/>
+  </svg>
+  <div class="frame"></div>
+
+  <div class="left">
+    <div class="meet">
+      <div class="race-no">11R</div>
+      <div class="meet-text"><b>府中・トレセン学園</b>第1回 校務開催 1日目</div>
+    </div>
+    <div class="name"><h1>トレセン校務ステークス</h1><span class="grade">GⅠ</span></div>
+    <div class="cond"><span><b>芝</b> 2400m（左）</span><span>訓練員限定</span><span>三語対応</span></div>
+    <div class="note"><b>短評</b><span class="fav">◎</span>駿川たづな　答案只來自學園資料庫，<br>辦不了的事，交給理事長室的真人。</div>
+    <div class="en">
+      <div class="t1">Tracen Academy</div>
+      <div class="t2">Administrative Information System</div>
+      <div class="t3"><span>AI Secretary · Hayakawa Tazuna</span><span>1着賞金 <em>快適な学園生活</em></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <!-- row: 枠 -->
+    <div class="label">枠</div>
+    <div class="waku" style="background:#f0a6c1">8</div>
+    <div class="waku" style="background:#ee8a2b;color:#fff">7</div>
+    <div class="waku" style="background:#2f8f4e;color:#fff">6</div>
+    <div class="waku" style="background:#f2cf3a">5</div>
+    <div class="waku" style="background:#2563b8;color:#fff">4</div>
+    <div class="waku" style="background:#d23b33;color:#fff">3</div>
+    <div class="waku" style="background:#1d1a24;color:#fff">2</div>
+    <div class="waku" style="background:#fff">1</div>
+    <!-- row: 馬番 -->
+    <div class="label">馬番</div>
+    <div class="ban">8</div><div class="ban">7</div><div class="ban">6</div><div class="ban">5</div>
+    <div class="ban">4</div><div class="ban">3</div><div class="ban">2</div><div class="ban">1</div>
+    <!-- row: 印 -->
+    <div class="label">印</div>
+    <div class="mark dim">△</div><div class="mark dim">△</div><div class="mark">◎</div><div class="mark dim">☆</div>
+    <div class="mark">▲</div><div class="mark dim">△</div><div class="mark dim">△</div><div class="mark">○</div>
+    <!-- row: 馬名 -->
+    <div class="label">馬名</div>
+    <div class="horse">３Ｄ角色</div>
+    <div class="horse">三語介面</div>
+    <div class="horse jp fav">駿川たづな</div>
+    <div class="horse">理事長室</div>
+    <div class="horse">訓練計畫</div>
+    <div class="horse">訓練設施</div>
+    <div class="horse">校務日曆</div>
+    <div class="horse">校務資訊</div>
+    <!-- row: 騎手 (the technology riding each feature) -->
+    <div class="label last">騎手</div>
+    <div class="jockey last"><b>three-vrm</b>VRM 1.0</div>
+    <div class="jockey last"><b>i18next</b>zh·ja·en</div>
+    <div class="jockey last"><b>Gemini</b>genai</div>
+    <div class="jockey last"><b>Human</b>handoff</div>
+    <div class="jockey last"><b>Rust</b>calc</div>
+    <div class="jockey last"><b>axum</b>API</div>
+    <div class="jockey last"><b>React</b>Vite</div>
+    <div class="jockey last"><b>PostgreSQL</b>sqlx</div>
+  </div>
+</div>
+</body>
+</html>

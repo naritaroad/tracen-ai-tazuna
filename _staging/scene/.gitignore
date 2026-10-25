@@ -1,0 +1,6 @@
+# 遊戲場景衍生檔（GLB、建置用 .blend、預覽）不進版本控制；清單、說明與建置腳本納入
+*
+!.gitignore
+!README.md
+!scene.json
+!build_scene.py

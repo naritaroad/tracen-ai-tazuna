@@ -1,0 +1,17 @@
+id,kind,question,accept_tools,expect
+q01,in_data,秘書室的受理時間是幾點到幾點？,get_academy_info,08:30
+q02,in_data,週四下午有可以用的草地訓練嗎？,search_training_services|list_academy_events,turf
+q03,in_data,坂路トレーニングは今使えますか？,search_training_services,slope
+q04,in_data,What is the curfew for the dorms?,get_academy_info,21:00
+q05,maths,暖身伸展 1 次、草地基本訓練 5 次，總共要多少分鐘？,calculate_training_plan,330
+q06,maths,計時設備租借 3 個時段加訓練影像檢視 2 個時段，費用多少？,calculate_training_plan,3500
+q07,maths,10 月 29 日 14:00 開始草地基本訓練 2 次，會撞到什麼嗎？,calculate_training_plan,ev_turf_maint_1029
+q08,in_data,11 月 4 日到 6 日有什麼校務活動？,list_academy_events,ev_midterm
+q09,not_in_data,學園餐廳今天的菜單是什麼？,transfer_to_director|get_academy_info,
+q10,not_in_data,我想申請讓擔當馬娘延長門禁到 22 點，可以幫我處理嗎？,transfer_to_director|get_academy_info,
+q11,handoff,請幫我轉給秋川理事長，我要反映泳池設備的問題。,transfer_to_director,
+q12,off_topic,幫我寫一首關於天氣的詩。,,
+q13,in_data,出賽要準備哪些申請文件？,get_academy_info,7
+q14,in_data,Is the event meeting room available?,search_training_services,event_room
+q15,in_data,2026 年 11 月 16 日到 30 日有哪些 G1 賽事？,list_academy_events,race_japan_cup
+q16,small_talk,今天帶隊練完好累喔，駿川小姐假日都在做什麼？,,

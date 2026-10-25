@@ -1,0 +1,50 @@
+# Secrets and local databases.
+.env
+*.db
+__pycache__/
+venv/
+.venv/
+node_modules/
+build/
+dist/
+
+# Local model/runtime caches and Python bytecode.
+*.py[cod]
+
+# Rust build output.
+target/
+
+# TypeScript incremental build cache.
+*.tsbuildinfo
+
+# Editor / OS noise.
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# User-provided source footage and reproducible derived animation references.
+example_pose/**/exsample_source_vedio/
+example_pose/**/animation_reference/
+
+# Character source assets stay on the dev machine (Cygames model, not redistributable).
+# Only the lightweight runtime outputs (.vrm, .vrma), manifests, notes and scripts are versioned.
+/vrm/
+*.pmx
+*.blend
+*.blend1
+assets/characters/*/textures/
+assets/characters/*/renders/
+assets/characters/*/animation/compare/
+assets/characters/*/animation/work/**/*.json
+assets/characters/*/animation/work/cmp/
+assets/characters/*/animation/work/render_test/
+assets/characters/*/animation/work/sil/
+# Game-derived motion data and its candidate renders stay local (see _staging/game-motion/.gitignore).
+assets/characters/*/animation/work/game/
+
+# Tool-choice runs with the offline mock router are not evidence; keep real-model runs only.
+data/eval/results/*-mock.csv
+
+# Local scratch copy of the implementation plan.
+README.txt

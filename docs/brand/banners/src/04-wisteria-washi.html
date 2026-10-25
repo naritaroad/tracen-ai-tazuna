@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Banner 04 · 藤と和紙</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+JP:wght@500&family=Noto+Serif+TC:wght@600&family=Shippori+Mincho+B1:wght@600;800&display=block" rel="stylesheet">
+<style>
+  /* Modern Japanese: wisteria hanging over washi paper, a vertical Mincho title and a gold horseshoe seal. */
+  html, body { margin: 0; width: 1280px; height: 400px; overflow: hidden; background: transparent; }
+  svg { display: block; border-radius: 20px; }
+  .corm { font-family: "Cormorant Garamond", serif; }
+  .mincho { font-family: "Shippori Mincho B1", serif; }
+  .tc { font-family: "Noto Serif TC", serif; }
+  .sans { font-family: "Noto Sans JP", sans-serif; }
+</style>
+</head>
+<body>
+<svg id="s" width="1280" height="400" viewBox="0 0 1280 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="washi" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="11"/>
+      <feColorMatrix values="0 0 0 0 .62  0 0 0 0 .56  0 0 0 0 .46  0 0 0 .32 0"/>
+    </filter>
+    <radialGradient id="light" cx="900" cy="200" r="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#efe7d8"/>
+    </radialGradient>
+    <filter id="depth"><feGaussianBlur stdDeviation=".9"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="1.5" dy="3" stdDeviation="2.5" flood-color="#4b3a6e" flood-opacity=".18"/></filter>
+  </defs>
+
+  <rect width="1280" height="400" fill="url(#light)"/>
+  <rect width="1280" height="400" filter="url(#washi)" opacity=".55"/>
+  <g id="fibres" fill="none" stroke="#d9ccb2" stroke-linecap="round" opacity=".55"></g>
+
+  <g id="back" filter="url(#depth)" opacity=".55"></g>
+  <g id="branch"></g>
+  <g id="front" filter="url(#shadow)"></g>
+  <g id="petals"></g>
+
+  <!-- English block -->
+  <g transform="translate(572 150)">
+    <text class="corm" font-weight="600" font-size="40" fill="#2b2340" letter-spacing="5">TRACEN ACADEMY</text>
+    <text y="36" class="corm" font-weight="500" font-size="21" fill="#4a405e" letter-spacing="2">Administrative Information System</text>
+    <path d="M0 62 H56" stroke="#a17a26" stroke-width="1.5"/>
+    <text y="92" class="tc" font-weight="600" font-size="16" fill="#3b3150" letter-spacing="5">特雷森學園 校務資訊系統</text>
+    <text y="120" class="sans" font-weight="500" font-size="12" fill="#6a5f80" letter-spacing="3.4">AI SECRETARY · HAYAKAWA TAZUNA</text>
+    <text y="186" class="corm" font-style="italic" font-weight="500" font-size="19" fill="#6c4fb3" letter-spacing=".6">Eclipse first, the rest nowhere.</text>
+  </g>
+
+  <!-- Vertical title and seal -->
+  <g class="mincho" fill="#241d36">
+    <text x="1184" y="58" font-weight="800" font-size="44" style="writing-mode: vertical-rl" letter-spacing="6">トレセン学園</text>
+    <text x="1122" y="66" font-weight="600" font-size="16" fill="#5d5470" style="writing-mode: vertical-rl" letter-spacing="6">校務情報システム</text>
+  </g>
+  <g transform="translate(1107 262)">
+    <rect width="30" height="30" rx="3" fill="#a8822e"/>
+    <path d="M10 23 V14 a5 5 0 0 1 10 0 V23" fill="none" stroke="#fbf6ea" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+</svg>
+<script>
+  let seed = 4211;
+  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgb = (c) => `rgb(${c[0]} ${c[1]} ${c[2]})`;
+
+  // Paper fibres.
+  const fibres = document.getElementById("fibres");
+  for (let i = 0; i < 46; i++) {
+    const x = rnd() * 1280, y = rnd() * 400, len = 30 + rnd() * 90, a = rnd() * Math.PI;
+    const dx = Math.cos(a) * len, dy = Math.sin(a) * len;
+    el("path", { d: `M${x.toFixed(0)} ${y.toFixed(0)} q${(dx / 2 + (rnd() - .5) * 20).toFixed(0)} ${(dy / 2 + (rnd() - .5) * 20).toFixed(0)} ${dx.toFixed(0)} ${dy.toFixed(0)}`, "stroke-width": (0.5 + rnd() * 0.9).toFixed(2) }, fibres);
+  }
+
+  // Branch along the top with pinnate leaves.
+  const branch = document.getElementById("branch");
+  el("path", { d: "M-20 14 C120 30 220 4 360 18 C500 32 620 6 760 16 C900 26 1020 4 1160 14 C1220 18 1260 10 1300 14", fill: "none", stroke: "#5b4636", "stroke-width": 4, "stroke-linecap": "round" }, branch);
+  const leafG = el("g", {}, branch);
+  for (let x = 0; x < 1290; x += 44 + rnd() * 26) {
+    const y = 14 + Math.sin(x / 70) * 8, ang = 20 + rnd() * 50, side = rnd() < .5 ? -1 : 1;
+    const stem = el("g", { transform: `translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${(side * ang).toFixed(0)})` }, leafG);
+    for (let k = 0; k < 5; k++) {
+      const g = ["#6f8f4a", "#86a35a", "#5b7a3e"][k % 3];
+      el("ellipse", { cx: 7 + k * 10, cy: -6, rx: 7, ry: 3.2, fill: g, transform: `rotate(-28 ${7 + k * 10} -6)` }, stem);
+      el("ellipse", { cx: 7 + k * 10, cy: 6, rx: 7, ry: 3.2, fill: g, transform: `rotate(28 ${7 + k * 10} 6)` }, stem);
+    }
+  }
+
+  // Racemes: long on the left, short over the text, medium at the right edge.
+  const TOP = [118, 82, 190], TIP = [214, 200, 242];
+  function raceme(parent, x, len, scale) {
+    const sway = (rnd() - .5) * 26, n = Math.round(len / (6.6 * scale));
+    el("path", { d: `M${x} 16 q${(sway / 2).toFixed(1)} ${(len / 2).toFixed(0)} ${sway.toFixed(1)} ${len.toFixed(0)}`, stroke: "#6b5a4a", "stroke-width": 1.2, fill: "none", opacity: .6 }, parent);
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, px = x + sway * t * t + (i % 2 ? 1 : -1) * (5 - 3 * t + rnd() * 2.5) * scale, py = 22 + len * t + (rnd() - .5) * 2;
+      const tilt = 22 + rnd() * 22;
+      const r = (7.5 - 5 * t) * scale, c = mix(TOP, TIP, t + (rnd() - .5) * .12);
+      if (t > .82) { el("circle", { cx: px.toFixed(1), cy: py.toFixed(1), r: (r * .8).toFixed(1), fill: rgb(mix(c, [150, 120, 205], .5)) }, parent); continue; }
+      el("ellipse", { cx: (px - r * .45).toFixed(1), cy: py.toFixed(1), rx: r.toFixed(1), ry: (r * .62).toFixed(1), fill: rgb(c), transform: `rotate(${-tilt} ${(px - r * .45).toFixed(1)} ${py.toFixed(1)})` }, parent);
+      el("ellipse", { cx: (px + r * .45).toFixed(1), cy: py.toFixed(1), rx: r.toFixed(1), ry: (r * .62).toFixed(1), fill: rgb(mix(c, [255, 255, 255], .12)), transform: `rotate(${tilt} ${(px + r * .45).toFixed(1)} ${py.toFixed(1)})` }, parent);
+      el("circle", { cx: px.toFixed(1), cy: (py - r * .2).toFixed(1), r: (r * .28).toFixed(1), fill: "#fff6d8", opacity: .85 }, parent);
+    }
+  }
+  const back = document.getElementById("back"), front = document.getElementById("front");
+  for (let x = 14; x < 600; x += 26 + rnd() * 16) raceme(back, x, 90 + rnd() * 150, .8);
+  for (let x = 1236; x < 1290; x += 26 + rnd() * 10) raceme(back, x, 60 + rnd() * 80, .75);
+  for (let x = 20; x < 560; x += 46 + rnd() * 24) raceme(front, x, 150 + rnd() * 170 - x * .12, 1);
+  for (let x = 600; x < 1090; x += 70 + rnd() * 40) raceme(front, x, 22 + rnd() * 26, .8);
+  for (let x = 1240; x < 1280; x += 40) raceme(front, x, 110 + rnd() * 70, .95);
+
+  // A few fallen petals.
+  const petals = document.getElementById("petals");
+  for (let i = 0; i < 14; i++) {
+    const x = 30 + rnd() * 560, y = 340 + rnd() * 50;
+    el("ellipse", { cx: x.toFixed(0), cy: y.toFixed(0), rx: 4, ry: 2.3, fill: rgb(mix(TOP, TIP, .4 + rnd() * .5)), opacity: .8, transform: `rotate(${(rnd() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})` }, petals);
+  }
+</script>
+</body>
+</html>

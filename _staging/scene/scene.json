@@ -1,0 +1,17 @@
+{
+  "id": "corridor",
+  "file": "corridor.glb",
+  "source": "vrm/scene/pfb_env_cutin1053_00_00_corridor (UmaContainerProp).pmx",
+  "position": [
+    -0.7,
+    0,
+    4.5
+  ],
+  "rotation_y_deg": 14,
+  "unlit": true,
+  "fog": {
+    "color": "#e9e4f2",
+    "near": 6,
+    "far": 30
+  }
+}

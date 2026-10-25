@@ -1,0 +1,29 @@
+{
+  "id": "9001_hayakawa_tazuna",
+  "displayName": { "ja": "駿川たづな", "zhTW": "駿川たづな", "en": "Hayakawa Tazuna" },
+  "vrm": {
+    "path": "assets/characters/9001_hayakawa_tazuna/vrm/HayakawaTazuna.vrm",
+    "specVersion": "1.0",
+    "sizeBytes": 3288084,
+    "sha256": "1ec49fb667c794292857f35010a3c41d0be69c60e5c656c4e17704438873006a",
+    "heightMeters": 1.672,
+    "facing": "+Z",
+    "thumbnail": "assets/characters/9001_hayakawa_tazuna/renders/thumbnail.jpg"
+  },
+  "stats": { "triangles": 12354, "materials": 6, "drawCallsWithOutline": 9, "morphTargets": 152, "skinJoints": 209, "humanBones": 54 },
+  "expressions": {
+    "preset": ["happy", "angry", "sad", "relaxed", "surprised", "aa", "ih", "ou", "ee", "oh", "blink", "blinkLeft", "blinkRight"],
+    "custom": ["smile", "grin", "troubled", "serious", "smug", "shy", "skeptical", "wink", "thinking"],
+    "lipSync": { "aa": "aa", "ih": "ih", "ou": "ou", "ee": "ee", "oh": "oh" },
+    "suggestedForSupportChat": { "greeting": "smile", "answering": "smile", "apology": "troubled", "confirm": "happy", "thinking": "thinking", "warning": "serious" }
+  },
+  "lookAt": { "type": "bone", "rangeDegrees": { "horizontal": 10, "up": 8, "down": 6 } },
+  "springBone": { "chains": 24, "segments": 30, "colliders": 12, "colliderGroups": ["Head", "Body", "Arms", "Legs"] },
+  "attachPoints": ["Head_attach", "Head_attach_L", "Head_attach_R", "Hand_Attach_L", "Hand_Attach_R"],
+  "license": {
+    "avatarPermission": "onlyAuthor",
+    "commercialUsage": "personalNonProfit",
+    "allowRedistribution": false,
+    "note": "原始模型版權屬 Cygames；公開部署前需確認權利。"
+  }
+}

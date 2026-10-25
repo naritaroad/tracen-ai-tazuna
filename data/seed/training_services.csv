@@ -1,0 +1,18 @@
+id,name,name_ja,name_en,category,unit_minutes,capacity,fee_jpy,available,location,aliases,notes,source_type
+turf_basic,草地基本訓練,芝コース基礎トレーニング,Turf course basic training,track,60,8,0,1,第一草地跑道,草地|芝|turf|草地跑道|芝コース,一般練習時段,project
+turf_pace,草地併跑練習,芝コース併走トレーニング,Turf course pacing run,track,45,4,0,1,第一草地跑道,併跑|併走|pacing|pace run,需兩名以上馬娘,project
+dirt_basic,沙地訓練,ダートコーストレーニング,Dirt course training,track,60,8,0,1,沙地跑道,沙地|ダート|dirt|泥地,一般練習時段,project
+woodchip,木屑跑道訓練,ウッドチップコーストレーニング,Woodchip course training,track,45,6,0,1,外圈木屑跑道,木屑|ウッドチップ|woodchip|wood chip,減輕腳部負擔的慢跑與調整,project
+slope,坡道訓練,坂路トレーニング,Uphill slope training,track,30,6,0,0,坡道跑道,坡道|坂路|slope|uphill,本週排水工程，暫停開放,project
+gate,起跑練習,ゲート練習,Starting gate practice,track,30,4,0,1,第一草地跑道起點,起跑|閘門|ゲート|gate|start,須有工作人員陪同,project
+pool,泳池訓練,プールトレーニング,Pool training,equipment,45,10,0,1,室內泳池,泳池|游泳|プール|pool|swim,須另行熱身,project
+gym,肌力器材,筋力トレーニング機器,Strength equipment,equipment,60,12,0,1,體育館 B1 重訓室,重訓|肌力|筋トレ|gym|weights|strength,一般練習時段,project
+stretch,伸展空間,ストレッチルーム,Stretching room,equipment,30,15,0,1,體育館 1 樓,伸展|ストレッチ|stretch|cool down,暖身與收操用,project
+timing,計時設備租借,計測機器の貸出,Timing equipment rental,analysis,60,3,500,1,秘書室,計時|碼錶|計測|timing|stopwatch|timer,展示費用：每時段 500 日圓,project
+video,訓練影像檢視,トレーニング映像レビュー,Training video review,analysis,60,2,1000,1,資料室 2,影像|錄影|映像|video|footage,展示費用：每時段 1000 日圓，含操作人員,project
+tactics_room,戰術討論室,作戦会議室,Tactics meeting room,room,60,6,0,1,本館 3 樓,戰術|作戦|會議|tactics|meeting room,可投影比賽影像,project
+rehearsal,排練空間,ライブ練習スタジオ,Live rehearsal studio,room,90,10,0,1,講堂旁練習室,排練|勝利演唱會|ライブ|rehearsal|live|dance,勝利演唱會排練使用,project
+event_room,活動會議室,イベント会議室,Event meeting room,room,60,20,0,0,本館 1 樓多功能室,活動室|多功能|イベント|event room,秋季活動籌備期間保留中,project
+workshop,訓練員研習,トレーナー研修,Trainer workshop,workshop,120,30,0,1,講堂,研習|研修|講習|workshop|training course,計入新任訓練員 12 小時研習,project
+race_consult,出賽準備諮詢,出走準備相談,Race preparation consultation,support,30,1,0,1,秘書室,出賽諮詢|出走|race prep|race consultation,由秘書室說明申請文件與期限,project
+document_service,校務文件服務,書類発行サービス,Academy document service,support,15,1,300,1,秘書室,文件|證明|書類|証明書|document|certificate,展示費用：每份 300 日圓,project

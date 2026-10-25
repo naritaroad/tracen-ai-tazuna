@@ -1,0 +1,96 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "dev"
+      ],
+      "port": 5173
+    },
+    {
+      "name": "api",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": [
+        "run",
+        "--manifest-path",
+        "backend/Cargo.toml"
+      ],
+      "port": 8080,
+      "autoPort": false
+    },
+    {
+      "name": "api-alt",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": [
+        "run",
+        "--manifest-path",
+        "backend/Cargo.toml"
+      ],
+      "env": {
+        "BIND_ADDR": "127.0.0.1:8081",
+        "CARGO_TARGET_DIR": "backend/target/alt"
+      },
+      "port": 8081,
+      "autoPort": false
+    },
+    {
+      "name": "web-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5174",
+        "--strictPort"
+      ],
+      "env": {
+        "API_PROXY_TARGET": "http://127.0.0.1:8081"
+      },
+      "port": 5174,
+      "autoPort": false
+    },
+    {
+      "name": "api-alt2",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": [
+        "run",
+        "--manifest-path",
+        "backend/Cargo.toml"
+      ],
+      "env": {
+        "BIND_ADDR": "127.0.0.1:8082",
+        "CARGO_TARGET_DIR": "backend/target/alt2",
+        "WEB_DIR": "backend/target/alt2/web"
+      },
+      "port": 8082,
+      "autoPort": false
+    },
+    {
+      "name": "web-alt2",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5176",
+        "--strictPort"
+      ],
+      "env": {
+        "API_PROXY_TARGET": "http://127.0.0.1:8082"
+      },
+      "port": 5176,
+      "autoPort": false
+    }
+  ]
+}

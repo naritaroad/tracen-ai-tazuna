@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>學園標誌提案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;600&family=Noto+Serif+JP:wght@400;600&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Same tokens as web/src/styles.css: 江戸紫 on 胡粉, gold horseshoe accent. */
+  :root {
+    --bg: #f8f6fc; --surface: #ffffff; --border: #e5deef;
+    --text: #241d36; --text-2: #645b7a;
+    --brand: #5b3a9e; --gold: #a17a26;
+    --dark-bg: #14111d; --dark-brand: #b59cf2; --dark-gold: #e0b75a;
+    --serif: "Noto Serif TC", "Noto Serif JP", serif;
+    --sans: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #14111d; --surface: #1b1727; --border: #362e4b; --text: #ece8f6; --text-2: #aea6c4; --brand: #b59cf2; --gold: #e0b75a; }
+  }
+  :root[data-theme="dark"] { --bg: #14111d; --surface: #1b1727; --border: #362e4b; --text: #ece8f6; --text-2: #aea6c4; --brand: #b59cf2; --gold: #e0b75a; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 300 15px/1.85 var(--sans); }
+  main { max-width: 1040px; margin: 0 auto; padding: 72px 16px 96px; }
+  header { margin-bottom: 64px; }
+  .eyebrow { font-size: 12px; letter-spacing: .32em; color: var(--text-2); text-transform: uppercase; }
+  h1 { font: 400 clamp(28px, 4vw, 40px)/1.3 var(--serif); letter-spacing: .12em; margin: 12px 0 20px; }
+  .lead { max-width: 640px; color: var(--text-2); margin: 0; }
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin: 40px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+  .rules li { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-2); }
+  .rules b { display: block; font: 600 14px/1.6 var(--serif); color: var(--text); letter-spacing: .1em; }
+
+  /* Each colour variant sets the three variables the marks read. */
+  .v { --m: var(--brand); --g: var(--gold); --k: var(--surface); }
+  .v.on-light { --m: #5b3a9e; --g: #a17a26; --k: #ffffff; background: #ffffff; }
+  .v.on-dark { --m: var(--dark-brand); --g: var(--dark-gold); --k: var(--dark-bg); background: var(--dark-bg); }
+  .v.on-brand { --m: #ffffff; --g: #e3bf5c; --k: #5b3a9e; background: #5b3a9e; }
+  .v.mono { --m: #241d36; --g: #241d36; --k: #f3f1ee; background: #f3f1ee; }
+
+  .concept { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; padding: 56px 0; border-top: 1px solid var(--border); }
+  .hero { aspect-ratio: 1; display: grid; place-items: center; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); }
+  .hero svg { width: 46%; height: auto; }
+  .no { font: 400 12px var(--sans); letter-spacing: .3em; color: var(--gold); }
+  h2 { font: 400 26px/1.4 var(--serif); letter-spacing: .14em; margin: 4px 0 2px; }
+  h2 small { font: 300 13px var(--sans); letter-spacing: .2em; color: var(--text-2); margin-left: 12px; }
+  .meaning { margin: 16px 0 24px; }
+  .meaning p { margin: 0 0 8px; }
+  .label { font-size: 11px; letter-spacing: .28em; color: var(--text-2); margin: 24px 0 10px; }
+  .sizes { display: flex; align-items: end; gap: 20px; }
+  .sizes svg { display: block; }
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .swatches > div { aspect-ratio: 1.4; display: grid; place-items: center; border-radius: 4px; border: 1px solid var(--border); }
+  .swatches svg { width: 36%; }
+  .lockup { display: flex; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 4px; border: 1px solid var(--border); }
+  .lockup svg { width: 44px; height: 44px; flex: none; }
+  .lockup .name { font: 600 19px/1.3 var(--serif); letter-spacing: .2em; }
+  .lockup .sub { font: 400 10.5px/1.6 var(--sans); letter-spacing: .3em; opacity: .7; }
+  .lockup.on-dark { color: #ece8f6; }
+  .lockup.on-light { color: #241d36; }
+  .lockup .rule { width: 1px; align-self: stretch; background: currentColor; opacity: .2; }
+
+  /* Vertical (縦書き) lockup for concept 6 */
+  .tate { display: flex; gap: 28px; align-items: flex-start; justify-content: center; }
+  .tate .col { writing-mode: vertical-rl; font: 600 30px/1 "Noto Serif JP", var(--serif); letter-spacing: .38em; color: var(--m); }
+  .tate .col.small { font: 400 11px/1 var(--sans); letter-spacing: .5em; color: var(--text-2); padding-top: 6px; }
+  .tate .seal { width: 22px; height: 22px; margin-top: 6px; }
+  .hero.tate-hero { padding: 24px; }
+
+  .pick { margin-top: 64px; padding: 32px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
+  .pick h2 { font-size: 20px; }
+  .pick ol { margin: 12px 0 0; padding-left: 1.4em; }
+  .pick li { margin-bottom: 6px; }
+
+  @media (max-width: 760px) {
+    main { padding-top: 48px; }
+    .concept { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+    .hero { max-width: 360px; }
+    .swatches { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<!-- Marks: 64×64 grid, read --m (main), --g (gold accent), --k (knockout = background). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 1 蹄紋 -->
+    <symbol id="m1" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="31" fill="none" stroke="var(--g)" stroke-width="1.4"/>
+      <circle cx="32" cy="32" r="27.5" fill="var(--m)"/>
+      <path d="M20 48 C18.5 41 18.5 35 19.5 30.5 A12.5 12.5 0 0 1 44.5 30.5 C45.5 35 45.5 41 44 48" fill="none" stroke="var(--k)" stroke-width="5.4" stroke-linecap="round"/>
+      <g fill="var(--m)"><circle cx="18.9" cy="42.5" r="1.05"/><circle cx="18.9" cy="35.5" r="1.05"/><circle cx="21.8" cy="23.4" r="1.05"/><circle cx="45.1" cy="42.5" r="1.05"/><circle cx="45.1" cy="35.5" r="1.05"/><circle cx="42.2" cy="23.4" r="1.05"/></g>
+    </symbol>
+    <!-- 2 藤架 -->
+    <symbol id="m2" viewBox="0 0 64 64">
+      <path d="M14 56 V31 a18 18 0 0 1 36 0 V56" fill="none" stroke="var(--g)" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M32 13 V19" stroke="var(--m)" stroke-width="1.2"/>
+      <g fill="var(--m)">
+        <circle cx="30" cy="21.5" r="3"/><circle cx="34.2" cy="25.4" r="2.8" opacity=".9"/>
+        <circle cx="30.3" cy="29.4" r="2.6" opacity=".78"/><circle cx="33.9" cy="33.2" r="2.3" opacity=".64"/>
+        <circle cx="30.8" cy="36.9" r="2" opacity=".5"/><circle cx="33.3" cy="40.4" r="1.7" opacity=".38"/>
+        <circle cx="31.6" cy="43.8" r="1.35" opacity=".26"/>
+      </g>
+    </symbol>
+    <!-- 3 一周 -->
+    <symbol id="m3" viewBox="0 0 64 64">
+      <rect x="15.5" y="23.5" width="33" height="17" rx="8.5" fill="none" stroke="var(--m)" stroke-width="1.2" opacity=".4"/>
+      <path d="M36 17 H40 A15 15 0 0 1 40 47 H24 A15 15 0 0 1 24 17 H26" fill="none" stroke="var(--m)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="31" cy="17" r="3" fill="var(--g)"/>
+    </symbol>
+    <!-- 4 ト印 -->
+    <symbol id="m4" viewBox="0 0 64 64">
+      <rect x="6" y="6" width="52" height="52" rx="11" fill="var(--m)"/>
+      <path d="M26 16.5 V47.5 M26 29 L39.5 37" fill="none" stroke="var(--k)" stroke-width="5.8" stroke-linecap="round"/>
+      <circle cx="42" cy="46" r="3.2" fill="var(--g)"/>
+    </symbol>
+    <!-- 5 水引 -->
+    <symbol id="m5" viewBox="0 0 64 64">
+      <g fill="none" stroke-width="2.8">
+        <path d="M15 54 V30 a17 17 0 0 1 34 0 V54" stroke="var(--m)"/>
+        <path d="M19 54 V30 a13 13 0 0 1 26 0 V54" stroke="var(--m)"/>
+        <path d="M23 54 V30 a9 9 0 0 1 18 0 V54" stroke="var(--g)"/>
+      </g>
+    </symbol>
+    <!-- 6 落款 (small seal used with the vertical wordmark) -->
+    <symbol id="m6" viewBox="0 0 64 64">
+      <rect x="4" y="4" width="56" height="56" rx="6" fill="var(--g)"/>
+      <path d="M22 46 V31 a10 10 0 0 1 20 0 V46" fill="none" stroke="var(--k)" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="eyebrow">Tracen Academy · Mark Study</div>
+  <h1>學園標誌提案</h1>
+  <p class="lead">沿用網站現有的江戸紫、胡粉白與金色蹄鐵，重新整理成六款日系簡約標誌。每款都放在 64 格網上繪製，附上 16–64 px 的縮小測試、四種底色與橫式組合，方便直接比較。</p>
+  <ul class="rules">
+    <li><b>余白</b>留白當作圖形的一部分，筆畫越少越好</li>
+    <li><b>一色一点</b>主體只用紫，金色只點一處</li>
+    <li><b>家紋幾何</b>正圓、正方與等寬筆畫，小尺寸也清楚</li>
+    <li><b>有典故</b>蹄鐵、藤、跑道、手綱，都和學園有關</li>
+  </ul>
+</header>
+
+<section class="concept" data-id="1">
+  <div class="hero v"><svg viewBox="0 0 64 64"><use href="#m1"/></svg></div>
+  <div>
+    <div class="no">01</div>
+    <h2>蹄紋<small>TEIMON</small></h2>
+    <div class="meaning">
+      <p>仿家紋的「丸に蹄」：紫色圓紋裡以留白鏤出蹄鐵，蹄鐵上留六個釘孔，外圍一圈金色細環。</p>
+      <p>最接近現有標誌，改動小、辨識度高，最適合當 favicon 與 App 圖示。</p>
+    </div>
+    <div class="label">縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m1"/></svg><svg width="32" height="32"><use href="#m1"/></svg><svg width="20" height="20"><use href="#m1"/></svg><svg width="16" height="16"><use href="#m1"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m1"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m1"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m1"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m1"/></svg></div></div>
+    <div class="label">組合</div>
+    <div class="lockup v on-light"><svg viewBox="0 0 64 64"><use href="#m1"/></svg><div><div class="name">特雷森學園</div><div class="sub">校務資訊系統 · TRACEN ACADEMY</div></div></div>
+  </div>
+</section>
+
+<section class="concept" data-id="2">
+  <div class="hero v"><svg viewBox="0 0 64 64"><use href="#m2"/></svg></div>
+  <div>
+    <div class="no">02</div>
+    <h2>藤架<small>FUJIDANA</small></h2>
+    <div class="meaning">
+      <p>一條金色細線畫出蹄鐵拱門，裡面垂下一串由濃到淡的紫藤。</p>
+      <p>最有季節感、最柔和，適合登入頁與大尺寸；16 px 時花串會糊在一起，小圖示要另做簡化版。</p>
+    </div>
+    <div class="label">縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m2"/></svg><svg width="32" height="32"><use href="#m2"/></svg><svg width="20" height="20"><use href="#m2"/></svg><svg width="16" height="16"><use href="#m2"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m2"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m2"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m2"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m2"/></svg></div></div>
+    <div class="label">組合</div>
+    <div class="lockup v on-light"><svg viewBox="0 0 64 64"><use href="#m2"/></svg><div><div class="name">特雷森學園</div><div class="sub">校務資訊系統 · TRACEN ACADEMY</div></div></div>
+  </div>
+</section>
+
+<section class="concept" data-id="3">
+  <div class="hero v"><svg viewBox="0 0 64 64"><use href="#m3"/></svg></div>
+  <div>
+    <div class="no">03</div>
+    <h2>一周<small>ISSHŪ</small></h2>
+    <div class="meaning">
+      <p>俯瞰的橢圓跑道，像円相一樣留一個缺口；金點是正要衝過終點的那一刻。</p>
+      <p>最現代、最像科技產品，也能延伸成載入動畫（金點繞一圈）。</p>
+    </div>
+    <div class="label">縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m3"/></svg><svg width="32" height="32"><use href="#m3"/></svg><svg width="20" height="20"><use href="#m3"/></svg><svg width="16" height="16"><use href="#m3"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m3"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m3"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m3"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m3"/></svg></div></div>
+    <div class="label">組合</div>
+    <div class="lockup v on-dark"><svg viewBox="0 0 64 64"><use href="#m3"/></svg><div><div class="name">特雷森學園</div><div class="sub">校務資訊系統 · TRACEN ACADEMY</div></div></div>
+  </div>
+</section>
+
+<section class="concept" data-id="4">
+  <div class="hero v"><svg viewBox="0 0 64 64"><use href="#m4"/></svg></div>
+  <div>
+    <div class="no">04</div>
+    <h2>ト印<small>TO-IN</small></h2>
+    <div class="meaning">
+      <p>方形朱印改成紫色，刻上「トレセン」的「ト」；金點是句點，也是たづな招呼語尾的那個「♪」。</p>
+      <p>最像行政單位的公印，放在公告、文件頁尾很自然。</p>
+    </div>
+    <div class="label">縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m4"/></svg><svg width="32" height="32"><use href="#m4"/></svg><svg width="20" height="20"><use href="#m4"/></svg><svg width="16" height="16"><use href="#m4"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m4"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m4"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m4"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m4"/></svg></div></div>
+    <div class="label">組合</div>
+    <div class="lockup v on-light"><svg viewBox="0 0 64 64"><use href="#m4"/></svg><div class="rule"></div><div><div class="name">トレセン学園</div><div class="sub">校務情報システム</div></div></div>
+  </div>
+</section>
+
+<section class="concept" data-id="5">
+  <div class="hero v"><svg viewBox="0 0 64 64"><use href="#m5"/></svg></div>
+  <div>
+    <div class="no">05</div>
+    <h2>水引蹄<small>MIZUHIKI</small></h2>
+    <div class="meaning">
+      <p>三條並行的細繩彎成蹄鐵，像祝賀用的水引，也像握在手裡的韁繩。「たづな」本來就是手綱的意思，代表引導與陪伴；兩紫一金三股，對應學生、訓練員與職員。</p>
+      <p>線條感最強、最輕盈，和 AI 秘書的故事最貼近；16 px 時三股會併成一條粗蹄鐵，仍然認得出來。</p>
+    </div>
+    <div class="label">縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m5"/></svg><svg width="32" height="32"><use href="#m5"/></svg><svg width="20" height="20"><use href="#m5"/></svg><svg width="16" height="16"><use href="#m5"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m5"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m5"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m5"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m5"/></svg></div></div>
+    <div class="label">組合</div>
+    <div class="lockup v on-light"><svg viewBox="0 0 64 64"><use href="#m5"/></svg><div><div class="name">特雷森學園</div><div class="sub">AI 秘書 · 駿川たづな</div></div></div>
+  </div>
+</section>
+
+<section class="concept" data-id="6">
+  <div class="hero tate-hero v">
+    <div class="tate">
+      <div class="col small">校務情報システム</div>
+      <div><div class="col">トレセン学園</div><svg class="seal" viewBox="0 0 64 64"><use href="#m6"/></svg></div>
+    </div>
+  </div>
+  <div>
+    <div class="no">06</div>
+    <h2>縦書き落款<small>TATEGAKI</small></h2>
+    <div class="meaning">
+      <p>不另做圖形，直接用明朝體直排校名，下面蓋一枚金色蹄鐵小印，像書法作品的落款。</p>
+      <p>最有日本味、最安靜，適合登入頁側邊或列印文件；側邊欄等橫向位置仍要搭配 01 或 04 的圖形。正式使用前要把字轉成外框。</p>
+    </div>
+    <div class="label">小印縮小測試</div>
+    <div class="sizes v"><svg width="64" height="64"><use href="#m6"/></svg><svg width="32" height="32"><use href="#m6"/></svg><svg width="20" height="20"><use href="#m6"/></svg><svg width="16" height="16"><use href="#m6"/></svg></div>
+    <div class="label">底色</div>
+    <div class="swatches"><div class="v on-light"><svg viewBox="0 0 64 64"><use href="#m6"/></svg></div><div class="v on-dark"><svg viewBox="0 0 64 64"><use href="#m6"/></svg></div><div class="v on-brand"><svg viewBox="0 0 64 64"><use href="#m6"/></svg></div><div class="v mono"><svg viewBox="0 0 64 64"><use href="#m6"/></svg></div></div>
+  </div>
+</section>
+
+<section class="pick">
+  <h2>建議</h2>
+  <ol>
+    <li><b>主標誌選 01 蹄紋</b>：延續現有蹄鐵，16 px 最清楚，換上去成本最低。</li>
+    <li><b>想強調 AI 秘書就選 05 水引蹄</b>：故事最好、畫面最輕；favicon 可改用 01 或把三股加粗成兩股。</li>
+    <li><b>06 縦書き落款當輔助</b>：登入頁與列印文件使用，和任一主標誌搭配。</li>
+  </ol>
+</section>
+
+</main>
+</body>
+</html>

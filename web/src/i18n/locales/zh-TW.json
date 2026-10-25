@@ -1,0 +1,545 @@
+{
+  "app": {
+    "name": "特雷森學園 校務資訊系統",
+    "short": "特雷森校務"
+  },
+  "nav": {
+    "chat": "諮詢駿川",
+    "info": "校務資訊",
+    "calendar": "校務日曆",
+    "services": "訓練設施",
+    "planner": "訓練計畫試算",
+    "director": "理事長室",
+    "memory": "我的資料",
+    "admin": "管理站",
+    "trainerSite": "回到訓練員站",
+    "logout": "登出",
+    "inbox": "案件收件匣",
+    "catalog": "展示資料",
+    "runs": "AI 執行紀錄",
+    "users": "帳號",
+    "settings": "AI 設定與預算"
+  },
+  "shell": {
+    "sidebar": "側邊欄",
+    "expand": "展開側邊欄",
+    "collapse": "收合側邊欄",
+    "openMenu": "開啟選單",
+    "closeMenu": "關閉選單",
+    "search": "搜尋對話",
+    "searchHint": "搜尋對話（{{keys}}）",
+    "newChatHint": "新對話（{{keys}}）",
+    "noMatch": "找不到符合的對話",
+    "noHistory": "還沒有對話紀錄",
+    "pages": "頁面",
+    "account": "帳號與設定",
+    "bubble": "前往其他頁面",
+    "bubbleClose": "關閉頁面選單",
+    "pinned": "已釘選",
+    "pin": "釘選對話",
+    "unpin": "取消釘選",
+    "whoSub": "{{name}}・{{role}}"
+  },
+  "settings": {
+    "language": "語言",
+    "theme": "主題",
+    "light": "明亮",
+    "dark": "深色",
+    "system": "跟隨系統"
+  },
+  "login": {
+    "title": "訓練員登入",
+    "username": "帳號",
+    "password": "密碼",
+    "submit": "登入",
+    "failed": "帳號或密碼錯誤。",
+    "hint": "測試帳號見專案的 .env.example。"
+  },
+  "source": {
+    "official": "官方設定",
+    "anime": "官方動畫",
+    "community": "社群整理",
+    "reference": "現實參考",
+    "project": "本系統設定"
+  },
+  "chat": {
+    "newChat": "新對話",
+    "history": "對話紀錄",
+    "untitled": "（新對話）",
+    "greeting": "歡迎來到特雷森學園，訓練員♪ 我是理事長秘書駿川手綱。校務規定、訓練設施、訓練計畫，或需要送交理事長室的事，都可以問我。",
+    "placeholder": "詢問駿川校務、設施或訓練計畫…",
+    "send": "送出",
+    "stop": "停止",
+    "samples": "可以這樣問",
+    "sample1": "秘書室的受理時間是幾點到幾點？",
+    "sample2": "坂路訓練現在可以用嗎？",
+    "sample3": "暖身伸展 1 次、草地基本訓練 5 次，總共要多少分鐘？",
+    "sample4": "10 月 29 日 14:00 開始草地基本訓練 2 次，會撞到什麼嗎？",
+    "sample5": "請幫我轉給秋川理事長，我要反映泳池設備的問題。",
+    "thinking": "駿川正在確認…",
+    "traceEmpty": "這次回覆沒有使用工具。",
+    "arguments": "參數",
+    "result": "回傳",
+    "model": "模型",
+    "tazuna": "駿川手綱",
+    "director": "秋川理事長・真人服務",
+    "handoffWaiting": "已送交理事長室（{{no}}），等候真人接手。在接手前，駿川仍可協助其他事。",
+    "handoffActive": "秋川理事長（真人）正在處理案件 {{no}}。你的訊息會直接送給理事長，駿川暫停回覆。",
+    "failed": "回覆失敗：{{message}}",
+    "traceSummary": "處理紀錄（{{count}}）",
+    "traceModel": "模型：{{model}}",
+    "stepMeta": "步驟 {{step}} · {{duration}}",
+    "resultPending": "（等待回傳）",
+    "heroTitle": "訓練員，今天想問什麼？",
+    "composerHint": "Enter 送出・Shift+Enter 換行",
+    "copy": "複製",
+    "copied": "已複製",
+    "jumpLatest": "捲到最新訊息",
+    "handoffTag": "已送交理事長室"
+  },
+  "concierge": {
+    "label": "駿川諮詢",
+    "open": "詢問駿川",
+    "close": "收起",
+    "openChat": "在對話頁開啟",
+    "newTopic": "換個話題",
+    "greeting": "訓練員，這一頁有不清楚的地方，都可以問我喔♪",
+    "placeholder": "問駿川…",
+    "asked": "你問：{{q}}",
+    "working": "正在查詢：{{tool}}…",
+    "noReply": "訊息已送出。完整內容請到對話頁查看。",
+    "handoff": "已送交理事長室，前往查看進度",
+    "more": "在對話頁看完整內容與處理紀錄",
+    "ask": {
+      "info": {
+        "1": "秘書室的受理時間是幾點到幾點？",
+        "2": "訓練設施要怎麼預約？",
+        "3": "門禁時間是幾點？"
+      },
+      "calendar": {
+        "1": "這週有什麼校務活動？",
+        "2": "10 月 29 日下午有排什麼嗎？",
+        "3": "最近有哪些日子設施會停用？"
+      },
+      "services": {
+        "1": "坂路訓練現在可以用嗎？",
+        "2": "泳池什麼時候開放？",
+        "3": "有哪些設施正在維護？"
+      },
+      "planner": {
+        "1": "暖身伸展 1 次、草地基本訓練 5 次，總共要多少分鐘？",
+        "2": "排訓練計畫時要注意什麼？",
+        "3": "訓練時段跟門禁衝突怎麼辦？"
+      },
+      "director": {
+        "1": "什麼情況需要送交理事長室？",
+        "2": "理事長室和秘書室有什麼不同？",
+        "3": "送交理事長室後多久會有回覆？"
+      },
+      "memory": {
+        "1": "你記得我的哪些偏好？",
+        "2": "「我的資料」頁可以做什麼？",
+        "3": "以後請用比較簡短的方式回答我。"
+      }
+    }
+  },
+  "notice": {
+    "director": {
+      "accepted": "理事長室已由真人接手。",
+      "resolved": "理事長室已結案，駿川恢復協助。",
+      "returned": "理事長室已把對話交回駿川。"
+    },
+    "run": {
+      "failed": {
+        "max_steps": "這個問題處理步驟太多，已停止。",
+        "timeout": "回覆逾時。",
+        "model_error": "模型暫時無法回覆。",
+        "internal": "系統錯誤。",
+        "not_configured": "尚未設定模型。",
+        "budget": "本月 AI 額度已用完，請改用手動頁面。"
+      }
+    }
+  },
+  "tools": {
+    "get_academy_info": "查詢校務資訊",
+    "list_academy_events": "查詢校務日曆",
+    "search_training_services": "查詢訓練設施",
+    "calculate_training_plan": "計算訓練計畫",
+    "transfer_to_director": "送交理事長室"
+  },
+  "status": {
+    "ok": "成功",
+    "rejected": "已拒絕",
+    "error": "錯誤"
+  },
+  "info": {
+    "title": "校務資訊",
+    "updated": "更新：{{date}}"
+  },
+  "calendar": {
+    "title": "校務日曆",
+    "from": "起",
+    "to": "迄",
+    "search": "查詢",
+    "empty": "這段期間沒有行程。",
+    "affects": "影響設施",
+    "all": "全校",
+    "races": "賽事",
+    "none": "不影響設施",
+    "raceFilter": {
+      "all": "G1 與 G2",
+      "g1": "只看 G1",
+      "none": "不顯示"
+    }
+  },
+  "kind": {
+    "class": "課程",
+    "exam": "考試",
+    "event": "活動",
+    "maintenance": "維護",
+    "workshop": "研習",
+    "race": "賽事"
+  },
+  "race": {
+    "detail": "{{racecourse}}・{{surface}} {{distance}} 公尺・{{direction}}",
+    "classes": "可出賽：{{classes}}",
+    "source": "賽程來源",
+    "halfNote": "賽事依遊戲的「月份前半／後半」排入日曆：前半為 1–15 日，後半為 16 日到月底；實際日期以學園公告為準。",
+    "surface": {
+      "turf": "草地",
+      "dirt": "沙地"
+    },
+    "direction": {
+      "right": "右回",
+      "left": "左回",
+      "straight": "直線"
+    },
+    "class": {
+      "junior": "新手級",
+      "classic": "經典級",
+      "senior": "資深級"
+    }
+  },
+  "racecourse": {
+    "sapporo": "札幌",
+    "hakodate": "函館",
+    "niigata": "新潟",
+    "fukushima": "福島",
+    "nakayama": "中山",
+    "tokyo": "東京",
+    "chukyo": "中京",
+    "kyoto": "京都",
+    "hanshin": "阪神",
+    "kokura": "小倉",
+    "oi": "大井",
+    "kawasaki": "川崎",
+    "funabashi": "船橋",
+    "morioka": "盛岡"
+  },
+  "services": {
+    "title": "訓練設施與資源",
+    "query": "名稱關鍵字",
+    "category": "類別",
+    "anyCategory": "全部類別",
+    "onlyAvailable": "只顯示可使用",
+    "unit": "每時段 {{n}} 分",
+    "capacity": "名額 {{n}}",
+    "fee": "{{n}} 日圓／時段",
+    "free": "免費",
+    "available": "可使用",
+    "unavailable": "暫停開放",
+    "empty": "沒有符合的設施。"
+  },
+  "category": {
+    "track": "跑道",
+    "equipment": "器材",
+    "analysis": "分析",
+    "room": "空間",
+    "workshop": "研習",
+    "support": "支援"
+  },
+  "planner": {
+    "title": "訓練計畫試算",
+    "intro": "選擇設施與次數，系統以程式計算總時間、展示費用，以及和校務日曆的衝突。",
+    "service": "設施",
+    "sessions": "次數",
+    "minutes": "每次分鐘（選填）",
+    "add": "新增一項",
+    "remove": "移除",
+    "date": "日期（選填）",
+    "start": "開始時間（選填）",
+    "calculate": "計算",
+    "total": "總時間 {{min}} 分（{{h}}）",
+    "fee": "展示費用合計 {{n}} 日圓",
+    "schedule": "排程",
+    "conflicts": "衝突與提醒",
+    "noConflicts": "沒有發現衝突。",
+    "problems": "以下項目需要確認",
+    "formula": "算式"
+  },
+  "conflict": {
+    "event": "與校務行程重疊",
+    "same_day_event": "當天有相關行程",
+    "service_unavailable": "設施暫停開放",
+    "after_hours": "超過 20:30 最後使用時間"
+  },
+  "director": {
+    "title": "理事長室",
+    "intro": "網頁沒有的資訊可以寫訊息找秋川理事長",
+    "reason": "類型",
+    "summary": "內容",
+    "submit": "送出案件",
+    "sent": "已送出案件 {{no}}。",
+    "mine": "我的案件",
+    "empty": "目前沒有案件。",
+    "events": "處理經過"
+  },
+  "reason": {
+    "not_in_data": "資料查不到",
+    "exception_request": "例外申請",
+    "complaint": "意見／申訴",
+    "asked_for_director": "指名理事長",
+    "other": "其他"
+  },
+  "ticketStatus": {
+    "waiting": "等候接手",
+    "in_progress": "處理中",
+    "resolved": "已結案",
+    "returned": "已交回駿川"
+  },
+  "ticketEvent": {
+    "created": "建立",
+    "accepted": "真人接手",
+    "reply": "回覆",
+    "trainer_message": "訓練員訊息",
+    "resolved": "結案",
+    "returned": "交回駿川",
+    "note": "備註"
+  },
+  "memory": {
+    "title": "我的資料",
+    "intro": "駿川會用這些資料稱呼你、調整回覆語言與語氣；不會把它們當作學園的規定。你可以隨時修改或刪除。",
+    "preferredName": "希望的稱呼",
+    "replyLocale": "回覆語言",
+    "auto": "依訊息自動判斷",
+    "save": "儲存",
+    "saved": "已儲存。",
+    "items": "記住的事",
+    "add": "新增",
+    "kindPreference": "偏好",
+    "kindFact": "關於我",
+    "delete": "刪除",
+    "edit": "修改",
+    "empty": "目前沒有記住的事。",
+    "sourceAgent": "駿川自動記住",
+    "sourceTrainer": "我自己新增",
+    "events": "過去的事件",
+    "eventsIntro": "駿川會依你的新問題找出相關的過去事件，當作參考；學園規定與可用狀態一律重新查資料庫。",
+    "eventsEmpty": "目前沒有事件。",
+    "avatarTitle": "頭像",
+    "avatarIntro": "顯示在側邊欄的帳號按鈕。選好圖片後可以自己移動、縮放，裁出要用的部分；只有你自己看得到。",
+    "avatarUpload": "上傳圖片",
+    "avatarChange": "更換圖片",
+    "avatarRemove": "移除頭像",
+    "avatarSaving": "上傳中…",
+    "avatarBadFile": "無法讀取這個檔案，請選擇 PNG、JPEG 或 WebP 圖片。",
+    "avatarAlt": "{{name}}的頭像",
+    "cropTitle": "裁切頭像",
+    "cropHint": "拖曳圖片調整位置，用滑桿、滾輪或雙指縮放；圓框內就是頭像。",
+    "cropLabel": "頭像裁切範圍（方向鍵移動，+／- 縮放）",
+    "cropZoom": "縮放",
+    "cropCancel": "取消",
+    "cropConfirm": "使用這個範圍"
+  },
+  "voice": {
+    "record": "語音輸入",
+    "stop": "停止錄音",
+    "recording": "錄音中 {{s}} 秒",
+    "transcribing": "轉成文字中…",
+    "denied": "無法使用麥克風，請在瀏覽器或 App 設定允許麥克風權限。",
+    "unsupported": "這個瀏覽器不支援錄音，請改用打字。",
+    "failed": "語音轉文字失敗：{{message}}",
+    "review": "已轉成文字，請確認後再送出。"
+  },
+  "settingsPage": {
+    "title": "AI 設定與預算",
+    "intro": "這裡的設定會立刻套用到下一次對話，不需要重新啟動。模型名稱請用供應商目前提供的模型 id；mock 是離線測試用。",
+    "models": "模型",
+    "chatModel": "對話（Agent）",
+    "memoryModel": "記憶整理與摘要",
+    "embedModel": "語意記憶嵌入（768 維）",
+    "transcribeModel": "語音轉文字",
+    "memoryEnabled": "啟用長期記憶（自動整理與語意回想）",
+    "budget": "每月預算",
+    "monthlyBudget": "每月上限（美元，空白＝不限制）",
+    "policy": "超過上限時",
+    "policyBlock": "停止 AI 回覆（手動頁面照常）",
+    "policyWarn": "只提醒，不停止",
+    "prices": "價格（美元／百萬 tokens，請依供應商價目表填寫）",
+    "model": "模型",
+    "input": "輸入",
+    "output": "輸出",
+    "addPrice": "新增模型價格",
+    "save": "儲存設定",
+    "saved": "已儲存。",
+    "usage": "本月用量",
+    "since": "自 {{date}} 起",
+    "spent": "已用 {{spent}} 美元",
+    "limit": "上限 {{limit}} 美元",
+    "noLimit": "未設上限",
+    "blocked": "已達上限，AI 回覆已停止。",
+    "purpose": "用途",
+    "calls": "次數",
+    "tokens": "tokens（輸入／輸出）",
+    "cost": "費用（美元）",
+    "unpriced": "{{n}} 次未設定價格，未計入費用",
+    "conversation": "對話風格與思考",
+    "conversationIntro": "調整駿川怎麼聊天、回覆多長、模型想多深。校務事實一律仍以工具查詢結果為準，這些設定不會放寬。",
+    "replyLength": "回覆長度",
+    "replyLengthBrief": "簡短（一到三句）",
+    "replyLengthNatural": "自然（看問題決定，不設上限）",
+    "replyLengthDetailed": "詳細（完整說明步驟與注意事項）",
+    "smallTalk": "題外話",
+    "smallTalkOff": "不聊（一句帶過，拉回校務）",
+    "smallTalkBalanced": "適度（聊幾句後自然拉回）",
+    "smallTalkRelaxed": "開放（訓練員想聊就陪著聊）",
+    "smallTalkHint": "「適度」大約連續三輪題外話後，駿川會用一句話把話題接回工作；寫文章、寫程式、做作業等大型請求在任何模式都會婉拒。",
+    "reasoning": "思考深度",
+    "reasoningAuto": "自動（模型預設）",
+    "reasoningLow": "低（較快、較省）",
+    "reasoningMedium": "中",
+    "reasoningHigh": "高（較慢、較貴）",
+    "reasoningHint": "對應 Gemini 3 的 thinking level；不支援思考的模型請選「自動」。思考用的 tokens 也會計費。",
+    "temperature": "溫度（空白＝模型預設）",
+    "temperatureHint": "Google 建議 Gemini 3 保持預設值 1.0，調低可能造成重複或品質下降。",
+    "maxOutputTokens": "每次呼叫的輸出上限（tokens）",
+    "maxOutputTokensHint": "Gemini 的上限包含思考用的 tokens；設太小會在思考途中被截斷。",
+    "maxSteps": "每則訊息最多模型呼叫次數",
+    "maxStepsHint": "包含查詢工具的往返與最後的回覆；越多越能處理複雜問題，也越久、越貴。",
+    "adminOnly": "只有管理員可以修改設定；工作人員可查看用量。"
+  },
+  "admin": {
+    "inboxTitle": "理事長室案件",
+    "persona": "你將以「秋川理事長・真人服務」身分回覆。實際操作者會記錄在稽核紀錄中。",
+    "accept": "接手",
+    "reply": "回覆",
+    "replyPlaceholder": "以秋川理事長身分回覆…",
+    "resolve": "結案",
+    "hand_back": "交回駿川",
+    "requester": "申請人",
+    "assignee": "承辦",
+    "origin": "來源",
+    "originAgent": "AI 轉接",
+    "originForm": "手動表單",
+    "select": "選擇左側案件查看。",
+    "catalogTitle": "展示資料維護",
+    "seedNote": "CATALOG_SEED_MODE=reset 時，下次啟動會以 CSV 重建這些資料。",
+    "save": "儲存",
+    "runsTitle": "AI 執行紀錄",
+    "usersTitle": "帳號",
+    "trainer": "訓練員",
+    "steps": "步數",
+    "tools": "工具",
+    "role": "角色",
+    "disabled": "已停用",
+    "field": {
+      "id": "代碼",
+      "capacity": "名額",
+      "fee_jpy": "費用（日圓）",
+      "content": "內容（繁體中文）",
+      "content_ja": "內容（日文）",
+      "content_en": "內容（英文）"
+    }
+  },
+  "avatar": {
+    "label": "角色",
+    "placeholder": "簡易顯示",
+    "loading": "角色載入中…",
+    "noAssets": "這個環境沒有提供 3D 角色素材",
+    "noMotion": "伺服器沒有送來角色的動作資料，請重新啟動 API 後再試",
+    "noWebgl": "這個瀏覽器無法顯示 3D，改用簡易顯示",
+    "failed": "3D 角色載入失敗，已改用簡易顯示",
+    "collapse": "收合角色",
+    "expand": "顯示角色",
+    "state": {
+      "idle": "待命中",
+      "listening": "聆聽中",
+      "thinking": "思考中",
+      "working": "查詢資料中",
+      "explaining": "說明中",
+      "confirming": "等候確認",
+      "handoff": "送交理事長室",
+      "apologizing": "查無資料",
+      "error": "發生問題"
+    },
+    "monogram": "たづな",
+    "tapLabel": "和駿川打招呼",
+    "tap": {
+      "body1": "是的，訓練員？有什麼需要協助的嗎？",
+      "body2": "我在這裡喔♪ 校務的事都可以問我。",
+      "body3": "今天的訓練也辛苦了！",
+      "body4": "要查設施或行程的話，請告訴我。",
+      "head1": "哎呀……被摸頭了呢。",
+      "head2": "呵呵，訓練員真是的。",
+      "shy": "請、請不要一直摸啦……我會不好意思的。",
+      "page": {
+        "chat": "想問什麼都可以，直接在下面輸入吧。",
+        "info": "校務規定有看不懂的地方嗎？",
+        "calendar": "要確認哪一天的行程呢？",
+        "services": "想用哪個設施？我幫你查查狀態。",
+        "planner": "訓練計畫的時間，我可以幫忙算喔。",
+        "director": "需要理事長室協助的事，交給我轉達吧。",
+        "memory": "你的偏好，我都有好好記著喔。"
+      }
+    }
+  },
+  "common": {
+    "loading": "載入中…",
+    "error": "發生錯誤：{{message}}",
+    "minutes": "{{n}} 分",
+    "none": "—",
+    "hoursMinutes": "{{h}} 小時 {{m}} 分",
+    "durationMs": "{{n}} 毫秒"
+  },
+  "planProblem": {
+    "not_found": "找不到「{{item}}」這項設施。",
+    "ambiguous": "「{{item}}」可能是：{{candidates}}"
+  },
+  "runStatus": {
+    "running": "執行中",
+    "completed": "完成",
+    "failed": "失敗"
+  },
+  "runError": {
+    "max_steps": "步驟過多",
+    "timeout": "逾時",
+    "model_error": "模型錯誤",
+    "internal": "系統錯誤",
+    "not_configured": "未設定模型",
+    "budget": "超出預算"
+  },
+  "purpose": {
+    "chat": "對話",
+    "memory": "記憶整理",
+    "summary": "對話摘要",
+    "embed": "語意嵌入",
+    "transcribe": "語音轉文字"
+  },
+  "role": {
+    "trainer": "訓練員",
+    "staff": "工作人員",
+    "admin": "管理員"
+  },
+  "apiError": {
+    "unauthorized": "請重新登入。",
+    "forbidden": "你沒有權限進行這項操作。",
+    "not_found": "找不到這筆資料。",
+    "bad_request": "送出的內容有誤（{{detail}}）。",
+    "conflict": "資料狀態已經變更，請重新整理（{{detail}}）。",
+    "not_implemented": "這項功能尚未開放。",
+    "internal": "系統發生錯誤，請稍後再試。",
+    "http_error": "伺服器沒有回應（{{detail}}）。",
+    "stream_error": "回覆中斷（{{detail}}）。",
+    "network": "無法連線到伺服器，請確認網路。"
+  }
+}

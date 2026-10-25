@@ -1,0 +1,59 @@
+name: Bug report / 錯誤回報
+description: Something does not work as documented. / 功能與文件描述不符。
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security problems go through the Security tab, not here (see SECURITY.md).
+        安全性問題請由 Security 分頁私下回報，不要在此公開（見 SECURITY.md）。
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area / 範圍
+      options:
+        - Chat and agent tools / 對話與 Agent 工具
+        - 3D character / 3D 角色
+        - Manual pages (info, calendar, facilities, planner) / 手動頁面
+        - Director's Office and management site / 理事長室與管理站
+        - Memory and My details / 記憶與我的資料
+        - Accounts and sign-in / 帳號與登入
+        - Languages and themes / 多語言與主題
+        - Android app / Android App
+        - Docker and setup / Docker 與環境設定
+        - Other / 其他
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 重現步驟
+      placeholder: |
+        1. Sign in as trainer
+        2. Ask "..."
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result / 預期與實際結果
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model / 模型
+      description: Value of MODEL, or the chat model set on the management site. / MODEL 的值或管理站設定的對話模型。
+      placeholder: mock / gemini-3.8-flash / ...
+  - type: input
+    id: environment
+    attributes:
+      label: Environment / 環境
+      placeholder: Commit, OS, browser, phone model
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots / 紀錄或截圖
+      description: Remove API keys, passwords and personal data first. / 請先移除 API 金鑰、密碼與個人資料。
+      render: text
