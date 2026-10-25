@@ -40,7 +40,7 @@ This section follows the course README template. The rest of this page describes
 
 ### Who It Serves and When They Use It
 
-- **Who uses it:** trainers at Tracen Academy who coach their own Uma Musume; on the other side, staff answer hand-over cases as *Director Akikawa · human service* on a management site that uses no AI.
+- **Who uses it:** trainers at Tracen Academy who coach their own Uma Musume; on the other side, staff answer hand-over cases as *Director Akikawa* on a management site that uses no AI.
 - **When they use it:** before planning training (is a facility open, how long is a slot, how many people, what does it cost), when choosing a date (exams, academy events, maintenance), before a race (which forms, how many days ahead), and outside the Director's Secretary Office hours (weekdays 08:30–18:00, Saturdays 09:00–12:00 in the demo data).
 - **What problem it solves:** without it, trainers read notices, calendars and facility lists themselves or walk to the office, and add up times and fees by hand. Tazuna looks everything up in the database, lets the server do the arithmetic and clash checks, and opens a real case for a person when the data has no answer.
 
@@ -309,6 +309,7 @@ The project documents are written in Traditional Chinese; the index is [docs/REA
 | HTTP API and SSE events | [api/README.md](docs/api/README.md), [stream-events.md](docs/api/stream-events.md) |
 | Character player and voice | [avatar-contract.md](docs/character/avatar-contract.md), [voice-contract.md](docs/character/voice-contract.md) |
 | Interface text and languages | [frontend-i18n.md](docs/frontend/frontend-i18n.md) |
+
 
 Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 

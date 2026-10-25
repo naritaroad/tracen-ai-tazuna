@@ -1,6 +1,6 @@
-<div align="center">
 
-<img src="../brand/banners/banner.zh-TW.webp" alt="特雷森學園 校務資訊系統 · AI 秘書 駿川手綱" width="100%" />
+
+![特雷森學園 校務資訊系統 · AI 秘書 駿川手綱](../brand/banners/banner.zh-TW.webp)
 
 # 特雷森學園 校務資訊系統
 
@@ -21,16 +21,15 @@
 
 [English](../../README.md) | **繁體中文** | [日本語](README.ja.md)
 
-</div>
+
 
 > [!NOTE]
 > 本專案為同人專案作品，與 Cygames, Inc. 無關。MIT 授權只涵蓋本專案自行撰寫的程式碼與文件，不含角色模型、動作、官方校徽與作品設定素材，詳見 [NOTICE.md](../../NOTICE.md)。
 
-<p align="center">
-  <img src="../assets/screenshots/chat.zh-TW.png" alt="對話頁：駿川回答訓練計畫問題並指出與跑道維護時段衝突，展開的處理紀錄顯示 calculate_training_plan 呼叫" width="900" />
-</p>
+![對話頁：駿川回答訓練計畫問題並指出與跑道維護時段衝突，展開的處理紀錄顯示 calculate_training_plan 呼叫](../assets/screenshots/chat.zh-TW.png)
 
-<!-- course-homework:start — Unit G 課程作業段落；評分後刪除此區塊 -->
+
+
 ## 課程作業說明（Unit G）
 
 > 課程作業：Unit G，My AI Customer Service Agent, with a Database and Tools
@@ -40,7 +39,7 @@
 
 ### 服務對象與使用時機
 
-- **誰會使用：**特雷森學園中帶領擔當馬娘的訓練員；另一端是理事長室的工作人員，在不使用 AI 的管理站以「秋川理事長・真人服務」身分接手轉接案件。
+- **誰會使用：**特雷森學園中帶領擔當馬娘的訓練員；另一端是理事長室的工作人員，在不使用 AI 的管理站以「秋川理事長」身分接手轉接案件。
 - **什麼時候使用：**排訓練前（設施能不能用、一個時段多久、名額、費用）、挑日期時（考試、全校活動、設施維護）、出賽前（要準備哪些文件、幾天前提交），以及理事長秘書室不受理的時間（展示資料設定為平日 08:30–18:00、週六 09:00–12:00）。
 - **解決什麼問題：**沒有這個系統時，訓練員得自己翻公告、日曆與設施表，或跑到秘書室問人，並自己加總時間與費用。駿川先查資料庫、由伺服器計算並檢查衝突，資料沒有的事則真的建立案件交給真人。
 
@@ -62,16 +61,13 @@
 - **模型：**`gemini-3.8-flash`（Google Gemini API，透過 [rust-genai](https://github.com/jeremychone/rust-genai) 呼叫）；`MODEL=mock` 可不用金鑰離線執行。
 - **聊天畫面：**React + Vite + TypeScript 前端；Rust（Axum）後端以 REST 與 SSE 提供 API。API 金鑰、Agent 迴圈、工具與資料庫都只在後端。
 - **資料庫：**PostgreSQL 18（課程建議使用 SQLite）。設定 `CATALOG_SEED_MODE=reset` 時，API 每次啟動都由 CSV 重建下列資料表：
-
   | 資料表 | CSV 檔 | 內容 | 筆數 |
   |---|---|---|---|
   | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 資訊主題：受理時間、設施規則、預約、門禁、出賽申請等 | 10 |
   | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 設施與服務：時段長度、名額、展示費用、是否可用、別名 | 17 |
   | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 課程、考試、活動與維護，以及受影響的設施 | 10 |
   | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | 遊戲中的 G1／G2 賽事日程（GameTora，標示為 `community`） | 76 |
-
 - **工具：**
-
   | 工具 | 用途 |
   |---|---|
   | `get_academy_info(topic)` | 讀取 `academy_info` 的一個主題 |
@@ -106,7 +102,8 @@ backend/Cargo.toml、web/package.json   套件清單
 
 - 資料中的校規、價格、人物與預約都是本專案的展示設定（`source_type` 為 `project` 或 `reference`）；賽事日程為社群整理的遊戲資料。本專案為非官方同人作品，詳見 [NOTICE.md](../../NOTICE.md)。
 - `.env` 存放 API 金鑰，不在此 repository 中，請由 `.env.example` 自行建立。
-<!-- course-homework:end -->
+
+
 
 ## 功能特色
 
@@ -121,16 +118,15 @@ backend/Cargo.toml、web/package.json   套件清單
 
 ## 畫面截圖
 
-| 轉接理事長室 | 管理站案件收件匣 |
-|---|---|
-| <img src="../assets/screenshots/handoff.zh-TW.png" alt="駿川查詢門禁規定後建立理事長室案件 DIR-1016" width="440" /> | <img src="../assets/screenshots/admin-inbox.zh-TW.png" alt="管理站收件匣中等候真人接手的案件 DIR-1016" width="440" /> |
-| **深色主題** | **校務日曆與頁面諮詢窗** |
-| <img src="../assets/screenshots/dark.zh-TW.png" alt="深色主題下詢問坡路訓練" width="440" /> | <img src="../assets/screenshots/calendar.zh-TW.png" alt="校務日曆列出 G1 與 G2 賽事，右下角是駿川的諮詢窗" width="440" /> |
+| 轉接理事長室                                                                 | 管理站案件收件匣                                                                  |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![駿川查詢門禁規定後建立理事長室案件 DIR-1016](../assets/screenshots/handoff.zh-TW.png) | ![管理站收件匣中等候真人接手的案件 DIR-1016](../assets/screenshots/admin-inbox.zh-TW.png) |
+| **深色主題**                                                               | **校務日曆與頁面諮詢窗**                                                            |
+| ![深色主題下詢問坡路訓練](../assets/screenshots/dark.zh-TW.png)                   | ![校務日曆列出 G1 與 G2 賽事，右下角是駿川的諮詢窗](../assets/screenshots/calendar.zh-TW.png) |
 
-<details>
-<summary>手機版面</summary>
-<p align="center"><img src="../assets/screenshots/mobile.zh-TW.png" alt="手機版新對話，駿川向訓練員打招呼" width="300" /></p>
-</details>
+手機版面
+
+![手機版新對話，駿川向訓練員打招呼](../assets/screenshots/mobile.zh-TW.png)
 
 ## 系統架構
 
@@ -160,8 +156,7 @@ flowchart LR
 
 Rust API 是模組化單體，同站提供建置好的網站與 `/api/v1`。送出對話訊息會啟動一次 Agent run，事件（`run.started`、`tool.started`、`avatar.intent`、`message.completed`、`handoff.updated` 等）以 SSE 傳回；手動頁面則直接呼叫同一組服務函式。設計決策見 [docs/engineering/architecture.md](../engineering/architecture.md) 與 [docs/product/decisions.md](../product/decisions.md)。
 
-<details>
-<summary><b>技術堆疊</b></summary>
+**技術堆疊**
 
 | 層 | 採用（版本鎖在 `Cargo.lock`／`package-lock.json`） |
 |---|---|
@@ -173,10 +168,9 @@ Rust API 是模組化單體，同站提供建置好的網站與 `/api/v1`。送�
 | Android | Capacitor 8.5.3；建置需 JDK 21 與 Android SDK API 36 |
 | 發行映像 | 三階段 `Dockerfile`：Node 建置網站、Rust 建置 release 二進位、Debian trixie-slim 以非 root 使用者執行 |
 
-</details>
 
-<details>
-<summary><b>Agent 工具</b></summary>
+
+**Agent 工具**
 
 | 工具 | 類型 | 回傳 |
 |---|---|---|
@@ -188,10 +182,9 @@ Rust API 是模組化單體，同站提供建置好的網站與 `/api/v1`。送�
 
 工具回傳資料而不是句子。使用者身分由伺服器帶入；未註冊的工具會被拒絕，參數先驗證才執行。完整契約見 [docs/product/product-spec.md](../product/product-spec.md)。
 
-</details>
 
-<details>
-<summary><b>設定</b></summary>
+
+**設定**
 
 所有設定都在 `.env`（由 [`.env.example`](../../.env.example) 複製）。
 
@@ -210,17 +203,16 @@ Rust API 是模組化單體，同站提供建置好的網站與 `/api/v1`。送�
 
 管理員在管理站「AI 設定與預算」存檔後，存下的設定優先於 `.env`。
 
-</details>
 
-<details>
-<summary><b>安全設計</b></summary>
+
+**安全設計**
 
 - 密碼以 Argon2 雜湊；工作階段只儲存 token 的 SHA-256。
 - 工作階段使用 HttpOnly、SameSite=Lax 的 cookie；改變狀態的請求只接受 `application/json`。
 - 模型不會送出 SQL、JavaScript 或骨架資料。SQL 皆為靜態，工具參數會先驗證，角色提示只接受固定詞彙。
 - 訓練員只看得到自己的對話、案件與記憶；管理端點需要工作人員或管理員權限。
 
-</details>
+
 
 ## 快速開始
 
@@ -323,4 +315,4 @@ Android 建置與 USB 實機測試步驟見 [docs/engineering/development.md](..
 
 ## 致謝
 
-[Axum](https://github.com/tokio-rs/axum)、[SQLx](https://github.com/transact-rs/sqlx)、[rust-genai](https://github.com/jeremychone/rust-genai)、[pgvector](https://github.com/pgvector/pgvector)、[three-vrm](https://github.com/pixiv/three-vrm)、[three.js](https://github.com/mrdoob/three.js)、[Capacitor](https://github.com/ionic-team/capacitor)、[i18next](https://github.com/i18next/i18next)。賽程資料來自 [GameTora](https://gametora.com/umamusume/races)，並與 BiliGame 交叉比對，標示為 `community`。
+[Axum](https://github.com/tokio-rs/axum)、[SQLx](https://github.com/transact-rs/sqlx)、[rust-genai](https://github.com/jeremychone/rust-genai)、[pgvector](https://github.com/pgvector/pgvector)、[three-vrm](https://github.com/pixiv/three-vrm)、[three.js](https://github.com/mrdoob/three.js)、[Capacitor](https://github.com/ionic-team/capacitor)、[i18next](https://github.com/i18next/i18next)。資料庫內建賽程資料來自 [GameTora](https://gametora.com/umamusume/races)，並與 BiliGame 交叉比對，標示為 `community`。
