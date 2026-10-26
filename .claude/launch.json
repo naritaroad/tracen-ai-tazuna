@@ -24,6 +24,43 @@
       "autoPort": false
     },
     {
+      "name": "api-screenshots",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": [
+        "run",
+        "--manifest-path",
+        "backend/Cargo.toml"
+      ],
+      "env": {
+        "BIND_ADDR": "127.0.0.1:8083",
+        "CARGO_TARGET_DIR": "backend/target/screenshots",
+        "AVATAR_GAME_MOTION_DIR": "",
+        "AVATAR_SCENE_DIR": "",
+        "BRAND_CREST_FILE": ""
+      },
+      "port": 8083,
+      "autoPort": false
+    },
+    {
+      "name": "web-screenshots",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "web",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5177",
+        "--strictPort"
+      ],
+      "env": {
+        "API_PROXY_TARGET": "http://127.0.0.1:8083"
+      },
+      "port": 5177,
+      "autoPort": false
+    },
+    {
       "name": "api-alt",
       "runtimeExecutable": "cargo",
       "runtimeArgs": [

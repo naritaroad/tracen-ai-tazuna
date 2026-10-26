@@ -11,7 +11,7 @@
     "planner": "Training plan calculator",
     "director": "Director's Office",
     "memory": "My details",
-    "admin": "Management",
+    "admin": "Admin",
     "trainerSite": "Back to the trainer site",
     "logout": "Sign out",
     "inbox": "Case inbox",
@@ -66,7 +66,7 @@
     "newChat": "New conversation",
     "history": "Conversations",
     "untitled": "(new conversation)",
-    "greeting": "Welcome to Tracen Academy, Trainer! I'm Hayakawa Tazuna, secretary to the Director. Ask me about academy rules, training facilities, training plans, or anything you'd like sent to the Director's Office.",
+    "greeting": "Tazuna answers questions about academy rules, facilities and training plans from the academy's data, and can refer matters to the Director's Office.",
     "placeholder": "Ask Tazuna about rules, facilities or training plans…",
     "send": "Send",
     "stop": "Stop",
@@ -86,11 +86,11 @@
     "handoffWaiting": "Sent to the Director's Office ({{no}}). A person will pick it up; until then Tazuna can still help with other things.",
     "handoffActive": "Director Akikawa (a real person) is handling case {{no}}. Your messages go straight to the Director, and Tazuna will not reply.",
     "failed": "Reply failed: {{message}}",
-    "traceSummary": "What I did ({{count}})",
+    "traceSummary": "Activity log ({{count}})",
     "traceModel": "Model: {{model}}",
     "stepMeta": "Step {{step}} · {{duration}}",
     "resultPending": "(waiting for the result)",
-    "heroTitle": "What can I help you with today, Trainer?",
+    "heroTitle": "Ask Hayakawa Tazuna",
     "composerHint": "Enter to send · Shift+Enter for a new line",
     "copy": "Copy",
     "copied": "Copied",
@@ -108,8 +108,8 @@
     "asked": "You asked: {{q}}",
     "working": "Checking: {{tool}}…",
     "noReply": "Message sent. See the chat page for the full conversation.",
-    "handoff": "Sent to the Director's Office — see its progress",
-    "more": "See the full answer and what I did in the chat page",
+    "handoff": "Sent to the Director's Office. View progress",
+    "more": "Open the full reply and activity log in the chat page",
     "ask": {
       "info": {
         "1": "What are the opening hours of the secretary's office?",
@@ -151,9 +151,9 @@
     },
     "run": {
       "failed": {
-        "max_steps": "This took too many steps, so it was stopped.",
+        "max_steps": "Stopped: this request needed too many steps.",
         "timeout": "The reply timed out.",
-        "model_error": "The model could not reply just now.",
+        "model_error": "The model is not responding. Try again later.",
         "internal": "System error.",
         "not_configured": "No model is set up.",
         "budget": "This month's AI budget is used up. Please use the manual pages."
@@ -169,7 +169,7 @@
   },
   "status": {
     "ok": "OK",
-    "rejected": "Refused",
+    "rejected": "Rejected",
     "error": "Error"
   },
   "info": {
@@ -185,7 +185,7 @@
     "affects": "Affects",
     "all": "Whole academy",
     "races": "Races",
-    "none": "No facility closed",
+    "none": "No facilities affected",
     "raceFilter": {
       "all": "G1 and G2",
       "g1": "G1 only",
@@ -260,7 +260,7 @@
   },
   "planner": {
     "title": "Training plan calculator",
-    "intro": "Choose facilities and sessions. The system calculates the total time, demo fees and clashes with the academy calendar in code.",
+    "intro": "Choose facilities and the number of sessions to work out the total time and demo fees, and to check for clashes with the academy calendar.",
     "service": "Facility",
     "sessions": "Sessions",
     "minutes": "Minutes per session (optional)",
@@ -285,7 +285,7 @@
   },
   "director": {
     "title": "Director's Office",
-    "intro": "For anything not on this site, write a message to Director Akikawa.",
+    "intro": "Questions the data can't answer, exception requests and complaints go to Director Akikawa from here. A real person replies.",
     "reason": "Type",
     "summary": "Details",
     "submit": "Send case",
@@ -337,7 +337,7 @@
     "eventsIntro": "Tazuna looks up past events related to your new question for context. Academy rules and availability are always checked again in the database.",
     "eventsEmpty": "No events yet.",
     "avatarTitle": "Profile picture",
-    "avatarIntro": "Shown on the account button in the sidebar. After choosing a picture you can move and zoom it to crop the part you want; only you can see it.",
+    "avatarIntro": "Shown on the account button in the sidebar. After choosing a picture, move and zoom it to set the crop. Only you can see it.",
     "avatarUpload": "Upload a picture",
     "avatarChange": "Change picture",
     "avatarRemove": "Remove picture",
@@ -359,11 +359,11 @@
     "denied": "The microphone is not available. Please allow it in your browser or app settings.",
     "unsupported": "This browser cannot record audio. Please type instead.",
     "failed": "Speech to text failed: {{message}}",
-    "review": "Here is the text. Please check it before sending."
+    "review": "Transcribed. Check the text before sending."
   },
   "settingsPage": {
     "title": "AI settings and budget",
-    "intro": "Changes here apply from the next conversation, without a restart. Use the provider's current model ids; mock is the offline test router.",
+    "intro": "Changes apply from the next conversation; no restart is needed. Use the provider's current model IDs. mock is for offline testing.",
     "models": "Models",
     "chatModel": "Conversation (agent)",
     "memoryModel": "Memory curation and summaries",
@@ -394,7 +394,7 @@
     "cost": "Cost (USD)",
     "unpriced": "{{n}} calls have no price set and are not counted",
     "conversation": "Conversation style and thinking",
-    "conversationIntro": "How Tazuna chats, how long her replies are and how deeply the model thinks. Academy facts still come only from tool results; these settings never relax that.",
+    "conversationIntro": "Tazuna's conversation style, reply length and the model's thinking depth. Academy facts still come only from tool results, whatever these are set to.",
     "replyLength": "Reply length",
     "replyLengthBrief": "Brief (one to three sentences)",
     "replyLengthNatural": "Natural (fits the question, no fixed limit)",
@@ -402,7 +402,7 @@
     "smallTalk": "Small talk",
     "smallTalkOff": "Off (one sentence, then back to academy matters)",
     "smallTalkBalanced": "Balanced (chat a little, then steer back)",
-    "smallTalkRelaxed": "Relaxed (chat as long as the trainer likes)",
+    "smallTalkRelaxed": "Relaxed (no steering back; mentions academy work after about six exchanges)",
     "smallTalkHint": "With Balanced, after about three off-topic exchanges in a row Tazuna bridges back to work in one sentence. Big jobs such as essays, code or homework are declined in every mode.",
     "reasoning": "Thinking depth",
     "reasoningAuto": "Auto (model default)",
@@ -456,7 +456,7 @@
     "placeholder": "Simple view",
     "loading": "Loading the character…",
     "noAssets": "3D character files are not provided here",
-    "noMotion": "The server sent no motion data for the character; restart the API and try again",
+    "noMotion": "The server sent no motion data for the character. Restart the API and try again",
     "noWebgl": "This browser cannot show 3D, so the simple view is used",
     "failed": "The 3D character could not be loaded, so the simple view is used",
     "collapse": "Hide character",
@@ -495,9 +495,10 @@
   },
   "common": {
     "loading": "Loading…",
-    "error": "Something went wrong: {{message}}",
+    "error": "Error: {{message}}",
     "minutes": "{{n}} min",
     "none": "—",
+    "colon": ": ",
     "hoursMinutes": "{{h}} h {{m}} min",
     "durationMs": "{{n}} ms"
   },
@@ -533,9 +534,9 @@
   "apiError": {
     "unauthorized": "Please sign in again.",
     "forbidden": "You do not have permission to do that.",
-    "not_found": "That could not be found.",
-    "bad_request": "Something in the request is not right ({{detail}}).",
-    "conflict": "This has changed in the meantime; please reload ({{detail}}).",
+    "not_found": "Record not found.",
+    "bad_request": "The request is invalid ({{detail}}).",
+    "conflict": "This record has changed. Reload and try again ({{detail}}).",
     "not_implemented": "This is not available yet.",
     "internal": "A system error occurred. Please try again shortly.",
     "http_error": "The server did not respond ({{detail}}).",

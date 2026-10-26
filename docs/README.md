@@ -39,7 +39,7 @@
 
 英文版在專案根目錄的 [README.md](../README.md)；三個版本的章節結構相同，截圖在 [assets/](assets/)，橫幅在 [brand/banners/](brand/banners/index.html)。
 
-## 原本就在子目錄
+## 其他
 
 - [api/](api/README.md)：HTTP API 與串流事件
 - [brand/](brand/logo-concepts.html)：標誌概念稿；[brand/banners/](brand/banners/index.html)：README 橫幅提案（原始檔與輸出腳本）

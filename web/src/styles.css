@@ -197,6 +197,11 @@ label { display: grid; gap: 4px; font-size: 0.88rem; color: var(--text-2); }
 /* The official crest, drawn in the theme violet through its own shape (src/brand.ts). */
 .mark.crest { display: inline-block; background: var(--brand); -webkit-mask: var(--crest) center / contain no-repeat; mask: var(--crest) center / contain no-repeat; }
 .brand em { margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-style: normal; font-size: 0.72rem; background: var(--gold-soft); color: var(--gold); }
+/* The badge stays whole; a long app name gives way first instead of sliding under the collapse button. */
+.brand-label { display: flex; align-items: center; min-width: 0; }
+.brand-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.brand-label em { flex: 0 0 auto; margin-left: 4px; padding: 1px 6px; letter-spacing: 0.02em; }
+.brand-label:has(em) .brand-name { letter-spacing: 0.02em; }
 .controls { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
 .controls select { width: auto; padding: 5px 10px; font-size: 0.88rem; border-radius: 999px; background: var(--surface); }
 .controls.labelled { display: grid; gap: 8px; }
@@ -377,7 +382,9 @@ details > summary { cursor: pointer; }
 
 .chat-col { width: 100%; max-width: 780px; margin: 0 auto; padding: 0 24px; }
 .chat-body { grid-area: body; overflow-y: auto; overscroll-behavior: contain; }
-.chat-page.empty .chat-body { display: flex; flex-direction: column; justify-content: flex-end; }
+.chat-page.empty .chat-body { display: flex; flex-direction: column; }
+/* Auto margins rather than justify-content: a hero taller than the space scrolls instead of being cut off at the top. */
+.chat-page.empty .chat-body > .chat-col { margin-top: auto; }
 
 .hero { display: grid; justify-items: center; gap: 4px; padding: 24px 0 22px; text-align: center; }
 .hero .mark { width: 44px; height: 44px; margin-bottom: 8px; }
@@ -659,7 +666,7 @@ button.avatar-figure { border: 0; padding: 0; cursor: pointer; font-family: inhe
   .chat-page.empty { grid-template-rows: auto minmax(0, 1fr) auto auto auto; grid-template-areas: "head" "body" "after" "avatar" "composer"; }
   .chat-head { min-height: 50px; padding: max(6px, env(safe-area-inset-top)) 8px 6px; }
   .chat-col { padding: 0 14px; }
-  .chat-page.empty .chat-body { justify-content: center; }
+  .chat-page.empty .chat-body > .chat-col { margin-block: auto; }
   .hero { padding: 10px 0; }
   .hero p { font-size: 0.9rem; }
   /* The character greets in place of the mark. */

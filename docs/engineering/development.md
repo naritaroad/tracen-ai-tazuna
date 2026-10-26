@@ -41,6 +41,8 @@ cd web && npm install && npm run dev
 
 3D 角色：在 `.env` 設 `AVATAR_ASSET_DIR=assets/characters`，對話頁右側底部（手機在輸入框上方）就會載入 VRM。要用本機的遊戲原始動作（較多手勢，只限本機研究），再設 `AVATAR_GAME_MOTION_DIR=_staging/game-motion`；角色窗的走廊背景再設 `AVATAR_SCENE_DIR=_staging/scene`（先依 `_staging/scene/README.md` 產生 GLB）。沒設定時顯示 2D 狀態卡。行為說明見 [avatar-contract.md](../character/avatar-contract.md)。
 
+特雷森校徽：`BRAND_CREST_FILE` 預設讀 `assets/brand/tracen-crest.svg`，有這個檔案時側邊欄與分頁圖示換成校徽，否則顯示蹄鐵。`.claude/launch.json` 的 `api-screenshots` 會清空背景、遊戲動作與校徽，用來拍公開截圖；它固定在 8083，搭配 `web-screenshots`（5177），不會占用一般開發用的 8080，所以 5173 的網站一律接到有背景與校徽的 API。
+
 ## 測試
 
 ```bash
@@ -83,7 +85,7 @@ adb reverse tcp:8080 tcp:8080
 adb install -r web/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-App 從手機的 `http://localhost:8080` 載入網站，`adb reverse` 把它轉到電腦上的 API；麥克風因為是 localhost 而可以使用。部署到伺服器時，先設 `CAP_SERVER_URL=https://你的網址` 再 `npx cap sync android`。依 Q01，APK 實機驗收由使用者進行。
+App 從手機的 `http://localhost:8080` 載入網站，`adb reverse` 把它轉到電腦上的 API；麥克風因為是 localhost 而可以使用。部署到伺服器時，先設 `CAP_SERVER_URL=https://<伺服器網址>` 再 `npx cap sync android`。依 Q01，APK 實機驗收由使用者進行。
 
 ## 驗收映像
 

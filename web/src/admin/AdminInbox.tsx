@@ -79,9 +79,9 @@ export function AdminInbox() {
                 </span>
               </div>
               <div className="small muted">
-                {t("admin.requester")}: {tk.requester_name} · {t("director.reason")}: {t(`reason.${tk.reason}`)} · {t("admin.origin")}:{" "}
+                {t("admin.requester")}{t("common.colon")}{tk.requester_name} · {t("director.reason")}{t("common.colon")}{t(`reason.${tk.reason}`)} · {t("admin.origin")}{t("common.colon")}
                 {tk.origin === "agent" ? t("admin.originAgent") : t("admin.originForm")}
-                {tk.assignee_name && ` · ${t("admin.assignee")}: ${tk.assignee_name}`}
+                {tk.assignee_name && ` · ${t("admin.assignee")}${t("common.colon")}${tk.assignee_name}`}
               </div>
               <p style={{ whiteSpace: "pre-wrap" }}>{tk.summary}</p>
               <div className="timeline">

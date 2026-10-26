@@ -1,7 +1,7 @@
 {
   "id": "9001_hayakawa_tazuna_mini",
   "variantOf": "9001_hayakawa_tazuna",
-  "displayName": { "ja": "駿川たづな（ミニ）", "zhTW": "駿川たづな（Q 版）", "en": "Hayakawa Tazuna (mini)" },
+  "displayName": { "ja": "駿川たづな（ミニ）", "zhTW": "駿川手綱（Q 版）", "en": "Hayakawa Tazuna (mini)" },
   "vrm": {
     "path": "assets/characters/9001_hayakawa_tazuna_mini/vrm/HayakawaTazunaMini.vrm",
     "specVersion": "1.0",

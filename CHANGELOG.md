@@ -1,53 +1,50 @@
 # Changelog
 
-
-
+All notable changes to this project are recorded here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Interface copy in all three languages. The empty chat page now names Tazuna and says what she can look up instead of greeting the trainer; the reply trace is labelled "Activity log" in English instead of "What I did"; the plan calculator, Director's Office and AI settings introductions describe what each page does; English error messages for missing records, invalid requests and changed records are more specific.
+- README wording in English, Traditional Chinese and Japanese, and the README screenshots retaken with the new copy. The README now gives the actual time limits (90 s per model call; 45 s per allowed call for the whole run, between 120 and 600 s) instead of the old 60 s and 120 s.
+- The Traditional Chinese character card shows 駿川手綱, the name used everywhere else in the zh-TW interface, instead of 駿川たづな.
+
+### Fixed
+
+- The management site badge in the sidebar no longer slides under the collapse button, and in English it reads "Admin" so "Tracen Office" fits beside it.
+- On phones, a chat start screen taller than the space (English, for example) scrolls instead of cutting off its heading.
+- Label colons on the case detail and the plan formula follow the interface language (full-width in Chinese and Japanese).
+
 ## [1.0.0-beta] - 2026-10-26
+
+First release.
 
 ### Added
 
-- The academy calendar now lists the game's race schedule: 34 G1 and 42 G2 races (`data/seed/race_schedule.csv`, new `races` table in migration 0004) with grade, racecourse, turf or dirt, distance, direction and the career years that may enter, in the Taiwan, Japanese and English game names. Each race is placed every year on its half month (1st–15th or 16th–end), never closes a facility, and can be filtered to G1 only or hidden. The `list_academy_events` tool returns the races too. Sources: GameTora's game data, checked against BiliGame (marked `community`).
-
-- 3D character module on the chat page: a three-vrm player (three 0.186.1, @pixiv/three-vrm 3.5.5) that loads on demand and falls back to the 2D state card without character files, without WebGL, on a load failure, or when the trainer picks the simple view. The character thinks, looks things up, explains, bows when handing a case to the Director's Office, greets an empty chat, nods at sentence ends, moves her mouth along the reply text, blinks, follows the pointer with her eyes and head, and reacts when tapped. High and standard quality (60/30 FPS), pauses when hidden, honours reduced motion.
-- Reply cues in `avatar.intent`: `emotion`, `intensity` and a semantic `gesture` from a fixed vocabulary. The model may suggest them with a `[[mood:…]]` line that the server validates and always strips from the reply; otherwise trilingual rules decide, and a hand-over or missing data always shows.
-- `behavior.json` per character (emotion → expression weights, gesture fallbacks, one-shot gestures, the motion graph) and `motion_sets` in the character manifest; the local game motion library can be served with `AVATAR_GAME_MOTION_DIR` (research use only).
-- `npm test` for the character planner, motion graph and lip-sync timing.
-
-- Started construction with the questionnaire's recommended options as provisional decisions (`docs/product/decisions.md`), plus product spec, worldbuilding guide, data model, API and stream-event contracts, character-player contract and an AI-agent path map.
-- Rust API (`backend/`): accounts and cookie sessions, PostgreSQL schema and migrations, demo catalog rebuilt from CSV at start, five agent tools (academy info, calendar, facility search, training-plan calculation, Director's Office hand-over), a bounded agent loop with recorded tool traces, SSE chat stream, trainer memory, Director's Office inbox for a real person, management endpoints, and a genai model gateway with an offline mock.
-- Reserved character-player endpoints and `avatar.intent` events; AI-driven animation itself is postponed.
-- Web front end (`web/`): trainer site (chat with tool trace, information, calendar, facilities, plan calculator, Director's Office, my details) and management site (case inbox, demo data, run log, accounts), in Traditional Chinese, Japanese and English with light and dark themes.
-- Demo data: 10 information topics, 17 training services, 10 calendar entries; a 14-question tool-choice test and the `eval-tools` command.
-- Docker Compose for PostgreSQL 18.6 and a multi-stage release image.
-- Added a dated README plan review and a 16-question decision worksheet, covering scope, the database choice, staged delivery, avatar integration, memory and third-party candidates. Preserved the original README plan.
-
-- Recorded the website Docker scope around the product: PostgreSQL plus a release image of the Rust API in Compose, with local Rust compiles during development, and the 3D client, Android app, and motion pipeline staying on the machine that displays or authors them. Summarized the same scope in README.md.
-- Local animation-reference preprocessing for user-provided Tazuna videos: source timestamps, fixed character crops, whole-body landmarks, anime masks, Japanese OCR, audio, reference clips and contact sheets.
-- A local review page, reproducible dependency/model records, data integrity checks and a Claude animation-authoring handoff.
-
-### Changed
-
-- Tazuna's system prompt now describes who she is and how she talks, from the official character page and community summaries of the game text (docs/product/worldbuilding.md §3): she answers what the trainer said first, varies her greetings, cares about tired or late-working trainers, uses her own small habits in chat and keeps her secrets. She can chat off topic; with the default setting she steers back in one bridging sentence after about three off-topic exchanges, and she still declines big jobs (essays, code, homework) and never invents academy facts, news or weather.
-- The management site's AI settings gain "Conversation style and thinking": reply length (brief, natural, detailed), small talk (off, balanced, relaxed), thinking depth (auto, low, medium, high), temperature, output limit per call and model calls per message. The chat agent no longer forces temperature 0.2 and a 1,200-token limit: Google recommends temperature 1.0 for Gemini 3, and on Gemini the limit includes thinking tokens, so replies could be cut off. Defaults: natural length, balanced small talk, the model's own thinking and temperature, 8,192 tokens, 6 calls (`AGENT_MAX_STEPS` is now only the starting value). Model and run time-outs grow with the allowed calls. The tool-choice test gains a small-talk question. A line break that the model writes as the two characters `
-` is turned into a real one. `.claude/launch.json` gains `api-alt2`/`web-alt2` (ports 8082/5176) for when other sessions hold the usual ports.
-
-- Project documents that lived in the `docs/` root are grouped into `docs/product/` (decisions, spec, worldbuilding), `docs/engineering/` (path map, architecture, data model, how to run), `docs/character/` (player contract, behaviour design, assets, voice) and `docs/frontend/` (interface copy). Filenames are unchanged. `docs/reviews/` stays the historical record and was not rewritten. The index is `docs/README.md`.
-- Tazuna is now on every trainer page: one character instance moves between the chat page's column and a concierge in the bottom-right corner of the other pages (a sheet from a button on phones), so the 3D model loads once. The concierge has a speech bubble, questions that fit the page, and continues the conversation last open on the chat page through the same agent and tools; it shows which tool she is using, links a Director's Office hand-over, and opens the full answer and trace in the chat page.
-- When the API sends a character model without motion data (an API started before its character files changed), the 2D card now says so and asks for an API restart, instead of claiming there are no character files; the reason is also logged in the browser console. `.claude/launch.json` gains an `api` entry (`cargo run`) next to `web`.
-- Tapping the character now gets a gesture and a short spoken line (shown above her and lip-synced): a greeting or a line about the current page, a reaction to a pat on the head, and shyness after three pats. The 2D card answers taps too.
-- Site layout follows desktop AI assistants (Claude, ChatGPT): the top bar and page tabs moved into a left sidebar with new conversation, conversation search, the pages, the conversation history and an account menu (language, theme, sign-out). The sidebar collapses to an icon rail and remembers it; Ctrl/⌘+Shift+O starts a conversation and Ctrl/⌘+K searches. The chat page centres a greeting, the composer and suggestions on an empty chat, then reads as one column with plain-text replies, a copy button, a jump-to-latest button and a growing rounded composer. On phones the sidebar is a drawer, the pages sit in a draggable side bubble that steps aside while typing, and the character greets a new chat but hides after each reply (the character button brings her back).
-- Web front end restyled in a modern Japanese look built on the Tracen uniform: violet and white with wisteria tints and a gold horseshoe accent, in light and dark themes; the favicon and browser theme colour follow. Japanese pages now use Japanese fonts first.
-- UI copy moved to JSON language files (`web/src/i18n/locales/`), loaded on demand per language. Remaining hard-coded text in components (admin table headings, run statuses, roles, usage purposes, units, currency, list separators, the character name, API error messages, the page title) now comes from the language files, `Intl` formatting, or the API. `npm run i18n:check` (also run by `npm run build`) checks key and placeholder parity across the three languages and rejects hard-coded text. See `docs/frontend/frontend-i18n.md`.
-- The Director's Office introduction now reads 「網頁沒有的資訊可以寫訊息找秋川理事長」 (with Japanese and English equivalents).
-- The calendar names affected facilities instead of showing their ids, and the plan calculator explains missing or ambiguous facilities in words.
-
-- Followed up the questionnaire: Gemini first (`gemini-3.8-flash`, `gemini-embedding-2`); AI models, prices and a monthly budget (block or warn) adjustable on the management site with usage per model; semantic memory with pgvector (past events, automatic curation with supersede history, conversation summaries, all visible and deletable by the trainer); microphone input with server-side speech to text and reserved spoken-reply endpoints; `anime` and `community` source types; a Capacitor 8 Android app built and installed over USB.
-- Database image switched to `pgvector/pgvector:0.8.7-pg18-trixie` (PostgreSQL 18.6).
-- Phones and the Android app: a conversation picker replaces the hidden sidebar on narrow screens, and the app returns to the last page after the WebView reloads (it was losing the open conversation around the microphone permission prompt). The username field no longer auto-capitalises or autocorrects.
-- Recorded the filled-in questionnaire (Q01 C, Q04 A with C, Q08 B, Q13 A with microphone input; the rest default) in `docs/product/decisions.md`, with open conflicts and missing information; updated the worldbuilding source priority, the memory and voice sections of the product spec, and added a voice contract.
-- Refined the plan around PostgreSQL as the product database, optional Android SQLite caching, source-backed trainer services, and confirmed human-admin handoff presented as Director Akikawa Yayoi; updated the review and questionnaire.
+- Rust API (Axum 0.8, SQLx 0.9) with accounts, cookie sessions and role checks, on PostgreSQL 18.6 with pgvector (`pgvector/pgvector:0.8.7-pg18-trixie`). Migrations are append-only.
+- A bounded agent loop over five whitelisted tools: academy information, academy calendar, facility search, training-plan calculation and Director's Office hand-over. Replies stream over SSE, and every tool call is stored and listed under the reply.
+- Model gateway on genai: Gemini (`gemini-3.8-flash`, embeddings `gemini-embedding-2`), Claude, or the offline `mock`.
+- Demo data rebuilt from CSV at start: 10 information topics, 17 training services and 10 calendar entries. Every row carries a `source_type` (`official`, `anime`, `community`, `reference` or `project`).
+- The game's race schedule in the academy calendar: 34 G1 and 42 G2 races (`data/seed/race_schedule.csv`, `races` table in migration 0004) with grade, racecourse, turf or dirt, distance, direction and the classes that may enter, named as in the Taiwanese, Japanese and English versions of the game. Each race is placed on its half month (1st–15th or 16th–end), never closes a facility, and can be filtered to G1 only or hidden. `list_academy_events` returns the races too. Source: GameTora, checked against BiliGame (`community`).
+- Training-plan calculation on the server: total minutes, demo fees, end time, and clashes with calendar events, facility closures and the 21:00 curfew. Missing or ambiguous facility names are reported in words.
+- Director's Office hand-over: `transfer_to_director` opens a case that staff handle on the management site as Director Akikawa (staffed). The AI does not reply while a person holds the case.
+- Tazuna's persona, taken from the official character page and community summaries of the game text (`docs/product/worldbuilding.md` §3). She can chat off topic; with the default setting she returns to academy work in one sentence after about three off-topic exchanges. She declines large jobs such as essays, code and homework, and does not invent academy facts, news or weather.
+- Trainer memory: preferences, conversation summaries and semantic recall of past events, curated in the background with the history of superseded entries kept. All of it is visible, editable and deletable under My details.
+- Microphone input with speech to text on the server; the endpoints for spoken replies are reserved.
+- Trainer site: chat, academy information, calendar, training facilities, plan calculator, Director's Office and My details (including a profile picture with manual cropping).
+- Sidebar layout with new conversation (Ctrl/⌘+Shift+O), conversation search (Ctrl/⌘+K), the pages, pinned and recent conversations, and an account menu for language, theme and sign-out. The sidebar collapses to an icon rail. On phones it becomes a drawer, and the pages sit in a draggable bubble.
+- Management site, which uses no AI: case inbox, demo data editing, AI run log, accounts, and AI settings and budget. The settings cover models, per-token prices, a monthly budget (block or warn) with usage per model, reply length, small talk, thinking depth, temperature, output limit per call and model calls per message. Defaults are natural length, balanced small talk, the model's own thinking depth and temperature, 8,192 output tokens and 6 calls; `AGENT_MAX_STEPS` sets only the starting value. Temperature is not forced lower because Google recommends 1.0 for Gemini 3, and Gemini's output limit includes thinking tokens.
+- Interface text in Traditional Chinese, Japanese and English, kept in JSON language files and loaded per language. `npm run i18n:check`, also run by `npm run build`, checks key and placeholder parity and rejects hard-coded text.
+- Light and dark themes in Tracen violet and white with wisteria tints and a gold horseshoe accent. Japanese pages use Japanese fonts first.
+- Capacitor 8 Android app that loads the site from the API server and returns to the last page after the WebView reloads.
+- 3D character player (three 0.186.1, @pixiv/three-vrm 3.5.5), loaded on demand. It shows thinking, looking things up, explaining, a bow on hand-over and a greeting on an empty chat, with nods, lip sync from the reply text, blinking, gaze that follows the pointer, and tap reactions with short spoken lines. High and standard quality run at 60 and 30 FPS; the player pauses when hidden and honours reduced motion. Without character files or WebGL, after a load failure, or when the trainer picks the simple view, a 2D state card is shown. If the API sends a character without motion data, the card asks for an API restart.
+- One character instance across the trainer site: it sits in the chat page's column, and on other pages it becomes a concierge in the bottom-right corner (a sheet on phones) that continues the open conversation with the same agent and tools.
+- Reply cues in `avatar.intent`: emotion, intensity and a gesture from a fixed vocabulary. The model can suggest them with a `[[mood:…]]` line, which the server validates and strips from the reply; otherwise trilingual rules decide.
+- `behavior.json` per character (emotion to expression weights, gesture fallbacks, one-shot gestures, the motion graph) and `motion_sets` in the character manifest. `AVATAR_GAME_MOTION_DIR` serves a local game motion library for research use only.
+- Tests: Rust unit tests, `npm test` for the character planner, motion graph and lip-sync timing, and a 16-question tool-choice test (`cargo run -- eval-tools`).
+- Local animation-reference preprocessing for Tazuna videos the user supplies (`tools/motion-reference/`): source timestamps, fixed character crops, whole-body landmarks, anime masks, Japanese OCR, audio, reference clips, contact sheets, a review page, and locked dependency and model records.
+- Docker Compose for PostgreSQL, and a three-stage release image for the API and the built site.
+- Project documents under `docs/`: product spec and decisions, worldbuilding and sources, architecture, data model, API and SSE events, character player and voice contracts.

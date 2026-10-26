@@ -322,8 +322,8 @@ function Sidebar({ admin, items, rail, mobile, open, onRail, onClose, search, on
       <div className="sb-head">
         <NavLink to={admin ? "/admin" : "/"} end className="brand" title={t("app.name")}>
           <Mark />
-          <span className="sb-label">
-            {t("app.short")}
+          <span className="sb-label brand-label">
+            <span className="brand-name">{t("app.short")}</span>
             {admin && <em>{t("nav.admin")}</em>}
           </span>
         </NavLink>

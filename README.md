@@ -4,7 +4,7 @@
 
 # Tracen Academy Administrative Information System
 
-**AI Hayakawa Tazuna** — a trainer-facing service desk for Tracen Academy, staffed by a 3D Hayakawa Tazuna who answers from the academy database, does the arithmetic in code and passes what she cannot settle to a real person.
+**AI Hayakawa Tazuna** is a service desk for Tracen Academy trainers. A 3D Hayakawa Tazuna answers from the academy database, the server works out times and fees, and anything the data can't settle becomes a case for a real person.
 
 [Documentation](docs/README.md) · [Getting started](#getting-started) · [API](docs/api/README.md) · [Issues](../../issues)
 
@@ -27,7 +27,7 @@
 > Unofficial doujin project (fan work), not affiliated with Cygames, Inc. The MIT License covers this project's own code and documents only; character models, motions, the official academy crest and setting material are excluded. See [NOTICE.md](NOTICE.md).
 
 <p align="center">
-  <img src="docs/assets/screenshots/chat.en.png" alt="Chat page: Tazuna answers a training-plan question, flags a clash with course maintenance, and the expanded trace shows the calculate_training_plan call" width="900" />
+  <img src="docs/assets/screenshots/chat.en.png" alt="Chat page: Tazuna answers a training-plan question and flags a clash with course maintenance; the expanded activity log shows the calculate_training_plan call" width="900" />
 </p>
 
 <!-- course-homework:start — Unit G homework section; remove this block after grading -->
@@ -57,7 +57,7 @@ This section follows the course README template. The rest of this page describes
 
 ### How It Works
 
-Every question goes to the agent first. The agent chooses a tool, the tool reads the database or calculates in code, and the agent answers only from what the tool returns. The chat page shows the tool trace (*What I did*: tool, arguments, result).
+Every question goes to the agent first. The agent chooses a tool, the tool reads the database or runs the calculation on the server, and the agent answers only from what the tool returns. Each reply on the chat page has an *Activity log* listing the tool, its arguments and its result.
 
 - **Model:** `gemini-3.8-flash` (Google Gemini API through [rust-genai](https://github.com/jeremychone/rust-genai)); `MODEL=mock` runs offline without a key.
 - **Chat screen:** React + Vite + TypeScript front end; Rust (Axum) back end with REST and SSE. The API key, the agent loop, the tools and the database stay in the back end.
@@ -77,7 +77,7 @@ Every question goes to the agent first. The agent chooses a tool, the tool reads
   | `get_academy_info(topic)` | Reads one topic from `academy_info` |
   | `list_academy_events(date_from, date_to)` | Lists calendar entries and races between two dates (at most 62 days) |
   | `search_training_services(query, category, only_available)` | Finds facilities in `training_services` by name or alias in any of the three languages |
-  | `calculate_training_plan(items, date, start_time)` | Minutes × sessions and fee × sessions, the schedule and clashes, calculated in code |
+  | `calculate_training_plan(items, date, start_time)` | Minutes × sessions and fee × sessions, the schedule and clashes, calculated on the server |
   | `transfer_to_director(reason, summary)` | Opens a Director's Office case for a real person and returns the case number |
 
 ### Sample Conversations
@@ -110,26 +110,26 @@ Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`,
 
 ## Features
 
-- **Answers grounded in the database.** Tazuna runs a bounded agent loop (at most 6 model calls, 60 s per call, 120 s per run) over five whitelisted tools. Academy rules, the calendar, facilities and fees come from PostgreSQL, never from the model's memory, and every tool call is stored and shown under *What I did*.
-- **Training plans calculated in code.** Durations, fees and end times are computed by the server and checked against calendar events, facility closures and the 21:00 curfew. An unmatched or ambiguous facility returns the problem instead of a wrong total.
-- **Hand-over to a real person.** `transfer_to_director` opens a real Director's Office case. Staff work it on the management site (which uses no AI) as *Director Akikawa · human service*: accept, reply, resolve or hand back. While a person holds the case, the AI stays silent.
-- **3D concierge that follows the conversation.** A three-vrm player, loaded on demand, moves through thinking, working, explaining, hand-over and apology states with lip sync, blinking, gaze and tap reactions. The model may only pick an emotion and gesture from a fixed vocabulary that the server validates. One character instance follows the trainer across every page, and the site falls back to a 2D status card without WebGL or character files.
-- **Memory the trainer controls.** Recent turns, conversation summaries, preferences and semantic recall of past events (pgvector, 768 dimensions), curated in the background with supersede history. Everything remembered is visible, editable and deletable under *My details*; health details, other people's contacts and credentials are never stored automatically.
-- **Every service without AI too.** Academy information, calendar (including 34 G1 and 42 G2 races from the game schedule), training facilities, plan calculator and Director's Office have their own pages that call the same service functions as the tools.
-- **Model choice and budget on the management site.** A [genai](https://github.com/jeremychone/rust-genai) gateway serves Gemini, Claude or an offline mock. Models, per-token prices and a monthly budget (block or warn) change without a restart, and each paid call is metered.
-- **Three languages, two themes, phones included.** Traditional Chinese, Japanese and English from JSON language files with system-language detection; light and dark themes; a phone layout; microphone input transcribed on the server into editable text; and a Capacitor Android app.
+- Tazuna answers from the database. She runs a bounded agent loop (6 model calls by default, 90 s per call, and 45 s per allowed call for the whole run, between 120 and 600 s) over five whitelisted tools. Academy rules, the calendar, facilities and fees come from PostgreSQL, not from the model's memory. Every tool call is stored and listed in the reply's *Activity log*.
+- Training plans are calculated on the server. Durations, fees and end times are checked against calendar events, facility closures and the 21:00 curfew. If a facility name matches nothing, or more than one facility, the tool returns that problem instead of a total.
+- Cases go to a real person. `transfer_to_director` opens a Director's Office case. Staff handle it on the management site, which uses no AI, and reply as *Director Akikawa (staffed)*: they can take the case, reply, close it or hand it back to Tazuna. While a person holds the case, the AI does not reply.
+- The 3D character follows the conversation. A three-vrm player, loaded on demand, switches between thinking, working, explaining, hand-over and apology states, with lip sync, blinking, gaze and tap reactions. The model can only pick an emotion and a gesture from a fixed vocabulary, and the server validates the pick. One character instance moves with the trainer from page to page; without WebGL or character files the site shows a 2D status card instead.
+- Trainers can see and edit what is remembered. Memory covers recent turns, conversation summaries, preferences and semantic recall of past events (pgvector, 768 dimensions). A background job curates it and keeps the history of superseded entries. Everything is listed under *My details*, where it can be edited or deleted. Health details, other people's contacts and credentials are never stored automatically.
+- Every service also has a manual page. Academy information, the calendar (with 34 G1 and 42 G2 races from the game schedule), training facilities, the plan calculator and the Director's Office each have a page that calls the same service functions as the tools.
+- Models and the budget are set on the management site. A [genai](https://github.com/jeremychone/rust-genai) gateway serves Gemini, Claude or an offline mock. Models, per-token prices and a monthly budget (block or warn) can be changed without a restart, and every paid call is metered.
+- Traditional Chinese, Japanese and English, light and dark themes, phone layout. Interface text lives in JSON language files, and the first language shown follows the system setting. Microphone input is transcribed on the server, and the trainer checks the text before sending it. A Capacitor Android app loads the same site.
 
 ## Screenshots
 
 | Director's Office hand-over | Management site case inbox |
 |---|---|
-| <img src="docs/assets/screenshots/handoff.en.png" alt="Tazuna checks the curfew rule and opens case DIR-1015 for the Director's Office" width="440" /> | <img src="docs/assets/screenshots/admin-inbox.en.png" alt="Management site inbox showing case DIR-1015 waiting for a person to take it" width="440" /> |
+| <img src="docs/assets/screenshots/handoff.en.png" alt="Tazuna checks the curfew rule and opens case DIR-1027 for the Director's Office" width="440" /> | <img src="docs/assets/screenshots/admin-inbox.en.png" alt="Management site inbox showing case DIR-1027 waiting for a person to take it" width="440" /> |
 | **Dark theme** | **Academy calendar with the page concierge** |
 | <img src="docs/assets/screenshots/dark.en.png" alt="Dark theme chat about the hill course" width="440" /> | <img src="docs/assets/screenshots/calendar.en.png" alt="Academy calendar listing G1 and G2 races with Tazuna as a page concierge" width="440" /> |
 
 <details>
 <summary>Phone layout</summary>
-<p align="center"><img src="docs/assets/screenshots/mobile.en.png" alt="Phone layout of a new conversation with Tazuna greeting the trainer" width="300" /></p>
+<p align="center"><img src="docs/assets/screenshots/mobile.en.png" alt="Phone layout of a new conversation, with suggested questions and the 3D character above the message box" width="300" /></p>
 </details>
 
 ## Architecture

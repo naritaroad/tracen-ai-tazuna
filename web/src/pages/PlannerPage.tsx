@@ -129,7 +129,7 @@ export function PlannerPage() {
                 </table>
               </div>
               <p className="muted small">
-                {t("planner.formula")}: <code>{result.formula}</code>
+                {t("planner.formula")}{t("common.colon")}<code>{result.formula}</code>
               </p>
             </div>
           )}
