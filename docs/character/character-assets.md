@@ -109,6 +109,7 @@
 3. 遊戲衍生資料（暫存區的 VRMA、內嵌動作包、清單）以 `_staging/game-motion/.gitignore`、`_staging/mini/.gitignore` 排除；解密工具與金鑰不進本專案。
 4. 官方校徽（`assets/brand/tracen-crest*.svg`，依官方商品照片重新描繪）依使用者 2026-10-26 的決定納入 git，README 橫幅 `docs/brand/banners/banner.*.webp` 也放了校徽，聲明見 `NOTICE.md`。Docker 映像也放了校徽（`Dockerfile` 複製 `tracen-crest.svg`，`compose.yaml` 設定 `BRAND_CREST_FILE`），公開版顯示校徽；網站只在檔案存在時顯示（`BRAND_CREST_FILE`），否則改用自製的蹄鐵標誌。
 5. 解密遊戲資產涉及規避技術保護措施的法律問題（臺灣著作權法第 80 條之 2），只做本機研究使用。**公開部署前必須另行確認權利**，此前公開版不含角色素材（Q16）。
+6. README 截圖（`docs/assets/screenshots/`）依使用者 2026-10-26 的決定，以本機實際設定拍攝：對話頁有走廊背景、角色用遊戲動作、側邊欄用校徽。截圖只呈現畫面，場景與動作檔本身仍不進 git、公開部署仍不得提供。
 
 ## 8. 已知限制
 

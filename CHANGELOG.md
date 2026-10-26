@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Interface copy in all three languages. The empty chat page now names Tazuna and says what she can look up instead of greeting the trainer; the reply trace is labelled "Activity log" in English instead of "What I did"; the plan calculator, Director's Office and AI settings introductions describe what each page does; English error messages for missing records, invalid requests and changed records are more specific.
 - README wording in English, Traditional Chinese and Japanese, and the README screenshots retaken with the new copy. The README now gives the actual time limits (90 s per model call; 45 s per allowed call for the whole run, between 120 and 600 s) instead of the old 60 s and 120 s.
+- README screenshots retaken with the local setup the site actually runs: the academy crest in the sidebar, and on the chat page Tazuna in front of the corridor scene with the game motions.
 - The Traditional Chinese character card shows 駿川手綱, the name used everywhere else in the zh-TW interface, instead of 駿川たづな.
 
 ### Fixed

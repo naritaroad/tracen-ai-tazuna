@@ -18,7 +18,7 @@
 | `docs/api/` | HTTP API、串流事件 | 可改 |
 | `docs/brand/` | 標誌概念稿 | 可改 |
 | `docs/readme/` | 專案介紹的繁中版 `README.zh-TW.md`、日文版 `README.ja.md` | 可改；與根目錄 `README.md` 同步 |
-| `docs/assets/` | README 用的截圖（橫幅在 `docs/brand/banners/`） | 可改；截圖不得含遊戲衍生場景或遊戲動作 |
+| `docs/assets/` | README 用的截圖（橫幅在 `docs/brand/banners/`） | 可改；截圖依本機實際設定拍攝（校徽、對話頁走廊背景、遊戲動作，使用者 2026-10-26 決定），用 `.claude/launch.json` 的 `api-screenshots`＋`web-screenshots` 與 `tracen_shots_*` 資料庫 |
 | `docs/reviews/` | 歷史評估 | **不改寫原文** |
 | `backend/` | Rust API（Axum＋SQLx＋genai） | 可改 |
 | `backend/migrations/` | PostgreSQL 遷移 | **已套用的檔案不可改**，新增 `000N_*.sql` |

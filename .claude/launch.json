@@ -33,10 +33,7 @@
       ],
       "env": {
         "BIND_ADDR": "127.0.0.1:8083",
-        "CARGO_TARGET_DIR": "backend/target/screenshots",
-        "AVATAR_GAME_MOTION_DIR": "",
-        "AVATAR_SCENE_DIR": "",
-        "BRAND_CREST_FILE": ""
+        "CARGO_TARGET_DIR": "backend/target/screenshots"
       },
       "port": 8083,
       "autoPort": false

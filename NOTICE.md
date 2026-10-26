@@ -17,7 +17,7 @@ It does **not** apply to, and grants no rights in:
 | Material | Location | Rule |
 |---|---|---|
 | Character models and animation clips | `assets/characters/*/vrm/`, `assets/characters/*/animation/vrma/` | Derived from Cygames works. VRM metadata sets `allowRedistribution: false` and `commercialUsage: personalNonProfit`. |
-| Game-derived motions and scenes | `_staging/` (local only, not in git) | Local research use only. Never served by a public deployment. |
+| Game-derived motions and scenes | `_staging/` (local only, not in git) | Local research use only. Never served by a public deployment. The README screenshots show the corridor scene and game motions as they appear locally; the files themselves are not distributed. |
 | Official academy crest | `assets/brand/tracen-crest*.svg`, and the README banners in `docs/brand/banners/` | Redrawn from a photo of official merchandise; a Cygames emblem. Included in the Docker image as the site mark and favicon; without the file the site uses the project's own horseshoe mark. |
 | Setting facts in the demo data | `data/seed/*.csv` rows marked `official`, `anime` or `community` | Facts about the work belong to their sources. Every row records its `source_type`; information topics and races also record a `source_ref`. |
 
@@ -46,7 +46,7 @@ Third-party libraries are used under their own licenses, recorded in `backend/Ca
 | 素材 | 位置 | 規則 |
 |---|---|---|
 | 角色模型與動畫片段 | `assets/characters/*/vrm/`、`assets/characters/*/animation/vrma/` | 衍生自 Cygames 著作。VRM 中繼資料設定為 `allowRedistribution: false`、`commercialUsage: personalNonProfit`。 |
-| 遊戲衍生動作與場景 | `_staging/`（只在本機，不進 git） | 僅限本機研究，公開部署不得提供。 |
+| 遊戲衍生動作與場景 | `_staging/`（只在本機，不進 git） | 僅限本機研究，公開部署不得提供。README 截圖呈現本機畫面中的走廊場景與遊戲動作，但不散布這些檔案。 |
 | 官方校徽 | `assets/brand/tracen-crest*.svg`，以及 `docs/brand/banners/` 的 README 橫幅 | 依官方商品照片重新描繪，屬 Cygames 的標誌。隨 Docker 映像提供，作為網站標誌與 favicon；沒有這個檔案時，網站改用本專案自製的蹄鐵標誌。 |
 | 展示資料中的作品設定 | `data/seed/*.csv` 中標為 `official`、`anime`、`community` 的資料列 | 作品設定屬於原出處。每列都記錄 `source_type`，校務資訊與賽程另記錄 `source_ref`。 |
 
@@ -75,7 +75,7 @@ Third-party libraries are used under their own licenses, recorded in `backend/Ca
 | 素材 | 場所 | ルール |
 |---|---|---|
 | キャラクターモデルとアニメーションクリップ | `assets/characters/*/vrm/`、`assets/characters/*/animation/vrma/` | Cygames の著作物から派生したもの。VRM のメタデータは `allowRedistribution: false`、`commercialUsage: personalNonProfit` に設定されています。 |
-| ゲーム由来のモーションとシーン | `_staging/`（ローカルのみ、git 管理外） | ローカルでの研究用途に限ります。公開環境では提供しません。 |
+| ゲーム由来のモーションとシーン | `_staging/`（ローカルのみ、git 管理外） | ローカルでの研究用途に限ります。公開環境では提供しません。README のスクリーンショットにはローカル環境の廊下シーンとゲームモーションが写っていますが、ファイル自体は配布しません。 |
 | 公式校章 | `assets/brand/tracen-crest*.svg`、および `docs/brand/banners/` の README バナー | 公式グッズの写真から描き起こした Cygames の校章です。サイトのロゴと favicon として Docker イメージに含めます。ファイルがない場合は、本プロジェクト独自の蹄鉄マークを使用します。 |
 | デモデータ中の作品設定 | `data/seed/*.csv` のうち `official`、`anime`、`community` の行 | 作品設定は各出典に帰属します。すべての行に `source_type` を記録し、校務案内とレースには `source_ref` も記録しています。 |
 
