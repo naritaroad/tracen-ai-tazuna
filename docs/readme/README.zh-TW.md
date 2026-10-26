@@ -123,7 +123,7 @@ backend/Cargo.toml、web/package.json   套件清單
 
 | 轉接理事長室                                                                 | 管理站案件收件匣                                                                  |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| ![駿川查詢門禁規定後建立理事長室案件 DIR-1025](../assets/screenshots/handoff.zh-TW.png) | ![管理站收件匣中等候真人接手的案件 DIR-1025](../assets/screenshots/admin-inbox.zh-TW.png) |
+| ![駿川查詢門禁規定後建立理事長室案件 DIR-1001](../assets/screenshots/handoff.zh-TW.png) | ![管理站收件匣中等候真人接手的案件 DIR-1001](../assets/screenshots/admin-inbox.zh-TW.png) |
 | **深色主題**                                                               | **校務日曆與頁面諮詢窗**                                                            |
 | ![深色主題下詢問坂路訓練](../assets/screenshots/dark.zh-TW.png)                   | ![校務日曆列出 G1 與 G2 賽事，右下角是駿川的諮詢窗](../assets/screenshots/calendar.zh-TW.png) |
 

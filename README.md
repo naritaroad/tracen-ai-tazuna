@@ -123,7 +123,7 @@ Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`,
 
 | Director's Office hand-over | Management site case inbox |
 |---|---|
-| <img src="docs/assets/screenshots/handoff.en.png" alt="Tazuna checks the curfew rule and opens case DIR-1027 for the Director's Office" width="440" /> | <img src="docs/assets/screenshots/admin-inbox.en.png" alt="Management site inbox showing case DIR-1027 waiting for a person to take it" width="440" /> |
+| <img src="docs/assets/screenshots/handoff.en.png" alt="Tazuna checks the curfew rule and opens case DIR-1001 for the Director's Office" width="440" /> | <img src="docs/assets/screenshots/admin-inbox.en.png" alt="Management site inbox showing case DIR-1001 waiting for a person to take it" width="440" /> |
 | **Dark theme** | **Academy calendar with the page concierge** |
 | <img src="docs/assets/screenshots/dark.en.png" alt="Dark theme chat about the hill course" width="440" /> | <img src="docs/assets/screenshots/calendar.en.png" alt="Academy calendar listing G1 and G2 races with Tazuna as a page concierge" width="440" /> |
 

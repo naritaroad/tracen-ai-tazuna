@@ -123,7 +123,7 @@ backend/Cargo.toml、web/package.json   パッケージ一覧
 
 | 理事長室への引き継ぎ | 管理サイトの案件受信箱 |
 |---|---|
-| <img src="../assets/screenshots/handoff.ja.png" alt="たづなが門限の規則を確認し、理事長室の案件 DIR-1026 を作成している" width="440" /> | <img src="../assets/screenshots/admin-inbox.ja.png" alt="管理サイトの受信箱で担当者の対応を待つ案件 DIR-1026" width="440" /> |
+| <img src="../assets/screenshots/handoff.ja.png" alt="たづなが門限の規則を確認し、理事長室の案件 DIR-1001 を作成している" width="440" /> | <img src="../assets/screenshots/admin-inbox.ja.png" alt="管理サイトの受信箱で担当者の対応を待つ案件 DIR-1001" width="440" /> |
 | **ダークテーマ** | **学園カレンダーとページ相談窓** |
 | <img src="../assets/screenshots/dark.ja.png" alt="ダークテーマで坂路トレーニングについて質問している会話" width="440" /> | <img src="../assets/screenshots/calendar.ja.png" alt="G1・G2 レースを表示する学園カレンダーと、右下のたづなの相談窓" width="440" /> |
 
