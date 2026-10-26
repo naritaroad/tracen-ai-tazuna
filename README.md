@@ -31,7 +31,7 @@
 </p>
 
 <!-- course-homework:start — Unit G homework section; remove this block after grading -->
-## Course Homework (Unit G)
+## Course Homework
 
 > Course homework: Unit G, My AI Customer Service Agent, with a Database and Tools
 > Student: F115118104 張任沂

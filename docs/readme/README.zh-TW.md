@@ -30,7 +30,7 @@
 
 
 
-## 課程作業說明（Unit G）
+## 課程作業說明
 
 > 課程作業：Unit G，My AI Customer Service Agent, with a Database and Tools
 > 學生：F115118104 張任沂
