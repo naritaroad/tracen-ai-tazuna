@@ -18,6 +18,7 @@
 - [architecture.md](engineering/architecture.md)：架構決策
 - [data-model.md](engineering/data-model.md)：資料模型
 - [development.md](engineering/development.md)：開發與執行
+- [mcp-and-skills.md](engineering/mcp-and-skills.md)：MCP 與 skills 設計（提案，尚未實作）
 
 ## character
 

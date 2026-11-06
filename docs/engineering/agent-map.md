@@ -1,6 +1,6 @@
 # 專案路徑導航（給 AI 工程代理）
 
-先讀這份，再讀 [decisions.md](../product/decisions.md) 與 [product-spec.md](../product/product-spec.md)；角色與語音介面見 [avatar-contract.md](../character/avatar-contract.md)、[voice-contract.md](../character/voice-contract.md)。角色資產的來源與規則見 [character-assets.md](../character/character-assets.md)；情境對應動作與表情的設計提案見 [avatar-behavior-design.md](../character/avatar-behavior-design.md)。日期：2026-10-25。
+先讀這份，再讀 [decisions.md](../product/decisions.md) 與 [product-spec.md](../product/product-spec.md)；角色與語音介面見 [avatar-contract.md](../character/avatar-contract.md)、[voice-contract.md](../character/voice-contract.md)。角色資產的來源與規則見 [character-assets.md](../character/character-assets.md)；情境對應動作與表情的設計提案見 [avatar-behavior-design.md](../character/avatar-behavior-design.md)。MCP 與 skills 的設計提案（尚未實作）見 [mcp-and-skills.md](mcp-and-skills.md)。日期：2026-10-25。
 
 ## 1. 目錄
 

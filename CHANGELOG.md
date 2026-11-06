@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Design proposal for an MCP server for external agents and a built-in skills registry ([docs/engineering/mcp-and-skills.md](docs/engineering/mcp-and-skills.md)). It covers the public-data boundary, feedback intake, rate limits and budget, and a staged plan. Nothing is implemented yet.
+
 ### Changed
 
 - Interface copy in all three languages. The empty chat page now names Tazuna and says what she can look up instead of greeting the trainer; the reply trace is labelled "Activity log" in English instead of "What I did"; the plan calculator, Director's Office and AI settings introductions describe what each page does; English error messages for missing records, invalid requests and changed records are more specific.
