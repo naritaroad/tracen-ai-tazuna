@@ -188,7 +188,15 @@ async fn run_loop(input: &RunInput<'_>, run_id: Uuid, sink: &EventSink) -> Resul
         .with_system(prompt::system_prompt(input.locale, &profile, academy_now(), conversation))
         .with_tools(tools::specs(&topics));
 
-    let ctx = ToolContext { db: input.db, user: input.user, conversation_id: input.conversation_id, run_id, locale: input.locale };
+    let ctx = ToolContext {
+        db: input.db,
+        user: input.user,
+        conversation_id: input.conversation_id,
+        run_id,
+        locale: input.locale,
+        ai: input.ai,
+        settings: input.settings,
+    };
     let mut usage_total: Vec<Value> = Vec::new();
     let mut any_not_found = false;
     let mut handed_off = false;

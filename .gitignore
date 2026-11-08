@@ -48,3 +48,6 @@ data/eval/results/*-mock.csv
 
 # Local scratch copy of the implementation plan.
 README.txt
+
+# Agent working notes (local paths, hand-over notes) stay on this machine; the repository is public.
+.agent-context/

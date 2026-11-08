@@ -24,6 +24,8 @@ struct InfoCsv {
     source_type: String,
     source_ref: String,
     updated_on: String,
+    #[serde(default = "default_visibility")]
+    visibility: String,
 }
 
 #[derive(Deserialize)]
@@ -41,6 +43,8 @@ struct ServiceCsv {
     aliases: String,
     notes: String,
     source_type: String,
+    #[serde(default = "default_visibility")]
+    visibility: String,
 }
 
 #[derive(Deserialize)]
@@ -54,6 +58,8 @@ struct EventCsv {
     ends_at: String,
     affects: String,
     source_type: String,
+    #[serde(default = "default_visibility")]
+    visibility: String,
 }
 
 #[derive(Deserialize)]
@@ -72,6 +78,19 @@ struct RaceCsv {
     classes: String,
     source_type: String,
     source_ref: String,
+    #[serde(default = "default_visibility")]
+    visibility: String,
+}
+
+fn default_visibility() -> String {
+    "trainer".to_string()
+}
+
+/// Who may read a row (docs/engineering/upgrade-plan-1.1.md §6.2); unmarked rows are for trainers.
+pub const VISIBILITIES: [&str; 3] = ["public", "trainer", "staff"];
+
+fn check_visibility(table: &str, id: &str, value: &str) -> Result<()> {
+    if VISIBILITIES.contains(&value) { Ok(()) } else { bail!("{table} {id}: visibility must be one of {VISIBILITIES:?}, found '{value}'") }
 }
 
 fn read_csv<T: for<'de> Deserialize<'de>>(path: &Path) -> Result<Vec<T>> {
@@ -115,6 +134,19 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         bail!("training_services.csv needs at least 15 rows, found {}", services.len());
     }
 
+    for r in &info {
+        check_visibility("academy_info", &r.topic, &r.visibility)?;
+    }
+    for r in &services {
+        check_visibility("training_services", &r.id, &r.visibility)?;
+    }
+    for r in &events {
+        check_visibility("academy_events", &r.id, &r.visibility)?;
+    }
+    for r in &races {
+        check_visibility("races", &r.id, &r.visibility)?;
+    }
+
     let mut tx = db.begin().await?;
     sqlx::query("DELETE FROM academy_info").execute(&mut *tx).await?;
     sqlx::query("DELETE FROM training_services").execute(&mut *tx).await?;
@@ -125,8 +157,8 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         let updated = Date::parse(&r.updated_on, format_description!("[year]-[month]-[day]"))
             .with_context(|| format!("academy_info {}: updated_on", r.topic))?;
         sqlx::query(
-            "INSERT INTO academy_info (topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on, sort_order)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+            "INSERT INTO academy_info (topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on, sort_order, visibility)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
         )
         .bind(r.topic.trim().to_lowercase())
         .bind(&r.title)
@@ -139,6 +171,7 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         .bind(&r.source_ref)
         .bind(updated)
         .bind(i as i32)
+        .bind(&r.visibility)
         .execute(&mut *tx)
         .await
         .with_context(|| format!("insert academy_info {}", r.topic))?;
@@ -146,8 +179,8 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
 
     for (i, r) in services.iter().enumerate() {
         sqlx::query(
-            "INSERT INTO training_services (id, name, name_ja, name_en, category, unit_minutes, capacity, fee_jpy, available, location, aliases, notes, source_type, sort_order)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)",
+            "INSERT INTO training_services (id, name, name_ja, name_en, category, unit_minutes, capacity, fee_jpy, available, location, aliases, notes, source_type, sort_order, visibility)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)",
         )
         .bind(&r.id)
         .bind(&r.name)
@@ -163,6 +196,7 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         .bind(&r.notes)
         .bind(&r.source_type)
         .bind(i as i32)
+        .bind(&r.visibility)
         .execute(&mut *tx)
         .await
         .with_context(|| format!("insert training_services {}", r.id))?;
@@ -173,8 +207,8 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         let starts = OffsetDateTime::parse(&r.starts_at, rfc3339).with_context(|| format!("academy_events {}: starts_at", r.id))?;
         let ends = OffsetDateTime::parse(&r.ends_at, rfc3339).with_context(|| format!("academy_events {}: ends_at", r.id))?;
         sqlx::query(
-            "INSERT INTO academy_events (id, title, title_ja, title_en, kind, starts_at, ends_at, affects, source_type)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+            "INSERT INTO academy_events (id, title, title_ja, title_en, kind, starts_at, ends_at, affects, source_type, visibility)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
         )
         .bind(&r.id)
         .bind(&r.title)
@@ -185,6 +219,7 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         .bind(ends)
         .bind(split_list(&r.affects))
         .bind(&r.source_type)
+        .bind(&r.visibility)
         .execute(&mut *tx)
         .await
         .with_context(|| format!("insert academy_events {}", r.id))?;
@@ -192,8 +227,8 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
 
     for (i, r) in races.iter().enumerate() {
         sqlx::query(
-            "INSERT INTO races (id, name, name_ja, name_en, grade, racecourse, surface, distance_m, direction, month, half, classes, source_type, source_ref, sort_order)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)",
+            "INSERT INTO races (id, name, name_ja, name_en, grade, racecourse, surface, distance_m, direction, month, half, classes, source_type, source_ref, sort_order, visibility)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)",
         )
         .bind(&r.id)
         .bind(&r.name)
@@ -210,6 +245,7 @@ pub async fn import_catalog(db: &PgPool, dir: &Path, mode: SeedMode) -> Result<S
         .bind(&r.source_type)
         .bind(&r.source_ref)
         .bind(i as i32)
+        .bind(&r.visibility)
         .execute(&mut *tx)
         .await
         .with_context(|| format!("insert races {}", r.id))?;

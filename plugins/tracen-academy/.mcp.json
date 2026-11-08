@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tracen-academy-public": {
+      "command": "${user_config.tracen_api}",
+      "args": ["mcp-stdio"]
+    }
+  }
+}

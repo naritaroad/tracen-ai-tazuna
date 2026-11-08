@@ -1,0 +1,170 @@
+{
+  "skills": [
+    {
+      "name": "academy-rules",
+      "tools": [
+        "search_academy_rules"
+      ],
+      "mcp_tools": [
+        "search_public_rules"
+      ],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent",
+        "mcp"
+      ],
+      "visibility": "public",
+      "evals": [
+        "q17",
+        "q18",
+        "q19",
+        "q20",
+        "r01",
+        "r13",
+        "b07"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "academy-info",
+      "tools": [
+        "get_academy_info"
+      ],
+      "mcp_tools": [],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent"
+      ],
+      "visibility": "trainer",
+      "evals": [
+        "q01",
+        "q04",
+        "q13",
+        "r30"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "academy-calendar",
+      "tools": [
+        "list_academy_events"
+      ],
+      "mcp_tools": [
+        "list_public_events"
+      ],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent",
+        "mcp"
+      ],
+      "visibility": "public",
+      "evals": [
+        "q08",
+        "q15"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "training-services",
+      "tools": [
+        "search_training_services"
+      ],
+      "mcp_tools": [
+        "search_public_services"
+      ],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent",
+        "mcp"
+      ],
+      "visibility": "public",
+      "evals": [
+        "q02",
+        "q03",
+        "q14"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "training-plan",
+      "tools": [
+        "calculate_training_plan"
+      ],
+      "mcp_tools": [
+        "calculate_training_plan"
+      ],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent",
+        "mcp"
+      ],
+      "visibility": "public",
+      "evals": [
+        "q05",
+        "q06",
+        "q07"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "director-handoff",
+      "tools": [
+        "transfer_to_director"
+      ],
+      "mcp_tools": [],
+      "roles": [
+        "trainer",
+        "staff",
+        "admin"
+      ],
+      "surfaces": [
+        "internal_agent"
+      ],
+      "visibility": "trainer",
+      "evals": [
+        "q11",
+        "b06",
+        "b10"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "public-feedback",
+      "tools": [],
+      "mcp_tools": [
+        "submit_public_feedback"
+      ],
+      "roles": [],
+      "surfaces": [
+        "mcp"
+      ],
+      "visibility": "public",
+      "evals": [
+        "m09",
+        "m10",
+        "m11"
+      ],
+      "enabled": true
+    }
+  ]
+}

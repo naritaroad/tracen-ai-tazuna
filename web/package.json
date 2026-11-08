@@ -1,7 +1,7 @@
 {
   "name": "tracen-aas-web",
   "private": true,
-  "version": "1.0.0-beta",
+  "version": "1.1.0-beta",
   "type": "module",
   "description": "Tracen Academy administrative information system: trainer site and management site",
   "scripts": {

@@ -26,6 +26,10 @@ pub struct Config {
     pub bind: SocketAddr,
     pub database_url: String,
     pub seed_dir: PathBuf,
+    /// Trainer handbook files for RAG (`RAG_DIR`, default data/rag).
+    pub rag_dir: PathBuf,
+    /// Built-in skills (`SKILLS_DIR`, default data/skills).
+    pub skills_dir: PathBuf,
     pub seed_mode: SeedMode,
     pub demo_accounts: Option<DemoAccounts>,
     /// `mock` (offline, deterministic) or a genai model name such as `claude-...` / `gemini-...`.
@@ -79,6 +83,8 @@ impl Config {
             bind: get("BIND_ADDR", "127.0.0.1:8080").parse().context("BIND_ADDR")?,
             database_url: env::var("DATABASE_URL").context("DATABASE_URL is required")?,
             seed_dir: PathBuf::from(get("SEED_DIR", "data/seed")),
+            rag_dir: PathBuf::from(get("RAG_DIR", "data/rag")),
+            skills_dir: PathBuf::from(get("SKILLS_DIR", "data/skills")),
             seed_mode,
             demo_accounts,
             model: get("MODEL", "mock"),

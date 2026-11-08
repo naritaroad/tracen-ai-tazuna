@@ -15,6 +15,18 @@ use crate::locale::Locale;
 /// Tracen Academy is in Japan (no daylight saving time).
 pub const ACADEMY_OFFSET: UtcOffset = offset!(+9);
 
+/// Which tables a query reads: the catalog itself, or the public-only views the MCP server may use
+/// (migration 0007). The names are constants, never user input.
+#[derive(Debug, Clone, Copy)]
+pub struct Tables {
+    pub services: &'static str,
+    pub events: &'static str,
+    pub races: &'static str,
+}
+
+pub const MAIN: Tables = Tables { services: "training_services", events: "academy_events", races: "races" };
+pub const PUBLIC_VIEWS: Tables = Tables { services: "mcp_services", events: "mcp_events", races: "mcp_races" };
+
 pub fn academy_now() -> OffsetDateTime {
     OffsetDateTime::now_utc().to_offset(ACADEMY_OFFSET)
 }
@@ -35,6 +47,9 @@ pub struct InfoRow {
     pub source_type: String,
     pub source_ref: String,
     pub updated_on: Date,
+    /// public, trainer or staff (docs/engineering/upgrade-plan-1.1.md §6.2). Missing means not public.
+    #[sqlx(default)]
+    pub visibility: String,
 }
 
 #[derive(Debug, Serialize)]
@@ -62,7 +77,7 @@ impl InfoRow {
 
 pub async fn list_info(db: &PgPool) -> sqlx::Result<Vec<InfoRow>> {
     sqlx::query_as::<_, InfoRow>(
-        "SELECT topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on
+        "SELECT topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on, visibility
          FROM academy_info ORDER BY sort_order, topic",
     )
     .fetch_all(db)
@@ -71,7 +86,7 @@ pub async fn list_info(db: &PgPool) -> sqlx::Result<Vec<InfoRow>> {
 
 pub async fn get_info(db: &PgPool, topic: &str) -> sqlx::Result<Option<InfoRow>> {
     sqlx::query_as::<_, InfoRow>(
-        "SELECT topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on
+        "SELECT topic, title, title_ja, title_en, content, content_ja, content_en, source_type, source_ref, updated_on, visibility
          FROM academy_info WHERE topic = lower($1)",
     )
     .bind(topic.trim())
@@ -143,20 +158,26 @@ pub fn format_local(t: OffsetDateTime) -> String {
 
 /// Events and races that overlap the academy-time days `from..=to`.
 pub async fn list_events(db: &PgPool, from: Date, to: Date) -> sqlx::Result<Vec<EventRow>> {
+    list_events_in(db, from, to, MAIN).await
+}
+
+pub async fn list_events_in(db: &PgPool, from: Date, to: Date, t: Tables) -> sqlx::Result<Vec<EventRow>> {
     let start = from.midnight().assume_offset(ACADEMY_OFFSET);
     let end = to.next_day().unwrap_or(to).midnight().assume_offset(ACADEMY_OFFSET);
-    let mut rows = sqlx::query_as::<_, EventRow>(
-        "SELECT id, title, title_ja, title_en, kind, starts_at, ends_at, affects, source_type
-         FROM academy_events WHERE starts_at < $2 AND ends_at > $1 ORDER BY starts_at, id",
-    )
+    let mut rows = sqlx::query_as::<_, EventRow>(sqlx::AssertSqlSafe(format!(
+        "SELECT id, title, title_ja, title_en, kind, starts_at, ends_at, affects, source_type, visibility
+         FROM {} WHERE starts_at < $2 AND ends_at > $1 ORDER BY starts_at, id",
+        t.events
+    )))
     .bind(start)
     .bind(end)
     .fetch_all(db)
     .await?;
-    let races = sqlx::query_as::<_, RaceRow>(
-        "SELECT id, name, name_ja, name_en, grade, racecourse, surface, distance_m, direction, month, half, classes, source_type, source_ref
-         FROM races ORDER BY sort_order, id",
-    )
+    let races = sqlx::query_as::<_, RaceRow>(sqlx::AssertSqlSafe(format!(
+        "SELECT id, name, name_ja, name_en, grade, racecourse, surface, distance_m, direction, month, half, classes, source_type, source_ref, visibility
+         FROM {} ORDER BY sort_order, id",
+        t.races
+    )))
     .fetch_all(db)
     .await?;
     rows.extend(race_entries(&races, from, to));
@@ -305,10 +326,15 @@ impl ServiceRow {
 }
 
 pub async fn list_services(db: &PgPool) -> sqlx::Result<Vec<ServiceRow>> {
-    sqlx::query_as::<_, ServiceRow>(
-        "SELECT id, name, name_ja, name_en, category, unit_minutes, capacity, fee_jpy, available, location, aliases, notes, source_type
-         FROM training_services ORDER BY sort_order, id",
-    )
+    list_services_in(db, MAIN).await
+}
+
+pub async fn list_services_in(db: &PgPool, t: Tables) -> sqlx::Result<Vec<ServiceRow>> {
+    sqlx::query_as::<_, ServiceRow>(sqlx::AssertSqlSafe(format!(
+        "SELECT id, name, name_ja, name_en, category, unit_minutes, capacity, fee_jpy, available, location, aliases, notes, source_type, visibility
+         FROM {} ORDER BY sort_order, id",
+        t.services
+    )))
     .fetch_all(db)
     .await
 }
@@ -322,7 +348,11 @@ pub struct ServiceFilter {
 
 /// Search by forgiving name match, category and availability. Best matches first.
 pub async fn search_services(db: &PgPool, filter: &ServiceFilter) -> sqlx::Result<Vec<ServiceRow>> {
-    let rows = list_services(db).await?;
+    search_services_in(db, filter, MAIN).await
+}
+
+pub async fn search_services_in(db: &PgPool, filter: &ServiceFilter, t: Tables) -> sqlx::Result<Vec<ServiceRow>> {
+    let rows = list_services_in(db, t).await?;
     let rows = rows
         .into_iter()
         .filter(|r| filter.category.as_deref().is_none_or(|c| c.is_empty() || r.category == c))

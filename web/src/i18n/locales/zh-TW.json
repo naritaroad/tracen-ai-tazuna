@@ -18,7 +18,9 @@
     "catalog": "展示資料",
     "runs": "AI 執行紀錄",
     "users": "帳號",
-    "settings": "AI 設定與預算"
+    "settings": "AI 設定與預算",
+    "handbook": "訓練員手冊",
+    "mcp": "MCP 與能力"
   },
   "shell": {
     "sidebar": "側邊欄",
@@ -95,7 +97,10 @@
     "copy": "複製",
     "copied": "已複製",
     "jumpLatest": "捲到最新訊息",
-    "handoffTag": "已送交理事長室"
+    "handoffTag": "已送交理事長室",
+    "opening": "歡迎來到特雷森學園，訓練員♪ 我是理事長秘書駿川手綱。學園的規定、設施、行事曆和訓練計畫都可以問我；資料裡查不到的事，我會幫您轉給理事長室。",
+    "sample6": "遠征回來之後，交通費要在多久內報支？",
+    "sections": "找到的章節：{{list}}"
   },
   "concierge": {
     "label": "駿川諮詢",
@@ -140,6 +145,11 @@
         "1": "你記得我的哪些偏好？",
         "2": "「我的資料」頁可以做什麼？",
         "3": "以後請用比較簡短的方式回答我。"
+      },
+      "handbook": {
+        "1": "遠征的交通費要在多久內報支？",
+        "2": "練習時弄壞器材需要賠償嗎？",
+        "3": "對處分不服要怎麼申訴？"
       }
     }
   },
@@ -165,7 +175,8 @@
     "list_academy_events": "查詢校務日曆",
     "search_training_services": "查詢訓練設施",
     "calculate_training_plan": "計算訓練計畫",
-    "transfer_to_director": "送交理事長室"
+    "transfer_to_director": "送交理事長室",
+    "search_academy_rules": "查詢訓練員手冊"
   },
   "status": {
     "ok": "成功",
@@ -281,7 +292,7 @@
     "event": "與校務行程重疊",
     "same_day_event": "當天有相關行程",
     "service_unavailable": "設施暫停開放",
-    "after_hours": "超過 20:30 最後使用時間"
+    "after_hours": "超過 21:30 最後使用時間"
   },
   "director": {
     "title": "理事長室",
@@ -489,7 +500,8 @@
         "services": "想用哪個設施？我幫你查查狀態。",
         "planner": "訓練計畫的時間，我可以幫忙算喔。",
         "director": "需要理事長室協助的事，交給我轉達吧。",
-        "memory": "你的偏好，我都有好好記著喔。"
+        "memory": "你的偏好，我都有好好記著喔。",
+        "handbook": "手冊裡有找不到的規定嗎？問我就好♪"
       }
     }
   },
@@ -524,7 +536,9 @@
     "memory": "記憶整理",
     "summary": "對話摘要",
     "embed": "語意嵌入",
-    "transcribe": "語音轉文字"
+    "transcribe": "語音轉文字",
+    "rag": "手冊檢索",
+    "mcp_embed": "MCP 外部檢索"
   },
   "role": {
     "trainer": "訓練員",
@@ -542,5 +556,96 @@
     "http_error": "伺服器沒有回應（{{detail}}）。",
     "stream_error": "回覆中斷（{{detail}}）。",
     "network": "無法連線到伺服器，請確認網路。"
+  },
+  "handbook": {
+    "title": "訓練員手冊",
+    "intro": "學園的辦事規定與流程。搜尋用的是和駿川手綱相同的檢索；時段、費用與期限等數字以校務資訊和設施資料為準。",
+    "search": "搜尋",
+    "placeholder": "例如：遠征的交通費要在多久內報支？",
+    "results": "搜尋結果",
+    "noResult": "手冊和校務資訊裡找不到相關的規定。需要的話，可以請駿川手綱轉給理事長室。",
+    "keywordMode": "語意檢索暫時無法使用，這次用關鍵字比對。",
+    "untranslated": "這一節還沒有你的語言版本，先顯示繁體中文。",
+    "notice": "本手冊是本系統的展示設定，不是作品的官方設定。"
+  },
+  "mcpPage": {
+    "title": "MCP、外部回饋與內建能力",
+    "intro": "外部 AI agent 只能經由 MCP 讀公開資料、送非個人的回饋。這一頁沒有 AI：開關、限額、金鑰與審核都由人操作。",
+    "remote": "遠端 MCP（Streamable HTTP）",
+    "noRole": "尚未設定唯讀資料庫角色（MCP_DATABASE_URL），/mcp 會一律回 503。設定方式見 docs/engineering/development.md。",
+    "enabled": "開放遠端 MCP",
+    "tools": "目前提供的工具：{{list}}",
+    "budget": "MCP 每月檢索預算（美元，空白＝不限）",
+    "limit": {
+      "read_per_minute": "免金鑰讀取／每 IP 每分鐘",
+      "key_read_per_minute": "有金鑰讀取／每分鐘",
+      "feedback_per_ip_day": "免金鑰回饋／每 IP 每天",
+      "key_feedback_per_day": "有金鑰回饋／每天",
+      "feedback_global_day": "全站回饋／每天"
+    },
+    "save": "儲存",
+    "saved": "已儲存",
+    "activity": "最近 7 天的呼叫",
+    "spent": "本月 MCP 檢索費用：{{usd}} 美元",
+    "noCalls": "最近沒有呼叫。",
+    "tool": "工具",
+    "status": "結果",
+    "calls": "次數",
+    "callStatus": {
+      "ok": "成功",
+      "rejected": "已拒絕",
+      "error": "錯誤",
+      "rate_limited": "超過限額",
+      "disabled": "未開放"
+    },
+    "clients": "客戶端金鑰",
+    "clientsIntro": "金鑰只用來換較高的限額，並讓回饋可以追溯到客戶端；沒有金鑰也能讀公開資料。金鑰只顯示一次，系統只存雜湊值。",
+    "newKey": "新金鑰（只顯示這一次）：",
+    "clientName": "客戶端名稱",
+    "createKey": "發一把金鑰",
+    "lastUsed": "最後使用：{{when}}",
+    "neverUsed": "尚未使用",
+    "disabled": "已停用",
+    "disable": "停用",
+    "feedback": "外部回饋審核",
+    "feedbackIntro": "回饋不會自動改任何資料、提示詞或記憶。採用時請由人改寫成資料或手冊段落，不要直接複製原文。被拒絕的回饋 30 天後清除內容。",
+    "noFeedback": "目前沒有回饋。",
+    "fbStatus": {
+      "pending_review": "待審核",
+      "accepted": "已採用",
+      "rejected": "未採用",
+      "merged": "已併入"
+    },
+    "category": {
+      "error_report": "資料有誤",
+      "missing_info": "缺少資訊",
+      "suggestion": "功能建議",
+      "other": "其他"
+    },
+    "flagInjection": "疑似提示詞注入",
+    "purged": "（內容已清除）",
+    "related": "相關：{{ref}}",
+    "note": "審核備註（選填）",
+    "review": {
+      "accepted": "採用",
+      "merged": "併入既有",
+      "rejected": "不採用"
+    },
+    "skills": "內建能力（skills）",
+    "skillsIntro": "每項能力定義在 data/skills，經人審核後進 git。這裡只能關掉或重新打開，不能修改內容；測試結果取自 data/eval/results 的最近一次真模型執行。",
+    "skill": "能力",
+    "where": "用在",
+    "tests": "測試",
+    "state": "狀態",
+    "surface": {
+      "internal_agent": "駿川手綱",
+      "mcp": "MCP"
+    },
+    "passed": "{{ok}}／{{total}} 通過",
+    "notRun": "尚未執行",
+    "switchOff": "關閉",
+    "switchOn": "打開",
+    "on": "使用中",
+    "off": "已關閉"
   }
 }

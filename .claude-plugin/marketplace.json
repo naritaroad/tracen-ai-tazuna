@@ -1,0 +1,16 @@
+{
+  "name": "tracen-ai-tazuna",
+  "description": "Claude Code plugins for AI Hayakawa Tazuna (an unofficial Uma Musume fan project).",
+  "owner": {
+    "name": "naritaroad",
+    "url": "https://github.com/naritaroad"
+  },
+  "plugins": [
+    {
+      "name": "tracen-academy",
+      "source": "./plugins/tracen-academy",
+      "category": "data",
+      "tags": ["mcp", "rag", "fan-project"]
+    }
+  ]
+}

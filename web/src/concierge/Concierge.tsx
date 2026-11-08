@@ -12,7 +12,7 @@ import { useShell } from "../components/Layout";
 import { CharacterSlot, useConcierge } from "./ConciergeProvider";
 
 /** Questions offered on each page (language-file keys `concierge.ask.<page>.<n>`). */
-const ASK_COUNT: Record<string, number> = { info: 3, calendar: 3, services: 3, planner: 3, director: 3, memory: 3 };
+const ASK_COUNT: Record<string, number> = { info: 3, handbook: 3, calendar: 3, services: 3, planner: 3, director: 3, memory: 3 };
 
 const OPEN_KEY = "tracen.concierge.open";
 

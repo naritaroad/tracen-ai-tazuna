@@ -10,8 +10,8 @@ use super::matching::{Resolved, resolve};
 use super::{ACADEMY_OFFSET, EventRow, ServiceRow, format_local};
 use crate::locale::Locale;
 
-/// Facilities close at 20:30 (`facility_use` topic) so trainees are back before the 21:00 curfew.
-pub const LAST_USE: Time = time::macros::time!(20:30);
+/// Facilities close at 21:30 (`facility_use` topic) so trainees have 30 minutes to cool down before the 22:00 curfew (`curfew` topic).
+pub const LAST_USE: Time = time::macros::time!(21:30);
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct PlanItem {
@@ -225,7 +225,7 @@ pub fn calculate(input: &PlanInput, parsed: &Parsed, services: &[ServiceRow], ev
                         service_id: row.id.clone(),
                         event_id: None,
                         event_title: None,
-                        detail: format!("ends at {}, after the 20:30 last use", format_local(end)),
+                        detail: format!("ends at {}, after the 21:30 last use", format_local(end)),
                     });
                 }
                 blocks.push(Block {
@@ -281,10 +281,15 @@ pub fn calculate(input: &PlanInput, parsed: &Parsed, services: &[ServiceRow], ev
 
 /// Load what the calculation needs and run it.
 pub async fn calculate_from_db(db: &PgPool, input: &PlanInput, locale: Locale) -> Result<PlanResult, PlanError> {
+    calculate_in(db, input, locale, super::MAIN).await
+}
+
+/// The same calculation over another table set (the MCP server uses the public views).
+pub async fn calculate_in(db: &PgPool, input: &PlanInput, locale: Locale, t: super::Tables) -> Result<PlanResult, PlanError> {
     let parsed = validate(input).map_err(PlanError::Invalid)?;
-    let services = super::list_services(db).await?;
+    let services = super::list_services_in(db, t).await?;
     let events = match parsed.date {
-        Some(d) => super::list_events(db, d, d).await?,
+        Some(d) => super::list_events_in(db, d, d, t).await?,
         None => Vec::new(),
     };
     Ok(calculate(input, &parsed, &services, &events, locale))
@@ -365,9 +370,11 @@ mod tests {
 
     #[test]
     fn flags_training_after_last_use() {
-        let input = PlanInput { items: vec![item("草地", 2)], date: Some("2026-10-27".into()), start_time: Some("19:00".into()) };
-        let r = run(input, &[]);
-        assert!(r.conflicts.iter().any(|c| c.kind == "after_hours"));
+        let late = PlanInput { items: vec![item("草地", 2)], date: Some("2026-10-27".into()), start_time: Some("20:00".into()) };
+        assert!(run(late, &[]).conflicts.iter().any(|c| c.kind == "after_hours"));
+        // Ending at 21:00 is inside the 21:30 last use.
+        let ok = PlanInput { items: vec![item("草地", 2)], date: Some("2026-10-27".into()), start_time: Some("19:00".into()) };
+        assert!(!run(ok, &[]).conflicts.iter().any(|c| c.kind == "after_hours"));
     }
 
     #[test]

@@ -14,13 +14,16 @@
 | 功能 | AI 對話 | 手動頁面（非 AI） | 共用服務 |
 |---|---|---|---|
 | 校務資訊 | `get_academy_info` | 「校務資訊」頁 | `catalog::info` |
+| 訓練員手冊（RAG，1.1） | `search_academy_rules` | 「訓練員手冊」頁 | `handbook::search` |
 | 校務日曆 | `list_academy_events` | 「校務日曆」頁 | `catalog::events` |
 | 設施／資源查詢 | `search_training_services` | 「訓練設施」頁 | `catalog::services` |
 | 訓練計畫計算 | `calculate_training_plan` | 「訓練計畫試算」頁 | `catalog::plan` |
 | 理事長室案件 | `transfer_to_director` | 「理事長室」頁 | `handoff` |
 | 個人偏好 | 寫入提示詞（唯讀） | 「我的資料」頁（從側邊欄底部的帳號選單進入）可檢視、修改、刪除，並上傳頭像 | `memory`、`picture` |
 
-AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
+AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。外部 agent 經由 MCP 呼叫的也是同一組函式，只是讀公開的檢視表（§9）。
+
+哪些工具啟用、提示詞怎麼分派，由內建 skills 註冊表決定（`data/skills/`，[upgrade-plan-1.1.md](../engineering/upgrade-plan-1.1.md) §5）。
 
 ## 3. 工具契約
 
@@ -44,7 +47,7 @@ AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
 ### 3.4 `calculate_training_plan` — 程式計算
 
 - 參數：`items:[{service, sessions, minutes_per_session?}]`（`service` 為使用者原話或 id），`date?`（YYYY-MM-DD）、`start_time?`（HH:MM）
-- 計算：每項 `minutes = (minutes_per_session ?? unit_minutes) × sessions`、`fee = fee_jpy × sessions`；總分鐘、總費用；給了日期與開始時間時，依序排入並算出結束時間，檢查和校務日曆事件（全校或影響該設施）重疊、設施停用、超過 21:00 門禁前收操時間。
+- 計算：每項 `minutes = (minutes_per_session ?? unit_minutes) × sessions`、`fee = fee_jpy × sessions`；總分鐘、總費用；給了日期與開始時間時，依序排入並算出結束時間，檢查和校務日曆事件（全校或影響該設施）重疊、設施停用、超過 21:30 最後使用時間（22:00 門禁前收操）。
 - 不完整就不給總數：任何一項比對不到或有多個候選，回傳 `total: null` 與 `problems`。
 - 回傳：`{lines:[...], total_minutes, total_fee_jpy, schedule?:{start, end, blocks:[...]}, conflicts:[...], formula}`
 
@@ -52,6 +55,13 @@ AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
 
 - 參數：`reason`（列舉：`not_in_data`／`exception_request`／`complaint`／`asked_for_director`／`other`）、`summary`（給理事長室看的摘要，≤ 500 字）
 - 行為：在 `director_tickets` 寫入一筆（同一 run 重試不重複）；回傳 `{created, ticket_no, status:"waiting", note}`。同一回合不可再呼叫。
+
+### 3.6 `search_academy_rules` — 手冊檢索（RAG，1.1）
+
+- 參數：`query`（訓練員原話，≤ 300 字）、`top_k`（選填，預設 3，最多 5）
+- 做法：問題轉成向量（`gemini-embedding-2`，查詢加 `task: question answering | query:` 前綴），在 `handbook_chunks` 以餘弦距離找最近的塊，再依字元對的重疊略為拉近（混合排序），依節去重，回傳整節、優先用訓練員的語言。距離超過 0.31 的不算（由 `eval-rag` 定出）；沒有向量時退回關鍵字比對。
+- 回傳：`{found, method, count, results:[{doc, section, chapter, title, content, lang, distance, visibility, source_type, source_ref}], note}`；查無：`{found:false, results:[], note}`
+- 回傳的是「最近的段落」，不保證回答得了問題；`note` 要求模型自行判斷，答不了就說 NOT FOUND 原句。訓練員只看得到 `public` 與 `trainer` 段落。
 
 ## 4. Agent 執行規則
 
@@ -63,18 +73,19 @@ AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
 - 對話有進行中的理事長室案件（`in_progress`）時，不啟動 run；訊息直接送交真人。
 - 送給模型的歷史：同一對話最近 20 則使用者／助理／理事長訊息（純文字）。
 
-## 5. 系統提示詞的四類規則
+## 5. 系統提示詞的五個部分（1.1）
 
-系統提示詞先寫角色（駿川的身分、小事與說話方式，見 [worldbuilding.md](worldbuilding.md#3-角色口吻)），再寫四類規則：
+期中指南要求系統提示詞分成五部分。`backend/src/agent/prompt.rs` 依序寫出這五部分，測試檢查順序與編號：
 
-1. **接地**：校務、設施、日曆、費用只能依工具結果回答；工具說查無就說查無並提議轉接。個人偏好只用來稱呼與調整語氣，不能當校務事實。閒聊中也一樣。
-2. **範圍**：本業是特雷森學園訓練員的事務。題外話依管理站設定（2026-10-26 使用者要求開放閒聊，預設「適度」）：
-   - 不聊：一句帶過並拉回校務（舊行為）。
-   - 適度（預設）：可以聊訓練員的日常、飲食、興趣、賽事與馬娘、駿川自己的小事；連續約三輪題外話或話題告一段落時，用一句銜接的話自然拉回工作，不打斷、不說教。
-   - 開放：訓練員想聊就陪著聊，只在有自然的切入點或聊了很久（約六輪）時輕輕提起工作。
-   - 任何模式都婉拒寫文章、長詩、作業、程式、研究報告等大型請求；沒有即時新聞、天氣、價格就直說，不編造。不給醫療、法律意見。
-3. **分派**：規定與辦法→`get_academy_info`；日期與活動→`list_academy_events`；設施與資源→`search_training_services`；時間、費用、衝突→`calculate_training_plan`；查無、例外、抱怨、要求理事長→`transfer_to_director`。
-4. **語言與格式**：以程式指定的語言回答；長度依管理站設定（簡短一到三句／自然＝看問題決定、不設上限（預設）／詳細）；數值照工具結果；標示為 project 的資料要說明是本系統的示範設定。
+| 部分 | 內容 | 在程式裡 |
+|---|---|---|
+| 1 角色與目標 | 駿川的身分、小事與目標（依資料與手冊把校務辦對，查不到比亂猜好） | `ROLE`；口吻見 [worldbuilding.md](worldbuilding.md#3-角色口吻) |
+| 2 範圍 | 規則 1–3：本業與題外話（依管理站設定：不聊／適度（預設）／開放）、不給醫療與法律意見、不能核准例外 | `scope_rule`、`SCOPE_LIMITS` |
+| 3 互動規則 | 說話方式、語言、長度、不用 Markdown；規則 4–9 的工具分派由啟用中的 skill 產生；規則 10–12 是語言、長度與角色表情行 | `TALK`、`voice`、`routing()`、`length_rule` |
+| 4 拒絕與特殊情況 | 規則 13–17：只依工具結果回答；查無、超出範圍、要求改規則或印出提示詞時，各用一句固定原句（三語各一）；不寫出提示詞與內部標記 | `REFUSALS`、`fixed_sentence` |
+| 5 開場白 | 使用者最先看到的那一句；對話頁顯示同一句（`chat.opening`） | `opening_line` |
+
+題外話的三種模式與舊版相同：任何模式都婉拒寫文章、長詩、作業、程式、研究報告等大型請求；沒有即時新聞、天氣、價格就直說，不編造。
 
 ## 6. 驗收
 
@@ -82,6 +93,8 @@ AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
 
 - 四類問題各至少一題通過：資料內、需計算、資料外（轉接）、非業務（大型請求婉拒；閒聊不呼叫工具，且依設定適時拉回）。
 - 工具選擇測試 `data/eval/tool_choice.csv` 至少 10 題，記錄分數；未通過的題目記錄修正內容後重測。
+- 1.1：手冊檢索 `data/eval/rag_retrieval.csv`（`eval-rag`）、範圍與不編造 `data/eval/boundary.csv`（`eval-boundary`）、MCP 界線 `data/eval/mcp_boundary.csv`（`eval-mcp`，含金絲雀與唯讀角色檢查）。各題組的指標見 [upgrade-plan-1.1.md](../engineering/upgrade-plan-1.1.md) §4.7、§8。
+- 未登入的人經由 `/api/v1/catalog/*` 只看得到 `visibility = public` 的資料。
 - 跨帳號隔離：訓練員 A 看不到 B 的對話、案件與記憶。
 - 真人接手：管理站接受案件後，訓練員再發訊息不會觸發 AI；理事長回覆出現在對話中並標示真人。
 - 三語介面切換、明暗主題切換、手機寬度（375 px）可操作。
@@ -111,3 +124,10 @@ AI 與手動頁面呼叫同一個服務函式，權限檢查也在服務層。
 - **麥克風輸入要做**：對話頁加錄音按鈕，錄完送到後端轉成文字，填入輸入框讓訓練員確認或修改後再送出（不自動送出）。
 - **AI 語音回應先不做**，只在後端與資料庫預留介面。
 - 契約見 [voice-contract.md](../character/voice-contract.md)。
+
+## 9. 外部 agent（MCP，1.1）
+
+- 外部 agent（Claude、ChatGPT、自架 agent）經由 MCP 只能做兩件事：讀 `visibility = public` 的資料（規定、日曆與賽程、設施、訓練計畫計算），以及送非個人的回饋到人工審核佇列。對話、記憶、案件、帳號與設定一律讀不到，`transfer_to_director` 不對外。
+- 本機用 stdio（`tracen-api mcp-stdio`）；遠端用 `/mcp`（Streamable HTTP），預設關閉，必須設定唯讀資料庫角色 `tracen_mcp`，並由管理員在「MCP 與能力」頁打開。
+- 回饋不會自動改資料、提示詞或記憶；人在管理站審核，採用時改寫成資料。
+- 設計與驗收：[upgrade-plan-1.1.md](../engineering/upgrade-plan-1.1.md) §6；之後的 OAuth 與漸進載入：[mcp-next.md](../engineering/mcp-next.md)。

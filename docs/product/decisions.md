@@ -55,3 +55,21 @@
 - Gemini 思考設定（2026-10-26 查閱）：https://ai.google.dev/gemini-api/docs/thinking （`gemini-3.8-flash` 預設 medium，可選 low／medium／high，不支援 minimal；`max_output_tokens` 含思考 tokens）；Gemini 3 開發指南：https://ai.google.dev/gemini-api/docs/gemini-3 （溫度建議保持 1.0）
 - Gemini Embedding 2 模型頁：https://ai.google.dev/gemini-api/docs/models/gemini-embedding-2
 - pgvector 映像標籤：https://hub.docker.com/r/pgvector/pgvector/tags ；版本：https://github.com/pgvector/pgvector/tags
+
+## 1.1 的決定（2026-11-07）
+
+期中作業（Unit H）要加 RAG；使用者同時要求加 MCP、給外部 agent 的 skills 與內建 skills 系統。設計與結果見 [upgrade-plan-1.1.md](../engineering/upgrade-plan-1.1.md)。
+
+| # | 決定 | 理由 | 來源 |
+|---|---|---|---|
+| 1.1-1 | MCP 與內建 skills 併進 1.1，不另開文件；先前的 `docs/engineering/mcp-and-skills.md` 不還原 | 使用者要求一起解決；刪除是故意的 | 使用者 |
+| 1.1-2 | 順序：A（RAG、提示詞、測試、繳交）→ B（註冊表、可見度、MCP stdio）→ C（HTTP、限流、回饋） | A 是期中必繳；MCP 讀取要用 RAG 的檢索 | 計畫 |
+| 1.1-3 | RAG 做成工具 `search_academy_rules`，不自動塞進每則提示詞 | 檢索出現在 Activity log；符合「工具回傳資料」；閒聊不付 embed 費 | 計畫 |
+| 1.1-4 | 手冊只寫流程與條件，會變的數字留在 CSV | 同一件事只有一個來源 | 計畫 |
+| 1.1-5 | skill 的自訂欄位放 `data/skills/registry.json`，`SKILL.md` 只放規格欄位 | Agent Skills 規格的 `metadata` 是字串對字串 | 查證 agentskills.io |
+| 1.1-6 | `rmcp` 鎖 `=3.9.0` | 2026-11-05 的最新穩定版，改版很快 | 查證 crates.io |
+| 1.1-7 | 先前核定的七項 MCP 決定照用：初始可見度標註；先做應用層過濾與金絲雀測試，開放遠端前補唯讀角色；讀取免驗證、IP 限流；回饋免金鑰、不收聯絡方式；先 stdio；skill 用英文；被拒回饋保留 30 天 | 使用者確認「照用」 | 使用者 |
+| 1.1-8 | 遠端 `/mcp` 沒有 `MCP_DATABASE_URL`（唯讀角色）就回 503 | 把「開放遠端前補唯讀角色」寫死在程式裡 | 實作 |
+| 1.1-9 | 檢索距離門檻 0.31，加混合排序；答不答得了由模型判斷 | 單靠門檻分不開「有」與「沒有」（`eval-rag`） | 實作 |
+| 1.1-10 | 未登入的 `/api/v1/catalog/*` 只回公開資料 | 加了可見度後，原本公開的 API 會露出 `trainer` 資料 | 實作 |
+| 1.1-11 | 宿舍規範加入 `academy_info`：新增 `dormitory` 主題；門禁由 21:00 改為 22:00（22:00–05:30 禁止外出）；設施最後使用時間與晚歸申請門檻一起由 20:30 延到 21:30；手冊 §6.3 特殊情況改由宿舍長同意 | 使用者提供宿舍規範（2026-11-07）；未查到官方原文，標 `community` | 使用者 |

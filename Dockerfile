@@ -24,6 +24,8 @@ COPY --from=api /src/backend/target/release/tracen-api /app/tracen-api
 COPY --from=web /src/web/dist /app/web
 COPY data/seed /app/data/seed
 COPY data/eval /app/data/eval
+COPY data/rag /app/data/rag
+COPY data/skills /app/data/skills
 # Character manifests only; the model and motion files are not redistributable.
 COPY assets/characters/9001_hayakawa_tazuna/character.json /app/assets/characters/9001_hayakawa_tazuna/character.json
 COPY assets/characters/9001_hayakawa_tazuna/animation/animations.json /app/assets/characters/9001_hayakawa_tazuna/animation/animations.json

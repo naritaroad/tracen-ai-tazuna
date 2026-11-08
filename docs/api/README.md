@@ -6,10 +6,12 @@
 |---|---|---|
 | `GET /health` | 公開 | 健康檢查 |
 | `POST /auth/login`、`POST /auth/logout`、`GET /auth/me` | — | 登入、登出、目前使用者 |
-| `GET /catalog/info?locale=`、`GET /catalog/info/{topic}` | 公開 | 校務資訊 |
-| `GET /catalog/services?query=&category=&only_available=&locale=` | 公開 | 設施與資源 |
-| `GET /catalog/events?from=&to=&locale=` | 公開 | 校務日曆（最多 92 天） |
+| `GET /catalog/info?locale=`、`GET /catalog/info/{topic}` | 公開 | 校務資訊（未登入只回 `visibility = public` 的主題，1.1） |
+| `GET /catalog/services?query=&category=&only_available=&locale=` | 公開 | 設施與資源（未登入只回公開列） |
+| `GET /catalog/events?from=&to=&locale=` | 公開 | 校務日曆（最多 92 天；未登入只回公開列） |
 | `POST /catalog/plan` | 公開 | 訓練計畫計算（與工具相同） |
+| `GET /handbook?locale=` | 登入 | 訓練員手冊全文（依章節；訓練員看 `public` 與 `trainer`，工作人員全部） |
+| `GET /handbook/search?q=&top_k=&locale=` | 登入 | 手冊檢索，與 `search_academy_rules` 相同（`q` 1–300 字） |
 | `GET/POST /conversations` | 訓練員 | 我的對話列表／新對話 |
 | `GET /conversations/{id}` | 本人 | 訊息、run、工具軌跡、進行中的案件 |
 | `PATCH /conversations/{id}` | 本人 | `{"pinned": true｜false}` 釘選或取消；列表釘選的排最前面 |
@@ -23,6 +25,13 @@
 | `GET /admin/catalog/info`、`PUT /admin/catalog/info/{topic}` | staff | 校務資訊內容 |
 | `GET /admin/runs` | staff | AI 執行紀錄 |
 | `GET /admin/users` | admin | 帳號 |
+| `GET /admin/feedback?status=`、`POST /admin/feedback/{id}/review` | staff | 外部回饋審核；`{"status": "accepted｜rejected｜merged", "note"}` |
+| `GET /admin/skills` | staff | 內建 skills、介面、可見度與各題最近一次真模型結果 |
+| `PUT /admin/skills/{name}` | admin | `{"enabled": true｜false}` 開關一個 skill（只能關掉或重新打開 registry 裡啟用的） |
+| `GET/PUT /admin/mcp/settings` | admin | 遠端 MCP 開關、MCP 預算與限流；回應另附 `readonly_role_configured` 與目前提供的工具 |
+| `GET/POST /admin/mcp/clients`、`POST /admin/mcp/clients/{id}/disable` | admin | 客戶端金鑰；建立時回傳一次 `key` |
+| `GET /admin/mcp/activity` | staff | 最近 7 天各工具與結果的呼叫次數、回饋筆數、本月 MCP 檢索費用 |
+| `POST /mcp`（不在 `/api/v1` 下） | 見 [development.md](../engineering/development.md#mcp外部-agent11) | MCP Streamable HTTP；需唯讀角色與管理員開關 |
 | `GET /avatar/states`、`GET /avatar/characters`、`GET /avatar/characters/{id}` | 公開 | 角色介面（[契約](../character/avatar-contract.md)） |
 | `POST /avatar/sessions/{id}/events` | — | 保留，回 501 |
 | `GET /avatar-assets/{id}/vrm/*.vrm`、`.../animation/vrma/*.vrma` | 公開 | 只在設定 `AVATAR_ASSET_DIR` 時存在 |

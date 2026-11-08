@@ -30,9 +30,10 @@
 
 
 
-## 課程作業說明
+<!-- course-homework:start — Unit H 期中作業區塊；評分後刪除 -->
+## 課程作業說明（期中）
 
-> 課程作業：Unit G，My AI Customer Service Agent, with a Database and Tools
+> 課程作業：Unit H 期中專案，做一個自己的語言模型應用（Agent + RAG + LLM），延伸 Unit G 的客服 Agent
 > 學生：F115118104 張任沂
 
 本節依課程的 README 範本撰寫；本頁其他段落是同一個專案更完整的說明。
@@ -40,43 +41,51 @@
 ### 服務對象與使用時機
 
 - **誰會使用：**特雷森學園中帶領擔當馬娘的訓練員；另一端是理事長室的工作人員，在不使用 AI 的管理站以「秋川理事長」身分接手轉接案件。
-- **什麼時候使用：**排訓練前（設施能不能用、一個時段多久、名額、費用）、挑日期時（考試、全校活動、設施維護）、出賽前（要準備哪些文件、幾天前提交），以及理事長秘書室不受理的時間（展示資料設定為平日 08:30–18:00、週六 09:00–12:00）。
-- **解決什麼問題：**沒有這個系統時，訓練員得自己翻公告、日曆與設施表，或跑到秘書室問人，並自己加總時間與費用。駿川先查資料庫，計算與衝突檢查交給伺服器；資料裡沒有的事，則建立案件交給真人處理。
+- **什麼時候使用：**排訓練前（設施能不能用、一個時段多久、費用）、挑日期時（考試、活動、維護）、出賽或遠征前（要哪些文件、交通費怎麼報支、外宿怎麼申請）、出狀況時（器材弄壞、受傷、想申訴），以及秘書室不受理的時間。
+- **解決什麼問題：**沒有這個系統時，訓練員得自己翻公告、日曆、設施表和一大本手冊，或跑到秘書室問人。駿川查資料庫裡的事實，在訓練員手冊裡找規定，計算交給伺服器；資料裡沒有的事就建立案件交給真人。一般的聊天 AI 不知道這所學園的任何資料，也不能開案件。
 
 ### 能做什麼
 
 | 功能 | 範例問題 | 使用的工具 |
 |---|---|---|
-| 校務規定與辦法（受理時間、門禁、出賽申請、文件、研習） | 「秘書室的受理時間是幾點到幾點？」 | `get_academy_info` |
+| 手冊規定：流程、條件、例外、罰則、申訴 | 「遠征回來之後，交通費要在多久內報支？」 | `search_academy_rules`（RAG） |
+| 簡短的校務資訊（受理時間、門禁、預約期限） | 「秘書室的受理時間是幾點到幾點？」 | `get_academy_info` |
 | 校務日曆與 G1／G2 賽事日程 | 「11 月 4 日到 6 日有什麼校務活動？」 | `list_academy_events` |
-| 查詢設施與服務：時段長度、名額、展示費用、是否可用 | 「泳池訓練現在可以預約嗎？一個時段多久？」 | `search_training_services` |
-| 試算訓練計畫：總分鐘、費用、結束時間與衝突 | 「11 月 2 日 18:00 開始，伸展空間 1 次、草地基本訓練 2 次，再做訓練影像檢視 1 次，總共要多久、費用多少？幾點會結束？」 | `calculate_training_plan` |
-| 轉接真人（資料外、例外申請、申訴） | 「學園有提供馬娘的蹄鐵更換服務嗎？」／「請幫我轉給秋川理事長。」 | `transfer_to_director` |
-| 婉拒業務外的大型請求、閒聊 | 「可以幫我寫一篇 800 字的英文作文嗎？」 | 不使用工具 |
+| 查詢設施與服務：時段長度、名額、展示費用、是否可用 | 「泳池訓練現在可以預約嗎？」 | `search_training_services` |
+| 試算訓練計畫：總分鐘、費用、結束時間與衝突 | 「10 月 29 日 14:00 開始草地基本訓練 2 次，會撞到什麼嗎？」 | `calculate_training_plan` |
+| 轉接真人（例外申請、申訴、指名找人） | 「請幫我轉給秋川理事長。」 | `transfer_to_director` |
+| 資料裡沒有就說沒有，婉拒業務外的請求 | 「訓練員的薪水怎麼算？」／「幫我寫一篇 800 字的作文。」 | 固定原句，不猜 |
+| 外部 AI agent（Claude、ChatGPT、自架）讀公開資料、送非個人的回饋 | — | MCP 伺服器（`tracen-api mcp-stdio`、`/mcp`） |
 
 ### 運作方式
 
-每個問題都先交給 Agent，由 Agent 選擇工具；工具查詢資料庫或在伺服器端計算，Agent 只依工具回傳的結果回答。對話頁每則回覆下方的「處理紀錄」會列出呼叫的工具、參數與回傳。
+每個問題都先交給 Agent，由 Agent 選擇工具；工具查資料庫、搜尋手冊或在伺服器端計算，Agent 只依工具回傳的結果回答。對話頁每則回覆下方的「處理紀錄」會列出呼叫的工具、參數、回傳，以及找到的手冊章節。
 
-- **模型：**`gemini-3.8-flash`（Google Gemini API，透過 [rust-genai](https://github.com/jeremychone/rust-genai) 呼叫）；`MODEL=mock` 可不用金鑰離線執行。
+- **RAG：**訓練員手冊（[`data/rag/trainer_handbook.zh-TW.md`](../../data/rag/trainer_handbook.zh-TW.md)，13 章 53 節，全部是展示設定）與簡短的校務資訊依節切塊，用 `gemini-embedding-2` 轉成向量存進 PostgreSQL + pgvector（`handbook_chunks`）；內容沒變就不重新轉。`search_academy_rules` 依語意加上字詞重疊找出最接近的幾節，回傳整節，駿川回答時附上節號。找到的幾節都答不了時，她會說固定的「查不到」原句，不會猜。
+- **分成五部分的系統提示詞：**角色與目標、範圍、互動規則、拒絕與特殊情況（三語各三句固定原句），以及開場白（對話頁顯示同一句），見 [`backend/src/agent/prompt.rs`](../../backend/src/agent/prompt.rs)。
+- **內建 skills：**每項能力是 [`data/skills/`](../../data/skills/) 裡的一個資料夾（Agent Skills 格式），加上 `registry.json` 裡的一筆（工具、角色、可見度、測試題）。提示詞的工具分派、Agent 的工具清單與 MCP 的工具清單都由它產生，啟動時會檢查。
+- **MCP：**外部 agent 只能經由唯讀的資料庫檢視表讀 `visibility = public` 的資料，以及把回饋送進人工審核佇列。遠端存取預設關閉，要由管理員打開，並且必須設定唯讀資料庫角色 `tracen_mcp`。給外部 agent 的 skill 產生在 [`skills/tracen-public/SKILL.md`](../../skills/tracen-public/SKILL.md)。
+- **模型：**對話用 `gemini-3.8-flash`，向量用 `gemini-embedding-2`（Google Gemini API，透過 [rust-genai](https://github.com/jeremychone/rust-genai) 呼叫）；`MODEL=mock` 可不用金鑰離線執行。
 - **聊天畫面：**React + Vite + TypeScript 前端；Rust（Axum）後端以 REST 與 SSE 提供 API。API 金鑰、Agent 迴圈、工具與資料庫都只在後端。
-- **資料庫：**PostgreSQL 18（課程建議使用 SQLite）。設定 `CATALOG_SEED_MODE=reset` 時，API 每次啟動都由 CSV 重建下列資料表：
+- **資料庫：**PostgreSQL 18 加 pgvector（課程建議使用 SQLite）。設定 `CATALOG_SEED_MODE=reset` 時，API 每次啟動都由 CSV 重建下列資料表：
 
-  | 資料表 | CSV 檔 | 內容 | 筆數 |
+  | 資料表 | 來源 | 內容 | 筆數 |
   |---|---|---|---|
-  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 資訊主題：受理時間、設施規則、預約、門禁、出賽申請等 | 10 |
-  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 設施與服務：時段長度、名額、展示費用、是否可用、別名 | 17 |
-  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 課程、考試、活動與維護，以及受影響的設施 | 10 |
+  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 簡短的資訊主題 | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 設施與服務 | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 課程、考試、活動與維護 | 10 |
   | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | 遊戲中的 G1／G2 賽事日程（GameTora，標示為 `community`） | 76 |
+  | `handbook_chunks` | 手冊檔與 `academy_info` | 可檢索的段落與 768 維向量 | 83 |
 
 - **工具：**
 
   | 工具 | 用途 |
   |---|---|
+  | `search_academy_rules(query, top_k)` | 依語意搜尋手冊與資訊主題，回傳整節 |
   | `get_academy_info(topic)` | 讀取 `academy_info` 的一個主題 |
   | `list_academy_events(date_from, date_to)` | 列出兩個日期之間的校務日曆與賽事（最多 62 天） |
-  | `search_training_services(query, category, only_available)` | 用中日英名稱或別名在 `training_services` 找設施 |
-  | `calculate_training_plan(items, date, start_time)` | 在伺服器端計算分鐘 × 次數、費用 × 次數、時程與衝突 |
+  | `search_training_services(query, category, only_available)` | 用中日英名稱或別名找設施 |
+  | `calculate_training_plan(items, date, start_time)` | 在伺服器端計算分鐘、費用、時程與衝突 |
   | `transfer_to_director(reason, summary)` | 建立理事長室案件交給真人，回傳案件編號 |
 
 ### 對話範例
@@ -85,13 +94,27 @@
 
 ![資料無法處理的例外申請轉交理事長室](../assets/screenshots/handoff.zh-TW.png)
 
+### 測試
+
+| 測試 | 檢查什麼 | 指令 |
+|---|---|---|
+| 工具選擇（21 題） | 每題選對工具，回答裡有正確的值 | `cd backend && cargo run -- eval-tools` |
+| 手冊檢索（46 題） | 前三筆有正確章節；手冊裡沒有的問題 | `cd backend && cargo run -- eval-rag` |
+| 範圍與不編造（12 題） | 超出範圍、不存在的資料、叫它忽略規則、叫它印出提示詞、角色扮演、假的承諾 | `cd backend && cargo run -- eval-boundary` |
+| MCP 界線（13 項） | 只有公開資料出得去、金絲雀字串不會出現、回饋含個資會被拒收 | `cd backend && cargo run -- eval-mcp` |
+
+結果寫到 `data/eval/results/`。單元測試：`cd backend && cargo test`。
+
 ### 專案檔案
 
 ```text
-backend/src/            Rust API：tools.rs（工具）、agent/（Agent 迴圈與系統提示詞）、seed.rs（CSV 匯入）、catalog/（查詢與計畫計算）
-web/src/                React 前端（含處理紀錄的對話頁、手動頁面、管理站）
+backend/src/            Rust API：tools.rs、agent/（Agent 迴圈、五部分提示詞）、handbook/（RAG）、skills.rs、mcp/、feedback.rs、catalog/、seed.rs
+web/src/                React 前端（含處理紀錄的對話頁、訓練員手冊頁、手動頁面、管理站）
+data/rag/               訓練員手冊（RAG 的文件）
+data/skills/            內建 skills：registry.json 與每個 skill 的 SKILL.md
 data/seed/*.csv         建立資料庫用的 CSV 檔
-data/eval/tool_choice.csv  工具選擇測試（16 題）：cd backend && cargo run -- eval-tools
+data/eval/*.csv         四組測試題
+skills/tracen-public/   給外部 agent 的 skill（自動產生）
 backend/Cargo.toml、web/package.json   套件清單
 .env.example            設定檔範例（不含真實金鑰）
 .gitignore              讓 .env、*.db、node_modules/、target/ 等不進 git
@@ -99,19 +122,23 @@ backend/Cargo.toml、web/package.json   套件清單
 
 ### 安裝與執行
 
-請依下方[快速開始](#快速開始)：把 `.env.example` 複製成 `.env`、用 Docker Compose 啟動 PostgreSQL、以 `cargo run` 啟動 API、以 `npm run dev` 啟動網站，再開啟 <http://localhost:5173>。
+請依下方[快速開始](#快速開始)：把 `.env.example` 複製成 `.env`、用 Docker Compose 啟動 PostgreSQL、以 `cargo run` 啟動 API、以 `npm run dev` 啟動網站，再開啟 <http://localhost:5173>。第一次啟動時會建立手冊的索引。要接 MCP 用戶端，見 [docs/engineering/development.md](../engineering/development.md#mcp外部-agent11)。
 
 ### 備註
 
-- 資料中的校規、價格、人物與預約都是本專案的展示設定（`source_type` 為 `project` 或 `reference`）；賽事日程為社群整理的遊戲資料。本專案為非官方同人作品，詳見 [NOTICE.md](../../NOTICE.md)。
+- 資料中的校規、手冊、價格、人物與預約都是本專案的展示設定（`source_type` 為 `project` 或 `reference`）；賽事日程為社群整理的遊戲資料。本專案為非官方同人作品，詳見 [NOTICE.md](../../NOTICE.md)。
 - `.env` 存放 API 金鑰，不在此 repository 中，請由 `.env.example` 自行建立。
+<!-- course-homework:end -->
 
 
 
 ## 功能特色
 
-- 駿川依資料庫回答。她以有上限的 Agent 迴圈（預設最多 6 次模型呼叫；單次 90 秒，整個 run 以每次呼叫 45 秒計，介於 120 到 600 秒）呼叫 5 個白名單工具；校規、校務日曆、設施與費用一律查 PostgreSQL，不靠模型記憶。每次工具呼叫都會存下來，可在回覆下方的「處理紀錄」展開檢視。
-- 訓練計畫由伺服器計算。時長、費用與結束時間算出後，再對照校務日曆、設施停用與 21:00 門禁檢查衝突。設施名稱比對不到，或同時符合多個設施時，工具回傳問題，不會給出錯誤的總數。
+- 駿川依資料庫回答。她以有上限的 Agent 迴圈（預設最多 6 次模型呼叫；單次 90 秒，整個 run 以每次呼叫 45 秒計，介於 120 到 600 秒）呼叫啟用中 skill 的 6 個工具；校規、校務日曆、設施與費用一律查 PostgreSQL，不靠模型記憶。每次工具呼叫都會存下來，可在回覆下方的「處理紀錄」展開檢視。
+- 訓練員手冊依語意檢索（RAG）。手冊的 53 節與簡短的校務資訊都轉成向量存進 pgvector；`search_academy_rules` 回傳整節，駿川回答時附上用到的節號。查不到答案時，她用一句固定的話說查不到，不會猜。手冊也有自己的頁面。
+- 能力以內建 skills 管理。每項能力是 `data/skills/` 裡一個 Agent Skills 格式的資料夾，加上註冊表裡的工具、角色、可見度與測試題；提示詞的工具分派與兩份工具清單都由它產生。管理員可在管理站關掉某個 skill。
+- 外部 AI agent 可以經由 MCP（stdio 或 Streamable HTTP）使用公開資料：只能透過唯讀檢視表讀 `visibility = public` 的資料，以及送出非個人的回饋，由工作人員在管理站審核。遠端存取預設關閉，而且必須設定唯讀資料庫角色。
+- 訓練計畫由伺服器計算。時長、費用與結束時間算出後，再對照校務日曆、設施停用與 21:30 最後使用時間（22:00 門禁前）檢查衝突。設施名稱比對不到，或同時符合多個設施時，工具回傳問題，不會給出錯誤的總數。
 - 需要人處理的事轉給真人。`transfer_to_director` 會建立理事長室案件；工作人員在管理站（不使用 AI）以「秋川理事長・真人服務」身分接手、回覆、結案或交回駿川。真人接手期間，AI 不回覆。
 - 3D 角色隨對話切換狀態。three-vrm 播放器按需載入，依思考、查詢、說明、轉接、致歉等狀態切換動作，並有口型、眨眼、視線與點擊反應。模型只能從固定詞彙選擇情緒與手勢，由伺服器驗證。訓練員站各頁共用同一個角色實例；沒有 WebGL 或角色檔時改顯示 2D 狀態卡。
 - 記憶內容由訓練員自己管理。記憶包含近期對話、對話摘要、個人偏好，以及過去事件的語意回想（pgvector，768 維），由背景工作整理，舊紀錄被取代時保留歷程。所有記住的內容都能在「我的資料」檢視、修改、刪除；健康與醫療狀況、他人聯絡方式、帳號密碼與金鑰不會自動記住。

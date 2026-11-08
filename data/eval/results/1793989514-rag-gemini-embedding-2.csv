@@ -1,0 +1,47 @@
+id,kind,lang,question,expect_sections,top_sections,top_distances,hit_at_3,found,pass
+r01,in_handbook,zh-TW,"遠征回來之後，交通費要在多久內報支？","§7.3","§7.3|§7.2|§7.1","0.198|0.211|0.229",true,true,true
+r02,in_handbook,zh-TW,"哪些遠征費用不能報支？","§7.4","§7.4|§7.2|§7.1","0.108|0.162|0.222",true,true,true
+r03,in_handbook,zh-TW,"擔當馬娘訓練時受傷了，什麼時候可以恢復訓練？","§4.2","§4.2|§4.1|§2.2","0.119|0.208|0.228",true,true,true
+r04,in_handbook,zh-TW,"擔當馬娘身體不舒服要先找誰？","§4.1|support_contacts","§4.1|support_contacts|§4.2","0.082|0.102|0.220",true,true,true
+r05,in_handbook,zh-TW,"訓練時不小心弄壞器材要賠嗎？","§5.5|§5.4|§8.2","§5.2|§5.4|§8.2","0.264|0.269|0.271",true,true,true
+r06,in_handbook,zh-TW,"發現跑道設備壞掉要怎麼通報？","§5.4","§5.4|§5.2|§8.2","0.248|0.268|0.323",true,true,true
+r07,in_handbook,zh-TW,"出賽申請已經過了期限，還能補送嗎？","§3.3","§3.3|§3.1|§3.5","0.188|0.224|0.235",true,true,true
+r08,in_handbook,zh-TW,"送出出賽申請後行程改了怎麼辦？","§3.4","§3.4|§7.1|race_paperwork","0.101|0.217|0.221",true,true,true
+r09,in_handbook,zh-TW,"出賽當天要向秘書室回報什麼？","§3.5","§3.5|§3.1|race_paperwork","0.082|0.214|0.218",true,true,true
+r10,in_handbook,zh-TW,"遠征需要外宿要怎麼申請？","§6.2|§7.1","§6.2|§7.1|§6.1","0.086|0.154|0.234",true,true,true
+r11,in_handbook,zh-TW,"我可以進學生宿舍的房間找擔當馬娘嗎？","§6.3","§6.3|support_contacts|facility_use","0.180|0.195|0.228",true,true,true
+r12,in_handbook,zh-TW,"擔當馬娘沒申請就晚歸，會怎麼處理？","§6.4|§6.1","race_paperwork|§6.4|§3.1","0.198|0.203|0.209",true,true,true
+r13,in_handbook,zh-TW,"有雜誌想採訪我的擔當馬娘，可以直接答應嗎？","§9.1","race_paperwork|§9.1|§4.1","0.258|0.258|0.266",true,true,true
+r14,in_handbook,zh-TW,"可以把訓練時拍的照片發到社群嗎？","§9.2","§9.2|§5.2|§2.4","0.251|0.318|0.323",true,true,true
+r15,in_handbook,zh-TW,"勝利演唱會排練可以拍影片嗎？","§9.3","§9.3|§9.2|§9.1","0.099|0.368|0.382",true,true,true
+r16,in_handbook,zh-TW,"廠商想送我們新的跑鞋，可以收嗎？","§2.5","§2.5|§7.5|§2.1","0.255|0.353|0.375",true,true,true
+r17,in_handbook,zh-TW,"要怎麼解除和擔當馬娘的擔當關係？","§2.1","§2.1|support_contacts|§3.1","0.158|0.252|0.260",true,true,true
+r18,in_handbook,zh-TW,"新任訓練員研習今年沒修完，可以留到明年補嗎？","§10.1","§10.1|trainer_workshops|§10.3","0.122|0.167|0.263",true,true,true
+r19,in_handbook,zh-TW,"研習報名了但臨時不能去怎麼辦？","§10.2","§10.2|§10.1|booking_policy","0.161|0.302|0.331",true,true,true
+r20,in_handbook,zh-TW,"年度考核只看比賽成績嗎？","§10.3","§10.3|§10.1|§11.2","0.130|0.311|0.330",true,true,true
+r21,in_handbook,zh-TW,"對賠償的判定不服，要怎麼申訴？","§11.2|§5.5","§11.2|§5.5|§11.4","0.175|0.181|0.283",true,true,true
+r22,in_handbook,zh-TW,"違規的處分有哪幾種？","§11.3","§11.3|§5.6|§6.4","0.121|0.215|0.236",true,true,true
+r23,in_handbook,zh-TW,"撿到別人的碼錶要交給誰？","§8.4","§8.4|§8.3|§8.1","0.269|0.323|0.342",true,true,true
+r24,in_handbook,zh-TW,"置物櫃可以放東西到隔天嗎？","§8.3","§8.3|§8.4|§8.1","0.185|0.327|0.359",true,true,true
+r25,in_handbook,zh-TW,"下大雷雨的時候，已經預約的時段會怎樣？","§5.3","§5.3|booking_policy|§5.1","0.200|0.264|0.314",true,true,true
+r26,in_handbook,zh-TW,"可以幫別的訓練員的學生預約設施嗎？","§5.6|§2.1","booking_policy|§5.1|facility_use","0.191|0.191|0.191",false,true,false
+r27,in_handbook,zh-TW,"監護人打電話來問成績，我可以直接回答嗎？","§2.4","§2.4|§2.5|§9.2","0.221|0.342|0.344",true,true,true
+r28,in_handbook,zh-TW,"帳號可以借同事用嗎？","§12.2","§12.2|§8.1|§12.3","0.267|0.329|0.358",true,true,true
+r29,in_handbook,zh-TW,"系統記住的資料要怎麼刪除？","§12.3","§12.3|§4.4|§1.2","0.105|0.323|0.356",true,true,true
+r30,in_handbook,zh-TW,"秘書室幾點開始受理？","service_desk","service_desk|§3.3|§1.2","0.174|0.242|0.254",true,true,true
+r31,in_handbook,ja,"遠征の交通費はいつまでに精算すればいいですか？","§7.3","§7.1|§7.2|§7.3","0.275|0.286|0.297",true,true,true
+r32,in_handbook,ja,"練習中に器具を壊したら弁償が必要ですか？","§5.5|§5.4|§8.2","§8.2|§5.4|§5.5","0.300|0.308|0.315",true,true,true
+r33,in_handbook,ja,"雑誌の取材を受けてもいいですか？","§9.1","§9.1|§9.2|§2.5","0.306|0.380|0.406",true,true,true
+r34,in_handbook,en-GB,"How long do I have to claim travel expenses after an away race?","§7.3","race_paperwork|§7.1|facility_use","0.244|0.300|0.315",false,true,false
+r35,in_handbook,en-GB,"Can I visit my Uma Musume in her dorm room?","§6.3","facility_use|support_contacts|curfew","0.159|0.160|0.261",false,true,false
+r36,in_handbook,en-GB,"What penalties are there for breaking the handbook rules?","§11.3","§11.3|calendar_conflicts|booking_policy","0.252|0.267|0.275",true,true,true
+n01,not_in_handbook,zh-TW,"訓練員的薪水怎麼算？","","§10.1|§10.3|trainer_workshops","0.212|0.232|0.242",false,true,false
+n02,not_in_handbook,zh-TW,"學園裡可以停車嗎？停車位怎麼申請？","","service_desk|documents|curfew","0.278|0.280|0.296",false,true,false
+n03,not_in_handbook,zh-TW,"宿舍可以養寵物嗎？","","§6.3|curfew|§3.5","0.250|0.269|0.300",false,true,false
+n04,not_in_handbook,zh-TW,"學園附近有推薦的租屋處嗎？","","curfew|§11.1|service_desk","0.346|0.349|0.350",false,true,false
+n05,not_in_handbook,zh-TW,"訓練員可以在外面兼職嗎？","","§2.5|§2.3|§2.4","0.236|0.244|0.252",false,true,false
+n06,not_in_handbook,zh-TW,"蹄鐵要去哪裡更換？","","support_contacts|§4.1|facility_use","0.376|0.378|0.395",false,true,false
+n07,not_in_handbook,zh-TW,"學園餐廳今天的菜單是什麼？","","§11.1|service_desk|§8.4","0.337|0.344|0.345",false,true,false
+n08,not_in_handbook,en-GB,"What is the Wi-Fi password for the dorms?","","curfew|facility_use|support_contacts","0.276|0.295|0.316",false,true,false
+n09,not_in_handbook,ja,"駐車場の申し込み方法を教えてください。","","race_paperwork|service_desk|documents","0.345|0.373|0.385",false,true,false
+n10,not_in_handbook,zh-TW,"明天高雄的天氣如何？","","§5.3|booking_policy|curfew","0.420|0.423|0.440",false,true,false

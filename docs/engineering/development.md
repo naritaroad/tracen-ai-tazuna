@@ -56,6 +56,24 @@ cd backend && cargo run -- eval-tools
 `eval-tools` 讀 `data/eval/tool_choice.csv`，每題開新對話跑一次 Agent，結果寫到 `data/eval/results/<時間>-<模型>.csv`。免費方案請設 `EVAL_DELAY_MS`（例如 4000）避免 429。`mock` 的分數只代表流程能跑，不能當成正式模型的測試結果。
 
 ```bash
+cd backend && cargo run -- eval-rag
+```
+
+`eval-rag` 讀 `data/eval/rag_retrieval.csv`，只呼叫 embedding，不呼叫對話模型。報告每題最近三節與距離，並分別列出「手冊裡有」的命中率與「手冊裡沒有」被擋下的比例；距離門檻（`handbook::max_distance`）由這份結果決定。
+
+```bash
+cd backend && cargo run -- eval-boundary
+```
+
+`eval-boundary` 讀 `data/eval/boundary.csv`：超出範圍、不存在的資料、叫它忽略規則、叫它印出提示詞、角色扮演繞路、假的承諾。檢查回覆是否含對應的固定原句（比對時忽略標點），以及沒有出現提示詞裡的金絲雀字串。
+
+```bash
+cd backend && cargo run -- eval-mcp
+```
+
+`eval-mcp` 讀 `data/eval/mcp_boundary.csv`，直接呼叫 MCP 工具：公開與非公開段落、日曆、設施、計算、不開放的轉接、回饋（正常、含個資、重送、疑似注入）。開跑前在私人資料表放金絲雀字串，任何回應都不能出現；結束後刪掉金絲雀與測試回饋。設定 `MCP_DATABASE_URL` 時，另外檢查唯讀角色讀不到私人資料表。
+
+```bash
 cd web && npm test
 ```
 
@@ -64,6 +82,54 @@ cd web && npm test
 ```bash
 cd web && npm run build
 ```
+
+## MCP（外部 agent，1.1）
+
+### 本機（stdio）
+
+```bash
+cd backend && cargo build
+```
+
+在 Claude Desktop、Claude Code 或自架 agent 的 MCP 設定加一個 stdio 伺服器，指令是 `backend/target/debug/tracen-api`（Windows 為 `.exe`），參數 `mcp-stdio`，工作目錄是專案根目錄（要讀 `.env`）。例如 Claude Code：
+
+```bash
+claude mcp add tracen-academy -- ./backend/target/debug/tracen-api mcp-stdio
+```
+
+執行檔會依序找 `.env`：環境變數 `TRACEN_HOME` 指的資料夾、目前的工作目錄往上、執行檔所在的資料夾往上；只認旁邊有 `data/skills/registry.json` 的 `.env`，所以家目錄裡別的專案的 `.env` 不會被誤讀。從別的資料夾啟動 `backend/target/*/tracen-api` 也讀得到專案的 `.env`。
+
+### Claude Code plugin
+
+`plugins/tracen-academy/` 把給外部 agent 的 skill（`tracen-public`）和上面的 stdio 伺服器包成一個 Claude Code plugin；專案根目錄的 `.claude-plugin/marketplace.json` 讓它可以從本機路徑或 GitHub 安裝。skill 檔由 `export-skills` 同時寫到 `skills/tracen-public/SKILL.md`（給其他 agent 系統）和 plugin 裡，兩份內容相同，測試會檢查。
+
+```text
+/plugin marketplace add <專案路徑>
+/plugin install tracen-academy@tracen-ai-tazuna
+```
+
+安裝時會問 `tracen-api` 執行檔的位置（建議先 `cargo build --release`，選 `backend/target/release/tracen-api.exe`）。細節見 [plugins/tracen-academy/README.md](../../plugins/tracen-academy/README.md)。
+
+stdio 的訊息走 stdout，記錄寫到 stderr。沒有設定 `MCP_DATABASE_URL` 時用主資料庫角色連線（只在本機）；設定後只用唯讀角色，連遷移都不跑。
+
+### 唯讀角色 `tracen_mcp`
+
+遷移 0007 會建立沒有密碼、不能登入的 `tracen_mcp`，只授權公開檢視表（見 [data-model.md](data-model.md)）。要開放遠端，先給它登入密碼：
+
+```bash
+docker compose exec db psql -U tracen -d tracen -c "ALTER ROLE tracen_mcp LOGIN PASSWORD '換成長的隨機密碼'"
+```
+
+再在 `.env` 設 `MCP_DATABASE_URL=postgres://tracen_mcp:密碼@127.0.0.1:5432/tracen`，重新啟動 API，並跑一次 `cargo run -- eval-mcp` 確認「read-only role」那幾項全部通過。
+
+### 遠端（Streamable HTTP）
+
+- 路徑是 `/mcp`（不在 `/api/v1` 下）。沒有 `MCP_DATABASE_URL` 時一律回 503。
+- 管理員在管理站「MCP 與能力」打開「開放遠端 MCP」之前，也一律回 503。
+- 只接受 `MCP_ALLOWED_HOSTS` 裡的 Host（預設 localhost、127.0.0.1、::1）。瀏覽器送來的 `Origin` 一律拒絕（403），除非列在 `MCP_ALLOWED_ORIGINS`。
+- 放在反向代理後面時，用 `MCP_CLIENT_IP_HEADER`（例如 `x-forwarded-for`）指定哪個標頭帶客戶端位址；只在代理會覆寫這個標頭時才設定。
+- 限流計數只在記憶體裡，重新啟動就清空；IP 不寫進資料庫。
+- ChatGPT、Claude 網頁版等遠端客戶端需要公開的 HTTPS 網址（部署或通道）；它們接受哪些驗證方式尚未實測，見 [mcp-next.md](mcp-next.md)。
 
 ## Android（Sony 手機實測）
 

@@ -26,6 +26,11 @@
 | `web/android/` | Capacitor Android 專案（App 從 API 伺服器載入網站） | 可改；`app/build/` 是建置產物 |
 | `data/seed/*.csv` | 展示資料（資訊表、紀錄表、日曆、遊戲賽程 `race_schedule.csv`） | 可改；每列都要有 `source_type` |
 | `data/eval/tool_choice.csv` | 工具選擇題庫 | 可增題，不刪既有題 |
+| `data/eval/rag_retrieval.csv`、`boundary.csv`、`mcp_boundary.csv` | 手冊檢索、範圍與不編造、MCP 界線題庫（1.1） | 可增題，不刪既有題 |
+| `data/rag/trainer_handbook.*.md` | 訓練員手冊（RAG 的內容；章 `##`、節 `### §N.M`） | 可改；三語節號要一致；不寫 CSV 已有的數字 |
+| `data/skills/` | 內建 skills：`registry.json`（我們的欄位）＋每個 skill 一個 `SKILL.md`（Agent Skills 格式） | 可改；啟動時驗證，失敗就不啟動 |
+| `skills/tracen-public/SKILL.md` | 給外部 agent 的 skill（通用 Agent Skills 格式） | **不要手改**，用 `cargo run -- export-skills` 產生 |
+| `plugins/tracen-academy/`、`.claude-plugin/marketplace.json` | Claude Code plugin：同一份 skill＋stdio MCP 伺服器設定 | `plugin.json`、`.mcp.json`、README 可改；`skills/tracen-public/SKILL.md` 由 `export-skills` 產生，**不要手改** |
 | `assets/characters/<id>/` | 角色清單、動作清單、行為對照、加工紀錄、.vrm／.vrma | `character.json`、`animations.json`、`behavior.json`（情緒 → 表情、手勢替代、動作組的圖）可改；**模型與動畫檔不可覆蓋**，`work/` 是動作擬合中間資料 |
 | `tools/vrm-test-viewer/` | 角色測試頁 | 獨立工具 |
 | `tools/motion-reference/` | 影片動作參考前處理 | 獨立工具，Python，不進容器 |
@@ -43,7 +48,11 @@
 | `seed.rs` | CSV → 展示資料表；測試帳號 |
 | `auth.rs` | 帳號、cookie 工作階段、`CurrentUser`／`StaffUser`／`AdminUser` 擷取器 |
 | `catalog/` | 校務資訊、日曆、設施查詢（`matching.rs` 寬鬆名稱比對）、`plan.rs` 訓練計畫計算、`http.rs` 手動頁面 API |
-| `tools.rs` | 工具規格、參數驗證、分派（白名單） |
+| `tools.rs` | 工具規格、參數驗證、分派（白名單；只開放啟用中 skill 的工具） |
+| `handbook/` | 手冊解析、`handbook_chunks` 同步與 embed 快取、混合檢索（`mod.rs`）；手冊頁 API（`http.rs`） |
+| `skills.rs` | skills 註冊表：載入與驗證、路由規則、MCP 暴露清單、管理員開關 |
+| `mcp/` | MCP 伺服器：工具與轉接（`mod.rs`）、限流（`limits.rs`）、管理站 API（`admin.rs`）、`eval-mcp`（`eval.rs`）、`export-skills`（`export.rs`） |
+| `feedback.rs` | 外部回饋：檢查、個資掃描、存入審核佇列、管理站審核 API |
 | `agent/` | 有界 Agent 迴圈、系統提示詞 |
 | `llm/` | `Ai` 服務：對話（`ModelGateway`）、嵌入、語音轉文字；genai（真模型）與 `mock`（離線） |
 | `settings.rs` | 管理站可調的模型、價格、每月預算；用量紀錄與預算檢查 |
@@ -56,9 +65,17 @@
 | `admin.rs` | 管理站：展示資料維護、帳號、執行紀錄 |
 | `avatar/mod.rs` | 角色介面：狀態表、`avatar.intent`、角色清單檔與動作組（`motion_sets`）、素材檔 |
 | `avatar/cues.rs` | 回覆的情緒／強度／語意手勢：解析並刪除模型的 `[[mood:…]]`，或用三語規則推定 |
-| `eval.rs` | 工具選擇測試 |
+| `eval.rs` | 工具選擇、手冊檢索、範圍與不編造測試 |
 
-新增工具：在 `tools.rs` 的 `TOOL_NAMES`、`specs`、`dispatch` 三處同時加，業務邏輯放在對應模組，手動頁面共用同一函式；再補 `data/eval/tool_choice.csv` 題目與前端三個語言檔的 `tools.<name>`。
+新增工具（1.1 起）：
+
+1. Rust：`tools.rs` 的 `TOOL_NAMES`、`all_specs`、`dispatch`，業務邏輯放在對應模組，手動頁面共用同一函式。
+2. skill：`data/skills/<name>/SKILL.md`（只放 `name`、`description`，正文寫 `## Routing`、`## Limits`，對外的再寫 `## External use`），並在 `registry.json` 加一筆（工具、角色、介面、可見度、題目）。每個工具必須屬於剛好一個 skill。
+3. 題目：在 `data/eval/` 加題，並把題號填進 `evals`；沒有題目的 skill 不能啟用。
+4. 前端三個語言檔的 `tools.<name>`；`mock.rs` 的離線路由加一條。
+5. 對外的 skill 改過後跑 `cargo run -- export-skills`（同時更新 `skills/tracen-public/` 與 plugin 裡的副本）。
+
+啟動時驗證註冊表，任何一條不合就拒絕啟動。
 
 ## 3. 前端（`web/src/`）
 
@@ -72,6 +89,11 @@ cd backend && cargo run              # API，讀專案根目錄 .env
 cd web && npm run dev                # 前端，/api 代理到 127.0.0.1:8080
 cd backend && cargo test             # 單元測試（不需要資料庫）
 cd backend && cargo run -- eval-tools   # 工具選擇測試，結果寫到 data/eval/results/
+cd backend && cargo run -- eval-rag     # 手冊檢索（只用 embedding）
+cd backend && cargo run -- eval-boundary   # 範圍、提示詞外洩、不編造
+cd backend && cargo run -- eval-mcp     # MCP 界線、金絲雀；設 MCP_DATABASE_URL 時加查唯讀角色
+cd backend && cargo run -- mcp-stdio    # MCP 伺服器（stdio）
+cd backend && cargo run -- export-skills   # 產生 skills/tracen-public/SKILL.md 與 plugin 裡的副本
 cd web && npm run i18n:check         # 三語鍵值一致、無寫死文字
 cd web && npm test                   # 角色規劃層、動作圖、口型（node --test）
 cd web && npm run build              # 文案檢查＋型別檢查＋建置

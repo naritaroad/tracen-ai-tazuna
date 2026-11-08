@@ -1,0 +1,50 @@
+id,lang,question,expect_sections,kind
+r01,zh-TW,遠征回來之後，交通費要在多久內報支？,§7.3,in_handbook
+r02,zh-TW,哪些遠征費用不能報支？,§7.4,in_handbook
+r03,zh-TW,擔當馬娘訓練時受傷了，什麼時候可以恢復訓練？,§4.2,in_handbook
+r04,zh-TW,擔當馬娘身體不舒服要先找誰？,§4.1|support_contacts,in_handbook
+r05,zh-TW,訓練時不小心弄壞器材要賠嗎？,§5.5|§5.4|§8.2,in_handbook
+r06,zh-TW,發現跑道設備壞掉要怎麼通報？,§5.4,in_handbook
+r07,zh-TW,出賽申請已經過了期限，還能補送嗎？,§3.3,in_handbook
+r08,zh-TW,送出出賽申請後行程改了怎麼辦？,§3.4,in_handbook
+r09,zh-TW,出賽當天要向秘書室回報什麼？,§3.5,in_handbook
+r10,zh-TW,遠征需要外宿要怎麼申請？,§6.2|§7.1,in_handbook
+r11,zh-TW,我可以進學生宿舍的房間找擔當馬娘嗎？,§6.3|dormitory,in_handbook
+r12,zh-TW,擔當馬娘沒申請就晚歸，會怎麼處理？,§6.4|§6.1,in_handbook
+r13,zh-TW,有雜誌想採訪我的擔當馬娘，可以直接答應嗎？,§9.1,in_handbook
+r14,zh-TW,可以把訓練時拍的照片發到社群嗎？,§9.2,in_handbook
+r15,zh-TW,勝利演唱會排練可以拍影片嗎？,§9.3,in_handbook
+r16,zh-TW,廠商想送我們新的跑鞋，可以收嗎？,§2.5,in_handbook
+r17,zh-TW,要怎麼解除和擔當馬娘的擔當關係？,§2.1,in_handbook
+r18,zh-TW,新任訓練員研習今年沒修完，可以留到明年補嗎？,§10.1,in_handbook
+r19,zh-TW,研習報名了但臨時不能去怎麼辦？,§10.2,in_handbook
+r20,zh-TW,年度考核只看比賽成績嗎？,§10.3,in_handbook
+r21,zh-TW,對賠償的判定不服，要怎麼申訴？,§11.2|§5.5,in_handbook
+r22,zh-TW,違規的處分有哪幾種？,§11.3,in_handbook
+r23,zh-TW,撿到別人的碼錶要交給誰？,§8.4,in_handbook
+r24,zh-TW,置物櫃可以放東西到隔天嗎？,§8.3,in_handbook
+r25,zh-TW,下大雷雨的時候，已經預約的時段會怎樣？,§5.3,in_handbook
+r26,zh-TW,可以幫別的訓練員的學生預約設施嗎？,§5.6|§2.1,in_handbook
+r27,zh-TW,監護人打電話來問成績，我可以直接回答嗎？,§2.4,in_handbook
+r28,zh-TW,帳號可以借同事用嗎？,§12.2,in_handbook
+r29,zh-TW,系統記住的資料要怎麼刪除？,§12.3,in_handbook
+r30,zh-TW,秘書室幾點開始受理？,service_desk,in_handbook
+r31,ja,遠征の交通費はいつまでに精算すればいいですか？,§7.3,in_handbook
+r32,ja,練習中に器具を壊したら弁償が必要ですか？,§5.5|§5.4|§8.2,in_handbook
+r33,ja,雑誌の取材を受けてもいいですか？,§9.1,in_handbook
+r34,en-GB,How long do I have to claim travel expenses after an away race?,§7.3,in_handbook
+r35,en-GB,Can I visit my Uma Musume in her dorm room?,§6.3|dormitory,in_handbook
+r36,en-GB,What penalties are there for breaking the handbook rules?,§11.3,in_handbook
+r37,zh-TW,美浦寮的宿舍長是誰？,dormitory,in_handbook
+r38,en-GB,Can students take cafeteria meals back to the dorm?,dormitory,in_handbook
+r39,ja,寮の門限は何時ですか？,curfew,in_handbook
+n01,zh-TW,訓練員的薪水怎麼算？,,not_in_handbook
+n02,zh-TW,學園裡可以停車嗎？停車位怎麼申請？,,not_in_handbook
+n03,zh-TW,宿舍可以養寵物嗎？,,not_in_handbook
+n04,zh-TW,學園附近有推薦的租屋處嗎？,,not_in_handbook
+n05,zh-TW,訓練員可以在外面兼職嗎？,,not_in_handbook
+n06,zh-TW,蹄鐵要去哪裡更換？,,not_in_handbook
+n07,zh-TW,學園餐廳今天的菜單是什麼？,,not_in_handbook
+n08,en-GB,What is the Wi-Fi password for the dorms?,,not_in_handbook
+n09,ja,駐車場の申し込み方法を教えてください。,,not_in_handbook
+n10,zh-TW,明天高雄的天氣如何？,,not_in_handbook

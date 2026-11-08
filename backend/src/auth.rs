@@ -104,6 +104,21 @@ impl FromRequestParts<AppState> for CurrentUser {
     }
 }
 
+/// The signed-in user if there is one. Public endpoints use it to show more to signed-in readers.
+pub struct MaybeUser(pub Option<CurrentUser>);
+
+impl FromRequestParts<AppState> for MaybeUser {
+    type Rejection = AppError;
+
+    async fn from_request_parts(parts: &mut Parts, state: &AppState) -> Result<Self, Self::Rejection> {
+        match CurrentUser::from_request_parts(parts, state).await {
+            Ok(user) => Ok(Self(Some(user))),
+            Err(AppError::Unauthorized) => Ok(Self(None)),
+            Err(e) => Err(e),
+        }
+    }
+}
+
 /// A staff member or admin (the management site).
 pub struct StaffUser(pub CurrentUser);
 

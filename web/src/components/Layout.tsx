@@ -121,12 +121,14 @@ function navItems(admin: boolean, role: Role | undefined): NavItem[] {
       { to: "/admin/catalog", key: "nav.catalog", icon: "database" },
       { to: "/admin/runs", key: "nav.runs", icon: "activity" },
       { to: "/admin/settings", key: "nav.settings", icon: "sliders" },
+      { to: "/admin/mcp", key: "nav.mcp", icon: "grid" },
       ...(role === "admin" ? [{ to: "/admin/users", key: "nav.users", icon: "users" as const }] : []),
       { to: "/", key: "nav.trainerSite", icon: "back" },
     ];
   return [
     { to: "/", key: "nav.chat", icon: "chat" },
     { to: "/info", key: "nav.info", icon: "info" },
+    { to: "/handbook", key: "nav.handbook", icon: "book" },
     { to: "/calendar", key: "nav.calendar", icon: "calendar" },
     { to: "/services", key: "nav.services", icon: "track" },
     { to: "/planner", key: "nav.planner", icon: "clock" },

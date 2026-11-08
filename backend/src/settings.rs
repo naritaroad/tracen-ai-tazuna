@@ -169,8 +169,27 @@ impl AiSettings {
 
 pub async fn load(db: &PgPool, config: &Config) -> sqlx::Result<AiSettings> {
     let stored: Option<Value> = sqlx::query_scalar("SELECT value FROM app_settings WHERE key = $1").bind(KEY).fetch_optional(db).await?;
+    Ok(merge(stored, config))
+}
+
+/// The same settings read through the `mcp_settings` view, for the MCP server's read-only role.
+pub async fn load_public(db: &PgPool, config: &Config) -> sqlx::Result<AiSettings> {
+    let stored: Option<Value> = sqlx::query_scalar("SELECT value FROM mcp_settings WHERE key = $1").bind(KEY).fetch_optional(db).await?;
+    Ok(merge(stored, config))
+}
+
+/// Month-to-date spending read through the `mcp_usage` view; `purpose` narrows it to one kind.
+pub async fn spent_this_month_public(db: &PgPool, purpose: Option<&str>) -> sqlx::Result<f64> {
+    sqlx::query_scalar("SELECT COALESCE(SUM(cost_usd), 0)::float8 FROM mcp_usage WHERE occurred_at >= $1 AND ($2::text IS NULL OR purpose = $2)")
+        .bind(month_start(academy_now()))
+        .bind(purpose)
+        .fetch_one(db)
+        .await
+}
+
+fn merge(stored: Option<Value>, config: &Config) -> AiSettings {
     let defaults = AiSettings::defaults(config);
-    Ok(match stored {
+    match stored {
         // Fields missing from an older stored value fall back to the defaults.
         Some(v) => {
             let mut merged = serde_json::to_value(&defaults).unwrap_or_default();
@@ -182,7 +201,7 @@ pub async fn load(db: &PgPool, config: &Config) -> sqlx::Result<AiSettings> {
             serde_json::from_value(merged).unwrap_or(defaults)
         }
         None => defaults,
-    })
+    }
 }
 
 fn month_start(now: OffsetDateTime) -> OffsetDateTime {

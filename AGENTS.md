@@ -20,3 +20,5 @@
 6. 校務事實只能來自資料庫與工具結果；新資料要標 `source_type`，不把專案設定寫成官方設定（`docs/product/worldbuilding.md`）。
 7. AI 角色動畫目前暫緩，只維護 `docs/character/avatar-contract.md` 的介面；不要讓模型直接控制動畫檔或骨架。（2026-10-25 使用者要求實作 3D 角色互動，暫緩解除；模型仍只能從固定詞彙選情緒與手勢，由伺服器驗證，見 `docs/character/avatar-contract.md`。）
 8. 介面文字一律放 `web/src/i18n/`，三語同步；繁中使用臺灣用語。語言檔是 `web/src/i18n/locales/*.json`，元件不寫死文字，改完跑 `npm run i18n:check`（見 `docs/frontend/frontend-i18n.md`）。
+9. 新增或修改 AI 工具時，照 `docs/engineering/agent-map.md` 的「新增工具」流程：每個工具屬於 `data/skills/` 裡剛好一個 skill，且要有測試題；對外的 skill 改過後跑 `cargo run -- export-skills`。（2026-11-07，1.1）
+10. 校務規定的長文放 `data/rag/trainer_handbook.*.md`，數字留在 CSV；外部回饋只給人審核，不進任何提示詞、記憶或索引（`docs/engineering/upgrade-plan-1.1.md`）。

@@ -9,7 +9,7 @@ import { Icon, type IconName } from "../components/Icon";
 import { Mark, MenuButton, useShell } from "../components/Layout";
 import { CharacterSlot, useConcierge } from "../concierge/ConciergeProvider";
 import { useConversations } from "../conversations";
-import { formatDateTime } from "../format";
+import { formatDateTime, formatList } from "../format";
 import { useRecorder } from "../voice/useRecorder";
 
 const SAMPLES: [string, IconName][] = [
@@ -18,6 +18,7 @@ const SAMPLES: [string, IconName][] = [
   ["sample3", "clock"],
   ["sample4", "calendar"],
   ["sample5", "director"],
+  ["sample6", "book"],
 ];
 
 // Wide screens remember whether the character column is open. Phones decide per reply (see ChatPage).
@@ -45,6 +46,17 @@ interface LiveRun {
   error: string | null;
 }
 
+type SectionHit = { section: string; title: string };
+
+/** The handbook sections a search returned, so the trace shows what the answer rests on. */
+function Sections({ call }: { call: ToolCall }) {
+  const { t, i18n } = useTranslation();
+  const result = call.result as { results?: SectionHit[] } | undefined;
+  if (call.tool_name !== "search_academy_rules" || !result?.results?.length) return null;
+  const list = result.results.map((h) => (h.section.startsWith("§") ? `${h.section} ${h.title}` : h.title));
+  return <div className="sections">{t("chat.sections", { list: formatList(list, i18n.language) })}</div>;
+}
+
 function Trace({ calls, model }: { calls: ToolCall[]; model?: string }) {
   const { t } = useTranslation();
   return (
@@ -61,6 +73,7 @@ function Trace({ calls, model }: { calls: ToolCall[]; model?: string }) {
             <span className={`badge ${c.status === "ok" ? "ok" : "bad"}`}>{t(`status.${c.status}`)}</span>{" "}
             <span className="muted">{t("chat.stepMeta", { step: c.step, duration: t("common.durationMs", { n: c.duration_ms }) })}</span>
           </div>
+          <Sections call={c} />
           <div className="muted">{t("chat.arguments")}</div>
           <pre>{JSON.stringify(c.arguments, null, 2)}</pre>
           <div className="muted">{t("chat.result")}</div>
@@ -334,6 +347,7 @@ export function ChatPage() {
             <div className="hero">
               <Mark />
               <h1>{t("chat.heroTitle")}</h1>
+              <p className="opening">{t("chat.opening")}</p>
               <p className="muted">{t("chat.greeting")}</p>
             </div>
           ) : (
@@ -441,7 +455,7 @@ export function ChatPage() {
       </div>
 
       <aside className="avatar-stage" aria-label={t("avatar.label")} hidden={!avatarOpen}>
-        <CharacterSlot visible={avatarOpen} greeting={!conversationId && !pending ? t("chat.greeting") : undefined} backdrop />
+        <CharacterSlot visible={avatarOpen} greeting={!conversationId && !pending ? t("chat.opening") : undefined} backdrop />
       </aside>
     </div>
   );

@@ -684,3 +684,14 @@ button.avatar-figure { border: 0; padding: 0; cursor: pointer; font-family: inhe
   .chat-page.empty .avatar-stage .avatar-card-3d { height: clamp(200px, 36dvh, 340px); }
   .inbox { grid-template-columns: 1fr; }
 }
+
+/* Opening line, handbook page and the handbook sections in the activity log (1.1). */
+.hero p.opening { color: var(--text); font-size: 1rem; }
+.trace .sections { margin: 4px 0 6px; font-size: 0.9rem; color: var(--brand-strong); }
+.handbook-search { flex-wrap: nowrap; }
+.handbook-search input { flex: 1 1 auto; min-width: 0; }
+.handbook-section { padding: 12px 16px; }
+.handbook-section summary { cursor: pointer; }
+.handbook-section p { margin: 10px 0 0; }
+.feedback-item { padding: 12px 0; border-top: 1px solid var(--border); }
+.feedback-item:first-of-type { border-top: 0; }

@@ -128,8 +128,9 @@ fn dates(q: &str) -> Vec<String> {
     MONTH_DAY.captures_iter(q).map(|c| format!("{year}-{:0>2}-{:0>2}", &c[1], &c[2])).collect()
 }
 
-const INFO_KEYWORDS: [(&str, &[&str]); 10] = [
+const INFO_KEYWORDS: [(&str, &[&str]); 11] = [
     ("curfew", &["門禁", "門限", "curfew"]),
+    ("dormitory", &["宿舍長", "寮長", "栗東", "美浦", "舍規", "寮則", "帶回宿舍", "持ち帰", "dorm leader", "dorm rule", "back to the dorm"]),
     ("service_desk", &["受理時間", "窗口", "受付", "office hours", "秘書室"]),
     ("booking_policy", &["取消", "キャンセル", "cancel", "預約規則"]),
     ("race_paperwork", &["出賽", "校外", "出走", "race entr", "off-campus"]),
@@ -139,6 +140,13 @@ const INFO_KEYWORDS: [(&str, &[&str]); 10] = [
     ("facility_use", &["使用規則", "利用ルール", "facility rule"]),
     ("support_contacts", &["保健室", "不適", "infirmary", "unwell"]),
     ("director_office", &["理事長室案件"]),
+];
+
+/// Handbook topics: procedures, conditions and penalties rather than one short fact.
+const RULE_WORDS: &[&str] = &[
+    "報支", "賠償", "損壞", "外宿", "遺失", "採訪", "拍攝", "肖像", "處分", "違規", "借用", "受傷", "恢復訓練", "補課", "公假", "逾期", "臨時",
+    "擔當關係", "禮品", "考核", "補修", "訪客", "置物櫃", "精算", "弁償", "取材", "撮影", "expense", "claim", "damage", "compensat", "lost property",
+    "overnight", "interview", "photo", "penalt", "appeal", "injur", "visitor", "locker", "handbook", "手冊", "ハンドブック",
 ];
 
 fn route(question: &str) -> Option<(&'static str, Value)> {
@@ -164,6 +172,10 @@ fn route(question: &str) -> Option<(&'static str, Value)> {
         return Some(("calculate_training_plan", args));
     }
 
+    if has(&q, RULE_WORDS) {
+        return Some(("search_academy_rules", json!({ "query": question })));
+    }
+
     if let Some((topic, _)) = INFO_KEYWORDS.iter().find(|(_, words)| has(&q, words)) {
         return Some(("get_academy_info", json!({ "topic": topic })));
     }
@@ -180,8 +192,9 @@ fn route(question: &str) -> Option<(&'static str, Value)> {
         return Some(("search_training_services", json!({ "query": question })));
     }
 
-    if has(&q, &["學園", "學校", "餐廳", "食堂", "菜單", "menu", "cafeteria", "学園"]) {
-        return Some(("transfer_to_director", json!({ "reason": "not_in_data", "summary": question })));
+    // Anything else about the academy: search first; the not-found sentence offers the Director's Office.
+    if has(&q, &["學園", "學校", "餐廳", "食堂", "菜單", "menu", "cafeteria", "学園", "停車", "parking", "寵物", "pet"]) {
+        return Some(("search_academy_rules", json!({ "query": question })));
     }
     None
 }
@@ -228,6 +241,12 @@ fn summarize(results: &[(String, Value)], locale: Locale) -> String {
                 )
             }
             "calculate_training_plan" => locale.pick("有項目無法確定，請問是指哪一項設施？", "どの施設か確認させてください。", "Which facility do you mean?").into(),
+            "search_academy_rules" if found == Some(true) => r["results"]
+                .as_array()
+                .and_then(|a| a.first())
+                .map(|h| format!("{} {}：{}", h["section"].as_str().unwrap_or(""), h["title"].as_str().unwrap_or(""), h["content"].as_str().unwrap_or("")))
+                .unwrap_or_default(),
+            "search_academy_rules" => crate::agent::prompt::fixed_sentence(locale, 0).into(),
             "transfer_to_director" => format!(
                 "{} {}",
                 locale.pick("已送交理事長室，等候真人接手。案件編號", "理事長室へお送りしました。担当者の対応をお待ちください。案件番号", "I have sent this to the Director's Office; a person will pick it up. Case"),
@@ -258,5 +277,7 @@ mod tests {
         assert_eq!(route("What is the curfew for the dorms?").map(|r| r.0), Some("get_academy_info"));
         assert_eq!(route("11 月 4 日到 6 日有什麼校務活動？").map(|r| r.0), Some("list_academy_events"));
         assert_eq!(route("幫我寫一首關於天氣的詩"), None);
+        assert_eq!(route("遠征的交通費要在多久內報支？").map(|r| r.0), Some("search_academy_rules"));
+        assert_eq!(route("學園餐廳今天的菜單是什麼？").map(|r| r.0), Some("search_academy_rules"));
     }
 }

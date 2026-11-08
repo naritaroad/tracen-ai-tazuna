@@ -18,7 +18,9 @@
     "catalog": "Demo data",
     "runs": "AI run log",
     "users": "Accounts",
-    "settings": "AI settings and budget"
+    "settings": "AI settings and budget",
+    "handbook": "Trainer Handbook",
+    "mcp": "MCP and skills"
   },
   "shell": {
     "sidebar": "Sidebar",
@@ -95,7 +97,10 @@
     "copy": "Copy",
     "copied": "Copied",
     "jumpLatest": "Jump to the latest message",
-    "handoffTag": "Sent to the Director's Office"
+    "handoffTag": "Sent to the Director's Office",
+    "opening": "Welcome to Tracen Academy, Trainer♪ I'm Hayakawa Tazuna, Director Akikawa's secretary. Ask me about academy rules, facilities, the calendar or your training plans; anything the data can't answer, I'll pass to the Director's Office.",
+    "sample6": "How soon after an away race do I have to claim travel expenses?",
+    "sections": "Sections found: {{list}}"
   },
   "concierge": {
     "label": "Ask Tazuna",
@@ -140,6 +145,11 @@
         "1": "Which of my preferences do you remember?",
         "2": "What can I do on the My details page?",
         "3": "From now on, please keep your answers short."
+      },
+      "handbook": {
+        "1": "How soon do I have to claim travel expenses after an away race?",
+        "2": "Do I pay if equipment breaks during training?",
+        "3": "How do I appeal a penalty?"
       }
     }
   },
@@ -165,7 +175,8 @@
     "list_academy_events": "Checked the academy calendar",
     "search_training_services": "Searched training facilities",
     "calculate_training_plan": "Calculated the training plan",
-    "transfer_to_director": "Sent to the Director's Office"
+    "transfer_to_director": "Sent to the Director's Office",
+    "search_academy_rules": "Search the Trainer Handbook"
   },
   "status": {
     "ok": "OK",
@@ -281,7 +292,7 @@
     "event": "Clashes with an academy event",
     "same_day_event": "A related event is on that day",
     "service_unavailable": "The facility is closed",
-    "after_hours": "Runs past the 20:30 last use"
+    "after_hours": "Runs past the 21:30 last use"
   },
   "director": {
     "title": "Director's Office",
@@ -489,7 +500,8 @@
         "services": "Which facility do you need? I'll check how it stands.",
         "planner": "I can work out the times for your training plan.",
         "director": "If it needs the Director's Office, I'll pass it on.",
-        "memory": "I keep your preferences safely noted."
+        "memory": "I keep your preferences safely noted.",
+        "handbook": "Can't find a rule in the handbook? Just ask me♪"
       }
     }
   },
@@ -524,7 +536,9 @@
     "memory": "Memory curation",
     "summary": "Conversation summary",
     "embed": "Embeddings",
-    "transcribe": "Speech to text"
+    "transcribe": "Speech to text",
+    "rag": "Handbook search",
+    "mcp_embed": "MCP external search"
   },
   "role": {
     "trainer": "Trainer",
@@ -542,5 +556,96 @@
     "http_error": "The server did not respond ({{detail}}).",
     "stream_error": "The reply was cut off ({{detail}}).",
     "network": "Cannot reach the server. Please check your connection."
+  },
+  "handbook": {
+    "title": "Trainer Handbook",
+    "intro": "How things are done at the academy. Search uses the same retrieval as Tazuna; slot lengths, fees and deadlines come from the academy information and facility data.",
+    "search": "Search",
+    "placeholder": "For example: how soon do I claim travel expenses?",
+    "results": "Results",
+    "noResult": "Neither the handbook nor the academy information has a rule on this. Tazuna can pass it to the Director's Office if you need.",
+    "keywordMode": "Meaning-based search is unavailable, so this search matched keywords.",
+    "untranslated": "This section has no English version yet, so it is shown in Traditional Chinese.",
+    "notice": "This handbook is a demo setting of this system, not part of the official story."
+  },
+  "mcpPage": {
+    "title": "MCP, outside feedback and skills",
+    "intro": "Outside AI agents can only read public data and send non-personal feedback through MCP. This page uses no AI: people set the switch, limits, keys and reviews.",
+    "remote": "Remote MCP (Streamable HTTP)",
+    "noRole": "The read-only database role (MCP_DATABASE_URL) is not set, so /mcp always answers 503. See docs/engineering/development.md.",
+    "enabled": "Allow remote MCP",
+    "tools": "Tools offered now: {{list}}",
+    "budget": "MCP monthly search budget (USD, empty = no cap)",
+    "limit": {
+      "read_per_minute": "Reads without a key / IP / minute",
+      "key_read_per_minute": "Reads with a key / minute",
+      "feedback_per_ip_day": "Feedback without a key / IP / day",
+      "key_feedback_per_day": "Feedback with a key / day",
+      "feedback_global_day": "All feedback / day"
+    },
+    "save": "Save",
+    "saved": "Saved",
+    "activity": "Calls in the last 7 days",
+    "spent": "MCP search cost this month: {{usd}} USD",
+    "noCalls": "No calls recently.",
+    "tool": "Tool",
+    "status": "Result",
+    "calls": "Calls",
+    "callStatus": {
+      "ok": "OK",
+      "rejected": "Refused",
+      "error": "Error",
+      "rate_limited": "Rate limited",
+      "disabled": "Switched off"
+    },
+    "clients": "Client keys",
+    "clientsIntro": "Keys only buy higher limits and make feedback traceable to a client; public data can be read without one. A key is shown once and only its hash is stored.",
+    "newKey": "New key (shown this once):",
+    "clientName": "Client name",
+    "createKey": "Create a key",
+    "lastUsed": "Last used {{when}}",
+    "neverUsed": "Never used",
+    "disabled": "Disabled",
+    "disable": "Disable",
+    "feedback": "Outside feedback review",
+    "feedbackIntro": "Feedback never changes data, prompts or memory by itself. When you adopt it, rewrite it as data or a handbook section; do not copy the text. Rejected feedback loses its text after 30 days.",
+    "noFeedback": "No feedback yet.",
+    "fbStatus": {
+      "pending_review": "Waiting for review",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "merged": "Merged"
+    },
+    "category": {
+      "error_report": "Error in the data",
+      "missing_info": "Missing information",
+      "suggestion": "Suggestion",
+      "other": "Other"
+    },
+    "flagInjection": "Possible prompt injection",
+    "purged": "(text removed)",
+    "related": "Related: {{ref}}",
+    "note": "Review note (optional)",
+    "review": {
+      "accepted": "Accept",
+      "merged": "Merge",
+      "rejected": "Reject"
+    },
+    "skills": "Built-in skills",
+    "skillsIntro": "Each skill is defined in data/skills and reviewed into git. Here you can only switch one off and on; the test results come from the latest real-model run in data/eval/results.",
+    "skill": "Skill",
+    "where": "Used by",
+    "tests": "Tests",
+    "state": "State",
+    "surface": {
+      "internal_agent": "Tazuna",
+      "mcp": "MCP"
+    },
+    "passed": "{{ok}} of {{total}} passed",
+    "notRun": "Not run yet",
+    "switchOff": "Switch off",
+    "switchOn": "Switch on",
+    "on": "On",
+    "off": "Off"
   }
 }

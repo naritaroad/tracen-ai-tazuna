@@ -18,6 +18,9 @@
 - [architecture.md](engineering/architecture.md)：架構決策
 - [data-model.md](engineering/data-model.md)：資料模型
 - [development.md](engineering/development.md)：開發與執行
+- [upgrade-plan-1.1.md](engineering/upgrade-plan-1.1.md)：1.1 升級計畫與結果（RAG、內建 skills、MCP）
+- [mcp-next.md](engineering/mcp-next.md)：MCP 與 skills 的下一步（漸進載入、OAuth、Skills 擴充、跨語言檢索）
+- [manual-test-plan.md](engineering/manual-test-plan.md)：1.1 人工驗收測試計畫（skills 盤點、案例、答案卷、記錄表）
 
 ## character
 

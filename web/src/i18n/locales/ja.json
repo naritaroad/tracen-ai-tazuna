@@ -18,7 +18,9 @@
     "catalog": "デモデータ",
     "runs": "AI 実行記録",
     "users": "アカウント",
-    "settings": "AI 設定と予算"
+    "settings": "AI 設定と予算",
+    "handbook": "トレーナーハンドブック",
+    "mcp": "MCP と機能"
   },
   "shell": {
     "sidebar": "サイドバー",
@@ -95,7 +97,10 @@
     "copy": "コピー",
     "copied": "コピーしました",
     "jumpLatest": "最新のメッセージへ",
-    "handoffTag": "理事長室へ送付済み"
+    "handoffTag": "理事長室へ送付済み",
+    "opening": "トレセン学園へようこそ、トレーナーさん♪ 理事長秘書の駿川たづなです。学園の規則や施設、行事、トレーニング計画のことなら聞いてくださいね。データで分からないことは、理事長室へおつなぎします。",
+    "sample6": "遠征の交通費は、いつまでに精算すればいいですか？",
+    "sections": "見つかった節：{{list}}"
   },
   "concierge": {
     "label": "たづなに相談",
@@ -140,6 +145,11 @@
         "1": "私の好みで、覚えていることは？",
         "2": "「マイデータ」ページでは何ができますか？",
         "3": "これからは短めに答えてください。"
+      },
+      "handbook": {
+        "1": "遠征の交通費はいつまでに精算すればいいですか？",
+        "2": "練習中に器具を壊したら弁償が必要ですか？",
+        "3": "処分に納得できないときは、どう申し立てますか？"
       }
     }
   },
@@ -165,7 +175,8 @@
     "list_academy_events": "学園カレンダーを確認",
     "search_training_services": "トレーニング施設を検索",
     "calculate_training_plan": "トレーニング計画を計算",
-    "transfer_to_director": "理事長室へ送付"
+    "transfer_to_director": "理事長室へ送付",
+    "search_academy_rules": "ハンドブックの検索"
   },
   "status": {
     "ok": "成功",
@@ -281,7 +292,7 @@
     "event": "学園の予定と重なっています",
     "same_day_event": "当日に関連する予定があります",
     "service_unavailable": "施設が利用停止中です",
-    "after_hours": "最終利用時刻 20:30 を過ぎています"
+    "after_hours": "最終利用時刻 21:30 を過ぎています"
   },
   "director": {
     "title": "理事長室",
@@ -489,7 +500,8 @@
         "services": "どの施設を使いますか？状況を確認しますね。",
         "planner": "トレーニング計画の時間計算、お手伝いしますよ。",
         "director": "理事長室へのご用件は、私がお取り次ぎします。",
-        "memory": "トレーナーさんの好みは、ちゃんと覚えていますよ。"
+        "memory": "トレーナーさんの好みは、ちゃんと覚えていますよ。",
+        "handbook": "ハンドブックで見つからない決まりがあれば、聞いてくださいね♪"
       }
     }
   },
@@ -524,7 +536,9 @@
     "memory": "記憶の整理",
     "summary": "会話の要約",
     "embed": "意味検索用の埋め込み",
-    "transcribe": "音声の文字変換"
+    "transcribe": "音声の文字変換",
+    "rag": "ハンドブック検索",
+    "mcp_embed": "MCP 外部検索"
   },
   "role": {
     "trainer": "トレーナー",
@@ -542,5 +556,96 @@
     "http_error": "サーバーから応答がありません（{{detail}}）。",
     "stream_error": "応答が途切れました（{{detail}}）。",
     "network": "サーバーに接続できません。ネットワークをご確認ください。"
+  },
+  "handbook": {
+    "title": "トレーナーハンドブック",
+    "intro": "学園での手続きと決まりごとです。検索は駿川たづなと同じしくみを使います。時間枠や費用、期限などの数字は学園情報と施設データが優先です。",
+    "search": "検索",
+    "placeholder": "例：遠征の交通費はいつまでに精算しますか？",
+    "results": "検索結果",
+    "noResult": "ハンドブックにも学園情報にも、該当する決まりは見つかりませんでした。必要なら、駿川たづなに理事長室への取り次ぎを頼めます。",
+    "keywordMode": "意味検索が使えないため、今回はキーワードで照合しました。",
+    "untranslated": "この節はまだ日本語版がないため、繁体字中国語で表示しています。",
+    "notice": "このハンドブックは本システムのデモ設定で、作品の公式設定ではありません。"
+  },
+  "mcpPage": {
+    "title": "MCP・外部フィードバック・内蔵機能",
+    "intro": "外部の AI エージェントは MCP 経由で公開データを読み、個人情報を含まないフィードバックを送れるだけです。このページに AI はありません。設定・上限・キー・審査はすべて人が行います。",
+    "remote": "リモート MCP（Streamable HTTP）",
+    "noRole": "読み取り専用のデータベースロール（MCP_DATABASE_URL）が未設定のため、/mcp は常に 503 を返します。設定方法は docs/engineering/development.md を参照してください。",
+    "enabled": "リモート MCP を有効にする",
+    "tools": "現在の提供ツール：{{list}}",
+    "budget": "MCP 月間検索予算（米ドル、空欄＝無制限）",
+    "limit": {
+      "read_per_minute": "キーなし読み取り／IP ごと毎分",
+      "key_read_per_minute": "キーあり読み取り／毎分",
+      "feedback_per_ip_day": "キーなしフィードバック／IP ごと毎日",
+      "key_feedback_per_day": "キーありフィードバック／毎日",
+      "feedback_global_day": "全体のフィードバック／毎日"
+    },
+    "save": "保存",
+    "saved": "保存しました",
+    "activity": "直近 7 日の呼び出し",
+    "spent": "今月の MCP 検索費用：{{usd}} 米ドル",
+    "noCalls": "最近の呼び出しはありません。",
+    "tool": "ツール",
+    "status": "結果",
+    "calls": "回数",
+    "callStatus": {
+      "ok": "成功",
+      "rejected": "拒否",
+      "error": "エラー",
+      "rate_limited": "上限超過",
+      "disabled": "無効"
+    },
+    "clients": "クライアントキー",
+    "clientsIntro": "キーは上限を上げ、フィードバックの送り元を追えるようにするためだけのものです。キーがなくても公開データは読めます。キーは一度だけ表示され、保存されるのはハッシュ値のみです。",
+    "newKey": "新しいキー（表示はこの一度だけ）：",
+    "clientName": "クライアント名",
+    "createKey": "キーを発行",
+    "lastUsed": "最終使用：{{when}}",
+    "neverUsed": "未使用",
+    "disabled": "停止済み",
+    "disable": "停止",
+    "feedback": "外部フィードバックの審査",
+    "feedbackIntro": "フィードバックがデータ・プロンプト・記憶を自動で変えることはありません。採用するときは人がデータやハンドブックの文に書き直し、原文をそのまま写さないでください。却下したものは 30 日後に本文を消去します。",
+    "noFeedback": "フィードバックはありません。",
+    "fbStatus": {
+      "pending_review": "審査待ち",
+      "accepted": "採用",
+      "rejected": "不採用",
+      "merged": "統合済み"
+    },
+    "category": {
+      "error_report": "データの誤り",
+      "missing_info": "情報の不足",
+      "suggestion": "機能の提案",
+      "other": "その他"
+    },
+    "flagInjection": "プロンプト注入の疑い",
+    "purged": "（本文は消去済み）",
+    "related": "関連：{{ref}}",
+    "note": "審査メモ（任意）",
+    "review": {
+      "accepted": "採用",
+      "merged": "既存に統合",
+      "rejected": "不採用"
+    },
+    "skills": "内蔵機能（skills）",
+    "skillsIntro": "各機能は data/skills に定義され、人の確認を経て git に入ります。ここでは停止と再開だけができ、内容は変えられません。テスト結果は data/eval/results の直近の実モデル実行から取ります。",
+    "skill": "機能",
+    "where": "使用先",
+    "tests": "テスト",
+    "state": "状態",
+    "surface": {
+      "internal_agent": "駿川たづな",
+      "mcp": "MCP"
+    },
+    "passed": "{{ok}}／{{total}} 合格",
+    "notRun": "未実行",
+    "switchOff": "停止",
+    "switchOn": "再開",
+    "on": "使用中",
+    "off": "停止中"
   }
 }

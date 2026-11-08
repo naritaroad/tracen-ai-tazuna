@@ -31,6 +31,7 @@ const SHY: TapReaction = { key: "avatar.tap.shy", gesture: "hand_chest", emotion
 const PAGE_LINES: Record<string, string> = {
   chat: "avatar.tap.page.chat",
   info: "avatar.tap.page.info",
+  handbook: "avatar.tap.page.handbook",
   calendar: "avatar.tap.page.calendar",
   services: "avatar.tap.page.services",
   planner: "avatar.tap.page.planner",

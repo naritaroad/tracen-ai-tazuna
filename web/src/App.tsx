@@ -4,6 +4,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router";
 
 import { AdminCatalog } from "./admin/AdminCatalog";
 import { AdminInbox } from "./admin/AdminInbox";
+import { AdminMcp } from "./admin/AdminMcp";
 import { AdminRuns } from "./admin/AdminRuns";
 import { AdminSettings } from "./admin/AdminSettings";
 import { AdminUsers } from "./admin/AdminUsers";
@@ -12,6 +13,7 @@ import { Layout } from "./components/Layout";
 import { CalendarPage } from "./pages/CalendarPage";
 import { ChatPage } from "./pages/ChatPage";
 import { DirectorPage } from "./pages/DirectorPage";
+import { HandbookPage } from "./pages/HandbookPage";
 import { InfoPage } from "./pages/InfoPage";
 import { LoginPage } from "./pages/LoginPage";
 import { MemoryPage } from "./pages/MemoryPage";
@@ -57,6 +59,7 @@ export function App() {
       <Route path="/" element={chat(<ChatPage />)} />
       <Route path="/c/:conversationId" element={chat(<ChatPage />)} />
       <Route path="/info" element={trainer(<InfoPage />)} />
+      <Route path="/handbook" element={trainer(<HandbookPage />)} />
       <Route path="/calendar" element={trainer(<CalendarPage />)} />
       <Route path="/services" element={trainer(<ServicesPage />)} />
       <Route path="/planner" element={trainer(<PlannerPage />)} />
@@ -67,6 +70,7 @@ export function App() {
       <Route path="/admin/runs" element={staff(<AdminRuns />)} />
       <Route path="/admin/users" element={staff(<AdminUsers />)} />
       <Route path="/admin/settings" element={staff(<AdminSettings />)} />
+      <Route path="/admin/mcp" element={staff(<AdminMcp />)} />
       <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

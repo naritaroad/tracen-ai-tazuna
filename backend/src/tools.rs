@@ -13,11 +13,20 @@ use uuid::Uuid;
 
 use crate::auth::CurrentUser;
 use crate::catalog::{self, SERVICE_CATEGORIES, ServiceFilter, plan};
+use crate::handbook::{self, Audience, DEFAULT_TOP_K, MAX_TOP_K, SearchRequest};
 use crate::handoff;
+use crate::llm::Ai;
 use crate::locale::Locale;
+use crate::settings::AiSettings;
 
-pub const TOOL_NAMES: [&str; 5] =
-    ["get_academy_info", "list_academy_events", "search_training_services", "calculate_training_plan", "transfer_to_director"];
+pub const TOOL_NAMES: [&str; 6] = [
+    "get_academy_info",
+    "search_academy_rules",
+    "list_academy_events",
+    "search_training_services",
+    "calculate_training_plan",
+    "transfer_to_director",
+];
 
 /// Who is asking and where; filled in by the server, never by the model.
 pub struct ToolContext<'a> {
@@ -26,6 +35,8 @@ pub struct ToolContext<'a> {
     pub conversation_id: Uuid,
     pub run_id: Uuid,
     pub locale: Locale,
+    pub ai: &'a Ai,
+    pub settings: &'a AiSettings,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -53,18 +64,39 @@ pub struct ToolOutcome {
     pub ticket: Option<handoff::TicketSummary>,
 }
 
+/// The tools of the enabled skills (data/skills/registry.json), in `TOOL_NAMES` order.
 pub fn specs(topics: &[String]) -> Vec<Tool> {
+    let enabled = crate::skills::registry().agent_tools();
+    let all = all_specs(topics);
+    debug_assert_eq!(all.len(), TOOL_NAMES.len());
+    TOOL_NAMES.iter().zip(all).filter(|(name, _)| enabled.contains(name)).map(|(_, tool)| tool).collect()
+}
+
+/// Every tool, in `TOOL_NAMES` order.
+fn all_specs(topics: &[String]) -> Vec<Tool> {
     vec![
         Tool::new("get_academy_info")
             .with_description(
                 "Get one academy rule or procedure for trainers: service desk hours (受理時間), facility rules, booking and cancelling, \
                  clashes with classes and exams, race entry / off-campus paperwork (出賽申請), documents and certificates, trainer workshops (研習), \
-                 Director's Office cases, dorm curfew (門禁), student support contacts (保健室).",
+                 Director's Office cases, dorm curfew (門禁), the two dorms and dorm rules (宿舍, 寮長), student support contacts (保健室).",
             )
             .with_schema(json!({
                 "type": "object",
                 "properties": { "topic": { "type": "string", "enum": topics } },
                 "required": ["topic"]
+            })),
+        Tool::new("search_academy_rules")
+            .with_description(
+                "Search the Tracen Academy trainer handbook and the academy information topics by meaning. Use for rules, procedures,                  conditions, exceptions, penalties and 'can I / may I / what happens if' questions: race and off-campus paperwork details,                  injuries and health reporting, facility damage and compensation, late return and overnight stays, travel expense claims,                  equipment loans, lost property, media and photos, workshops and reviews, complaints and appeals, accounts.                  Returns whole sections with their number (e.g. §7.3); found:false means the handbook has no answer.",
+            )
+            .with_schema(json!({
+                "type": "object",
+                "properties": {
+                    "query": { "type": "string", "description": "The trainer's question in their own words (any language)" },
+                    "top_k": { "type": "integer", "minimum": 1, "maximum": MAX_TOP_K, "description": "How many sections; default 3" }
+                },
+                "required": ["query"]
             })),
         Tool::new("list_academy_events")
             .with_description(
@@ -97,7 +129,7 @@ pub fn specs(topics: &[String]) -> Vec<Tool> {
         Tool::new("calculate_training_plan")
             .with_description(
                 "Calculate a training plan: total minutes and demo fees for services × sessions, and, with a date and start time, \
-                 the schedule and clashes with the academy calendar, closed facilities and the 20:30 last use. \
+                 the schedule and clashes with the academy calendar, closed facilities and the 21:30 last use. \
                  Always use this for any total or time calculation; never add numbers yourself.",
             )
             .with_schema(json!({
@@ -151,6 +183,12 @@ struct InfoArgs {
 }
 
 #[derive(Deserialize)]
+struct RulesArgs {
+    query: String,
+    top_k: Option<usize>,
+}
+
+#[derive(Deserialize)]
 struct EventArgs {
     date_from: String,
     date_to: Option<String>,
@@ -166,7 +204,10 @@ struct TransferArgs {
 pub async fn dispatch(ctx: &ToolContext<'_>, name: &str, arguments: &Value) -> ToolOutcome {
     let started = Instant::now();
     let mut ticket = None;
+    // A tool of a disabled skill is as unknown as a made-up one.
+    let enabled = crate::skills::registry().agent_tools().contains(&name);
     let (status, result) = match name {
+        _ if !enabled => (ToolStatus::Rejected, json!({ "error": "unknown_tool", "detail": format!("'{name}' is not a tool of this system") })),
         "get_academy_info" => match serde_json::from_value::<InfoArgs>(arguments.clone()) {
             Err(e) => invalid(e.to_string()),
             Ok(a) => match catalog::get_info(ctx.db, &a.topic).await {
@@ -177,6 +218,51 @@ pub async fn dispatch(ctx: &ToolContext<'_>, name: &str, arguments: &Value) -> T
                 },
                 Err(e) => db_error(e),
             },
+        },
+        "search_academy_rules" => match serde_json::from_value::<RulesArgs>(arguments.clone()) {
+            Err(e) => invalid(e.to_string()),
+            Ok(a) if a.query.trim().is_empty() => invalid("query is empty"),
+            Ok(a) => {
+                let query: String = a.query.trim().chars().take(300).collect();
+                let request = SearchRequest {
+                    query: &query,
+                    top_k: a.top_k.unwrap_or(DEFAULT_TOP_K),
+                    locale: ctx.locale,
+                    audience: if ctx.user.is_staff() { Audience::Staff } else { Audience::Trainer },
+                    user_id: Some(ctx.user.id),
+                    purpose: "rag",
+                    max_distance: None,
+                    source: handbook::Source::Main,
+                    allow_embed: true,
+                };
+                match handbook::search(ctx.db, ctx.ai, ctx.settings, &request).await {
+                    Ok(o) if o.found => (
+                        ToolStatus::Ok,
+                        json!({
+                            "found": true,
+                            "method": o.method,
+                            "count": o.results.len(),
+                            "results": o.results,
+                            "note": "These are the closest sections, not necessarily answers. If none of them answers the question, treat it as not found. \
+                                     Otherwise answer only from them and cite handbook sections by number (e.g. §7.3); academy information topics \
+                                     have no number. A section in another language is still the rule: answer in the reply language.",
+                        }),
+                    ),
+                    Ok(o) => (
+                        ToolStatus::Ok,
+                        json!({
+                            "found": false,
+                            "method": o.method,
+                            "results": [],
+                            "note": "Nothing in the trainer handbook or the academy information covers this. Say the NOT FOUND sentence; do not guess.",
+                        }),
+                    ),
+                    Err(e) => {
+                        tracing::error!(error = ?e, "handbook search failed");
+                        (ToolStatus::Error, json!({ "error": "internal", "detail": "The handbook search did not answer. Apologise and offer the Director's Office." }))
+                    }
+                }
+            }
         },
         "list_academy_events" => match serde_json::from_value::<EventArgs>(arguments.clone()) {
             Err(e) => invalid(e.to_string()),

@@ -1,0 +1,22 @@
+{
+  "name": "tracen-academy",
+  "displayName": "Tracen Academy public data (AI Hayakawa Tazuna)",
+  "version": "1.1.0-beta",
+  "description": "Read the public demo data of AI Hayakawa Tazuna, an unofficial fan project: Trainer Handbook rules, the academy calendar and G1/G2 races, training facilities and training-plan totals, and send non-personal feedback to a human review queue. Bundles the tracen-public skill and the local MCP server (tracen-api mcp-stdio).",
+  "author": {
+    "name": "naritaroad",
+    "url": "https://github.com/naritaroad"
+  },
+  "homepage": "https://github.com/naritaroad/tracen-ai-tazuna",
+  "repository": "https://github.com/naritaroad/tracen-ai-tazuna",
+  "license": "MIT",
+  "keywords": ["tracen", "uma-musume", "mcp", "rag", "fan-project"],
+  "userConfig": {
+    "tracen_api": {
+      "type": "file",
+      "title": "tracen-api executable",
+      "description": "The built API in your clone of tracen-ai-tazuna, e.g. <clone>/backend/target/release/tracen-api.exe (run `cargo build --release` in backend/ first). It finds the project's .env from its own folder, so PostgreSQL must be running.",
+      "required": true
+    }
+  }
+}

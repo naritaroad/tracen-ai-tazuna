@@ -42,9 +42,9 @@ pub struct Cue {
 }
 
 /// The instruction added to the system prompt, built from the same vocabulary the parser accepts.
-pub fn prompt_rule() -> String {
+pub fn prompt_rule(number: usize) -> String {
     format!(
-        "15. End every final reply with one extra line `[[mood:EMOTION INTENSITY GESTURE]]` for your on-screen character.\n    \
+        "{number}. End every final reply with one extra line `[[mood:EMOTION INTENSITY GESTURE]]` for your on-screen character.\n    \
          EMOTION is one of: {}. INTENSITY is 0.0 to 1.0. GESTURE is one of: {}, none.\n    \
          The system removes this line before the trainer sees it; never mention it or put anything else in it.",
         EMOTIONS.join(" "),
@@ -284,7 +284,7 @@ mod tests {
 
     #[test]
     fn prompt_rule_lists_the_vocabulary() {
-        let rule = prompt_rule();
+        let rule = prompt_rule(12);
         assert!(EMOTIONS.iter().chain(GESTURES.iter()).all(|w| rule.contains(w)));
     }
 }

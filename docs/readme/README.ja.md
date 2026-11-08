@@ -30,10 +30,10 @@
   <img src="../assets/screenshots/chat.ja.png" alt="会話ページ：たづながトレーニング計画の質問に答え、コース整備との重なりを指摘している。展開した処理記録に calculate_training_plan の呼び出しが表示されている" width="900" />
 </p>
 
-<!-- course-homework:start — Unit G の課題セクション。採点後にこのブロックを削除 -->
-## コース課題（Unit G）
+<!-- course-homework:start — Unit H の中間課題セクション。採点後にこのブロックを削除 -->
+## コース課題（中間）
 
-> コース課題：Unit G、My AI Customer Service Agent, with a Database and Tools
+> コース課題：Unit H 中間プロジェクト、自分の言語モデルアプリ（Agent + RAG + LLM）。Unit G のカスタマーサービスエージェントを発展させたもの
 > 学生：F115118104 張任沂
 
 この節はコースの README テンプレートに沿っています。このページのほかの節は、同じプロジェクトの詳しい説明です。
@@ -41,43 +41,51 @@
 ### 誰が、いつ使うか
 
 - **誰が使うか：** 担当ウマ娘を指導するトレセン学園のトレーナー。もう一方は理事長室の職員で、AI を使わない管理サイトから「秋川理事長」として引き継ぎ案件を受けます。
-- **いつ使うか：** トレーニングを組む前（施設が使えるか、1 枠の長さ、定員、料金）、日付を選ぶとき（試験、全校行事、施設整備）、レース前（必要な書類、何日前に提出するか）、理事長秘書室が受け付けていない時間（デモデータでは平日 08:30–18:00、土曜 09:00–12:00）。
-- **何を解決するか：** このシステムがなければ、トレーナーは掲示、カレンダー、施設一覧を自分で調べるか秘書室まで行き、時間と料金も手で足し合わせます。たづなはデータベースを調べ、サーバーが計算と重なりの確認を行い、データにない用件は実際の案件として人に渡します。
+- **いつ使うか：** トレーニングを組む前（施設が使えるか、1 枠の長さ、料金）、日付を選ぶとき（試験、行事、整備）、レースや遠征の前（必要な書類、交通費の精算、外泊の申請）、困ったとき（器具の破損、けが、異議の申し立て）、秘書室の受付時間外。
+- **何を解決するか：** このシステムがなければ、トレーナーは掲示、カレンダー、施設一覧、分厚いハンドブックを自分で調べるか、秘書室まで行きます。たづなはデータベースで事実を調べ、トレーナーハンドブックで決まりを探し、計算はサーバーに任せ、データにない用件は案件として人に渡します。一般的なチャット AI はこの学園のデータを知らず、案件も作れません。
 
 ### できること
 
 | 機能 | 質問の例 | 使うツール |
 |---|---|---|
-| 校務の規則と手続き（受付時間、門限、レース申請、書類、研修） | 「秘書室の受付時間は何時から何時までですか？」 | `get_academy_info` |
+| ハンドブックの決まり：手続き、条件、例外、処分、異議申し立て | 「遠征の交通費は、いつまでに精算すればいいですか？」 | `search_academy_rules`（RAG） |
+| 短い学園情報（受付時間、門限、予約の期限） | 「秘書室の受付時間は何時から何時までですか？」 | `get_academy_info` |
 | 学園カレンダーと G1／G2 のレース日程 | 「11 月 4 日から 6 日まで、学園の予定は何がありますか？」 | `list_academy_events` |
-| 施設とサービスの検索：枠の長さ、定員、デモ料金、利用可否 | 「プールトレーニングは今予約できますか？ 1 枠はどのくらいですか？」 | `search_training_services` |
-| トレーニング計画の試算：合計分数、料金、終了時刻、重なり | 「11 月 2 日 18:00 開始で、ストレッチルーム 1 回、芝コース基礎トレーニング 2 回、トレーニング映像レビュー 1 回。合計時間と料金、終了時刻は？」 | `calculate_training_plan` |
-| 人への引き継ぎ（データにない用件、例外、苦情） | 「学園にウマ娘の蹄鉄交換はありますか？」／「秋川理事長に取り次いでください。」 | `transfer_to_director` |
-| 役割の外の大きな依頼は断る、雑談 | 「800 語の英作文を書いてもらえますか？」 | ツールは使わない |
+| 施設とサービスの検索：枠の長さ、定員、デモ料金、利用可否 | 「プールトレーニングは今予約できますか？」 | `search_training_services` |
+| トレーニング計画の試算：合計分数、料金、終了時刻、重なり | 「10 月 29 日 14:00 から芝コース基礎トレーニングを 2 回すると、何かと重なりますか？」 | `calculate_training_plan` |
+| 人への引き継ぎ（例外、苦情、指名） | 「秋川理事長に取り次いでください。」 | `transfer_to_director` |
+| データにないことはないと言い、役割の外の依頼は断る | 「トレーナーの給料はどう決まりますか？」／「800 字の作文を書いてください。」 | 決まった一文、推測しない |
+| 外部の AI エージェント（Claude、ChatGPT、自前）が公開データを読み、個人情報を含まないフィードバックを送る | — | MCP サーバー（`tracen-api mcp-stdio`、`/mcp`） |
 
 ### 動き方
 
-質問はまずエージェントに渡します。エージェントがツールを選び、ツールがデータベースを読むかサーバー側で計算し、エージェントはツールが返した内容だけを基に答えます。会話ページでは、各返信の下の「処理記録」に、使ったツール、引数、結果が表示されます。
+質問はまずエージェントに渡します。エージェントがツールを選び、ツールがデータベースを読むか、ハンドブックを検索するか、サーバー側で計算し、エージェントはツールが返した内容だけを基に答えます。各返信の下の「処理記録」に、使ったツール、引数、結果、見つかったハンドブックの節が表示されます。
 
-- **モデル：** `gemini-3.8-flash`（Google Gemini API。[rust-genai](https://github.com/jeremychone/rust-genai) 経由）。`MODEL=mock` なら API キーなしでオフライン実行できます。
+- **RAG：** トレーナーハンドブック（[`data/rag/trainer_handbook.zh-TW.md`](../../data/rag/trainer_handbook.zh-TW.md)、13 章 53 節、すべてデモ設定）と短い学園情報を節ごとに分け、`gemini-embedding-2` でベクトルにして PostgreSQL + pgvector（`handbook_chunks`）に保存します。内容が変わらなければ作り直しません。`search_academy_rules` は意味と語句の重なりで近い節を探して節ごと返し、たづなは節番号を添えて答えます。どの節も質問に答えていなければ、推測せずに決まった「見つからない」の一文を返します。
+- **5 部構成のシステムプロンプト：** 役割と目標、範囲、対話のルール、断り方と特別な場合（各言語 3 つの決まった一文）、最初のひとこと（会話ページにも同じ文を表示）。[`backend/src/agent/prompt.rs`](../../backend/src/agent/prompt.rs) を参照。
+- **内蔵 skills：** 各機能は [`data/skills/`](../../data/skills/) の 1 つのフォルダー（Agent Skills 形式）と、`registry.json` の 1 項目（ツール、ロール、公開範囲、テスト）です。プロンプトのツール振り分け、エージェントのツール一覧、MCP のツール一覧はここから作られ、起動時に検証されます。
+- **MCP：** 外部エージェントは、読み取り専用のデータベースビューを通じて `visibility = public` の行を読むことと、フィードバックを審査キューに送ることしかできません。リモート接続は管理者が有効にするまで無効で、読み取り専用のデータベースロール `tracen_mcp` が必要です。外部エージェント向けの skill は [`skills/tracen-public/SKILL.md`](../../skills/tracen-public/SKILL.md) に生成されます。
+- **モデル：** 会話は `gemini-3.8-flash`、ベクトルは `gemini-embedding-2`（Google Gemini API。[rust-genai](https://github.com/jeremychone/rust-genai) 経由）。`MODEL=mock` なら API キーなしでオフライン実行できます。
 - **チャット画面：** React + Vite + TypeScript のフロントエンド。Rust（Axum）のバックエンドが REST と SSE で API を提供します。API キー、エージェントループ、ツール、データベースはバックエンドに置きます。
-- **データベース：** PostgreSQL 18（コースでは SQLite が示されています）。`CATALOG_SEED_MODE=reset` のとき、API は起動のたびに CSV から次のテーブルを作り直します。
+- **データベース：** PostgreSQL 18 と pgvector（コースでは SQLite が示されています）。`CATALOG_SEED_MODE=reset` のとき、API は起動のたびに CSV から次のテーブルを作り直します。
 
-  | テーブル | CSV | 内容 | 行数 |
+  | テーブル | 元データ | 内容 | 行数 |
   |---|---|---|---|
-  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 情報トピック：受付時間、施設の規則、予約、門限、レース申請など | 10 |
-  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 施設とサービス：枠の長さ、定員、デモ料金、利用可否、別名 | 17 |
-  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 授業、試験、行事、整備と、影響を受ける施設 | 10 |
+  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 短い情報トピック | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 施設とサービス | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 授業、試験、行事、整備 | 10 |
   | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | ゲームの G1／G2 レース日程（GameTora、`community`） | 76 |
+  | `handbook_chunks` | ハンドブックのファイルと `academy_info` | 検索できる節と 768 次元のベクトル | 83 |
 
 - **ツール：**
 
   | ツール | 用途 |
   |---|---|
+  | `search_academy_rules(query, top_k)` | ハンドブックと情報トピックを意味で検索し、節ごと返す |
   | `get_academy_info(topic)` | `academy_info` から 1 つのトピックを読む |
   | `list_academy_events(date_from, date_to)` | 2 つの日付の間の学園カレンダーとレースを一覧する（最大 62 日） |
-  | `search_training_services(query, category, only_available)` | 三言語の名称か別名で `training_services` の施設を探す |
-  | `calculate_training_plan(items, date, start_time)` | 分 × 回数、料金 × 回数、時間割と重なりをサーバー側で計算する |
+  | `search_training_services(query, category, only_available)` | 三言語の名称か別名で施設を探す |
+  | `calculate_training_plan(items, date, start_time)` | 分数、料金、時間割と重なりをサーバー側で計算する |
   | `transfer_to_director(reason, summary)` | 理事長室の案件を作り、案件番号を返す |
 
 ### 会話の例
@@ -86,13 +94,27 @@
 
 ![データでは対応できない依頼を理事長室へ引き継ぐ](../assets/screenshots/handoff.ja.png)
 
+### テスト
+
+| テスト | 確かめること | コマンド |
+|---|---|---|
+| ツール選択（21 問） | 質問ごとに正しいツールを選び、答えに正しい値があるか | `cd backend && cargo run -- eval-tools` |
+| ハンドブック検索（46 問） | 上位 3 件に正しい節があるか、ハンドブックにない質問 | `cd backend && cargo run -- eval-rag` |
+| 範囲と捏造の防止（12 問） | 範囲外、存在しないデータ、ルール無視の指示、プロンプトの表示要求、ロールプレイ、偽の約束 | `cd backend && cargo run -- eval-boundary` |
+| MCP の境界（13 項目） | 公開データだけが出ること、カナリア文字列が出ないこと、個人情報を含むフィードバックの拒否 | `cd backend && cargo run -- eval-mcp` |
+
+結果は `data/eval/results/` に書き出されます。単体テスト：`cd backend && cargo test`。
+
 ### プロジェクトのファイル
 
 ```text
-backend/src/            Rust API：tools.rs（ツール）、agent/（エージェントループとシステムプロンプト）、seed.rs（CSV の取り込み）、catalog/（検索と計画の計算）
-web/src/                React フロントエンド（処理記録のある会話ページ、手動ページ、管理サイト）
+backend/src/            Rust API：tools.rs、agent/（エージェントループ、5 部構成のプロンプト）、handbook/（RAG）、skills.rs、mcp/、feedback.rs、catalog/、seed.rs
+web/src/                React フロントエンド（処理記録のある会話ページ、トレーナーハンドブックのページ、手動ページ、管理サイト）
+data/rag/               トレーナーハンドブック（RAG の文書）
+data/skills/            内蔵 skills：registry.json と skill ごとの SKILL.md
 data/seed/*.csv         データベースを作る CSV
-data/eval/tool_choice.csv  ツール選択テスト（16 問）：cd backend && cargo run -- eval-tools
+data/eval/*.csv         4 つのテストセット
+skills/tracen-public/   外部エージェント向けの skill（自動生成）
 backend/Cargo.toml、web/package.json   パッケージ一覧
 .env.example            設定の見本（本物のキーは入っていません）
 .gitignore              .env、*.db、node_modules/、target/ などを git に入れない
@@ -100,18 +122,21 @@ backend/Cargo.toml、web/package.json   パッケージ一覧
 
 ### インストールと実行
 
-下の[はじめに](#はじめに)に従ってください。`.env.example` を `.env` にコピーし、Docker Compose で PostgreSQL を起動し、`cargo run` で API を、`npm run dev` でウェブサイトを起動して、<http://localhost:5173> を開きます。
+下の[はじめに](#はじめに)に従ってください。`.env.example` を `.env` にコピーし、Docker Compose で PostgreSQL を起動し、`cargo run` で API を、`npm run dev` でウェブサイトを起動して、<http://localhost:5173> を開きます。初回起動時にハンドブックの索引を作ります。MCP クライアントの接続方法は [docs/engineering/development.md](../engineering/development.md#mcp外部-agent11) を参照してください。
 
 ### 備考
 
-- データにある校則、料金、人物、予約は、このプロジェクトのデモ設定です（`source_type` は `project` または `reference`）。レース日程はコミュニティが整理したゲームデータです。本プロジェクトは非公式の同人プロジェクトです。詳しくは [NOTICE.md](../../NOTICE.md)。
+- データにある校則、ハンドブック、料金、人物、予約は、このプロジェクトのデモ設定です（`source_type` は `project` または `reference`）。レース日程はコミュニティが整理したゲームデータです。本プロジェクトは非公式の同人プロジェクトです。詳しくは [NOTICE.md](../../NOTICE.md)。
 - `.env` には API キーを置き、このリポジトリには含めません。`.env.example` から自分で作ってください。
 <!-- course-homework:end -->
 
 ## 主な機能
 
-- たづなはデータベースをもとに回答します。上限付きのエージェントループ（モデル呼び出しは既定で最大 6 回。1 回 90 秒、1 run は呼び出し 1 回あたり 45 秒で 120〜600 秒）で、ホワイトリストに登録された 5 つのツールを使います。学園の規則、カレンダー、施設、料金はすべて PostgreSQL から取得し、モデルの記憶には頼りません。ツール呼び出しはすべて保存され、返信の下の「処理記録」で確認できます。
-- トレーニング計画はサーバーで計算します。所要時間、料金、終了時刻を算出したうえで、学園行事、施設の利用停止、21:00 の門限との重なりを確認します。施設名が一致しない、または候補が複数ある場合は、誤った合計ではなく問題点を返します。
+- たづなはデータベースをもとに回答します。上限付きのエージェントループ（モデル呼び出しは既定で最大 6 回。1 回 90 秒、1 run は呼び出し 1 回あたり 45 秒で 120〜600 秒）で、有効な skill の 6 つのツールを使います。学園の規則、カレンダー、施設、料金はすべて PostgreSQL から取得し、モデルの記憶には頼りません。ツール呼び出しはすべて保存され、返信の下の「処理記録」で確認できます。
+- トレーナーハンドブックを意味で検索します（RAG）。53 の節と短い学園情報を pgvector にベクトルで保存し、`search_academy_rules` が節ごと返します。たづなは使った節の番号を添えて答え、答えが見つからなければ推測せずに決まった一文でそう伝えます。ハンドブック専用のページもあります。
+- 機能は内蔵 skills として管理します。各機能は `data/skills/` にある Agent Skills 形式のフォルダーと、ツール・ロール・公開範囲・テストを記した登録項目です。プロンプトのツール振り分けと 2 つのツール一覧はここから作られます。管理者は管理サイトで skill を止められます。
+- 外部の AI エージェントは MCP（stdio または Streamable HTTP）で公開データを使えます。読み取り専用のビューを通じて `visibility = public` の行だけを読み、個人情報を含まないフィードバックを送れます。フィードバックは職員が管理サイトで審査します。リモート接続は既定で無効で、読み取り専用のデータベースロールが必要です。
+- トレーニング計画はサーバーで計算します。所要時間、料金、終了時刻を算出したうえで、学園行事、施設の利用停止、22:00 の門限前の最終利用時刻 21:30 との重なりを確認します。施設名が一致しない、または候補が複数ある場合は、誤った合計ではなく問題点を返します。
 - 人の判断が必要な用件は担当者へ引き継ぎます。`transfer_to_director` が理事長室の案件を作成します。職員は管理サイト（AI は使いません）で「秋川理事長・有人対応」として対応開始、返信、完了、たづなへの差し戻しを行います。担当者が対応している間、AI は返信しません。
 - 3D キャラクターは会話に合わせて動きます。必要なときに読み込まれる three-vrm プレーヤーが、考え中、調べ中、説明、引き継ぎ、お詫びなどの状態に応じて動き、口の動き、まばたき、視線追従、タップへの反応を行います。モデルが選べる感情とジェスチャーは固定の語彙に限られ、サーバーが検証します。トレーナーサイトの各ページで同じキャラクターを共有し、WebGL やキャラクターファイルがない環境では 2D の状態カードに切り替わります。
 - 記憶の内容はトレーナー自身が管理できます。記憶するのは直近の会話、会話の要約、好みの設定、過去の出来事の意味検索（pgvector、768 次元）です。バックグラウンドで整理し、置き換えた記録の履歴も残します。記憶した項目はすべて「マイデータ」で確認・修正・削除できます。健康や医療の情報、他人の連絡先、パスワードや API キーは自動では記憶しません。

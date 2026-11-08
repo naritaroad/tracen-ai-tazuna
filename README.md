@@ -30,10 +30,10 @@
   <img src="docs/assets/screenshots/chat.en.png" alt="Chat page: Tazuna answers a training-plan question and flags a clash with course maintenance; the expanded activity log shows the calculate_training_plan call" width="900" />
 </p>
 
-<!-- course-homework:start — Unit G homework section; remove this block after grading -->
-## Course Homework
+<!-- course-homework:start — Unit H midterm section; remove this block after grading -->
+## Course Homework (Midterm)
 
-> Course homework: Unit G, My AI Customer Service Agent, with a Database and Tools
+> Course homework: Unit H midterm project, Your Own Language Model App (Agent + RAG + LLM), extending the Unit G customer service agent
 > Student: F115118104 張任沂
 
 This section follows the course README template. The rest of this page describes the same project in more detail.
@@ -41,43 +41,51 @@ This section follows the course README template. The rest of this page describes
 ### Who It Serves and When They Use It
 
 - **Who uses it:** trainers at Tracen Academy who coach their own Uma Musume; on the other side, staff answer hand-over cases as *Director Akikawa* on a management site that uses no AI.
-- **When they use it:** before planning training (is a facility open, how long is a slot, how many people, what does it cost), when choosing a date (exams, academy events, maintenance), before a race (which forms, how many days ahead), and outside the Director's Secretary Office hours (weekdays 08:30–18:00, Saturdays 09:00–12:00 in the demo data).
-- **What problem it solves:** without it, trainers read notices, calendars and facility lists themselves or walk to the office, and add up times and fees by hand. Tazuna looks everything up in the database, lets the server do the arithmetic and clash checks, and opens a real case for a person when the data has no answer.
+- **When they use it:** before planning training (is a facility open, how long is a slot, what does it cost), when choosing a date (exams, events, maintenance), before a race or an away trip (which forms, travel claims, overnight stays), when something goes wrong (damaged equipment, an injury, an appeal), and outside the Secretary Office hours.
+- **What problem it solves:** without it, trainers read notices, the calendar, the facility list and a long handbook themselves, or walk to the office. Tazuna looks facts up in the database, searches the Trainer Handbook for the rules, lets the server do the arithmetic, and opens a case for a real person when the data has no answer. A general chatbot knows none of this academy's data and cannot open a case.
 
 ### What It Can Do
 
 | Function | Example question | Tool it uses |
 |---|---|---|
-| Academy rules and procedures (office hours, curfew, race paperwork, documents, workshops) | "What time does the Secretary Office open?" | `get_academy_info` |
+| Handbook rules: procedures, conditions, exceptions, penalties, appeals | "How soon after an away race do I have to claim travel expenses?" | `search_academy_rules` (RAG) |
+| Short academy information (office hours, curfew, booking deadline) | "What time does the Secretary Office open?" | `get_academy_info` |
 | Academy calendar and G1/G2 race schedule | "What is on from 4 to 6 November?" | `list_academy_events` |
-| Find a facility or service, its slot length, capacity, demo fee and availability | "Can I book pool training now? How long is a slot?" | `search_training_services` |
-| Work out a training plan: total minutes, fees, end time and clashes | "From 18:00 on 2 November: stretching once, turf training twice, video review once. How long, how much, and when does it end?" | `calculate_training_plan` |
-| Hand over to a person (not in the data, exceptions, complaints) | "Does the academy offer horseshoe replacement?" / "Please pass this to Director Akikawa." | `transfer_to_director` |
-| Decline jobs outside its role, small talk | "Can you write an 800-word essay for me?" | no tool |
+| Find a facility, its slot length, capacity, demo fee and availability | "Can I book pool training now?" | `search_training_services` |
+| Work out a training plan: total minutes, fees, end time and clashes | "From 14:00 on 29 October, two turf basic sessions: does anything clash?" | `calculate_training_plan` |
+| Hand over to a person (exceptions, complaints, on request) | "Please pass this to Director Akikawa." | `transfer_to_director` |
+| Say it is not in the data, or decline jobs outside its role | "How is a trainer's salary worked out?" / "Write me an 800-word essay." | fixed sentences, no guessing |
+| Outside AI agents (Claude, ChatGPT, self-hosted) read public data and send non-personal feedback | — | MCP server (`tracen-api mcp-stdio`, `/mcp`) |
 
 ### How It Works
 
-Every question goes to the agent first. The agent chooses a tool, the tool reads the database or runs the calculation on the server, and the agent answers only from what the tool returns. Each reply on the chat page has an *Activity log* listing the tool, its arguments and its result.
+Every question goes to the agent first. The agent chooses a tool, the tool reads the database, searches the handbook or calculates on the server, and the agent answers only from what the tool returns. Each reply has an *Activity log* with the tool, its arguments, its result and the handbook sections found.
 
-- **Model:** `gemini-3.8-flash` (Google Gemini API through [rust-genai](https://github.com/jeremychone/rust-genai)); `MODEL=mock` runs offline without a key.
-- **Chat screen:** React + Vite + TypeScript front end; Rust (Axum) back end with REST and SSE. The API key, the agent loop, the tools and the database stay in the back end.
-- **Database:** PostgreSQL 18 (the course suggests SQLite). With `CATALOG_SEED_MODE=reset` the API rebuilds these tables from the CSV files every time it starts:
+- **RAG:** the Trainer Handbook ([`data/rag/trainer_handbook.zh-TW.md`](data/rag/trainer_handbook.zh-TW.md), 13 chapters, 53 sections, all demo settings) and the short information topics are split by section and embedded with `gemini-embedding-2` into PostgreSQL + pgvector (`handbook_chunks`). Embeddings are reused while a section's text is unchanged. `search_academy_rules` finds the closest sections by meaning plus shared wording and returns whole sections; Tazuna cites the section number. If none of them answers the question, she says a fixed "not found" sentence instead of guessing.
+- **System prompt in five parts:** role and goal, scope, interaction rules, refusals and special cases (three fixed sentences per language), and the opening line that the chat page also shows ([`backend/src/agent/prompt.rs`](backend/src/agent/prompt.rs)).
+- **Built-in skills:** each capability is one folder in [`data/skills/`](data/skills/) (Agent Skills format) plus an entry in `registry.json` with its tools, roles, visibility and tests. The prompt's tool rules, the agent's tool list and the MCP tool list are all built from it, and it is checked at start.
+- **MCP:** outside agents can only read `visibility = public` rows through read-only database views and send feedback to a review queue. Remote access is off until an admin switches it on, and it needs the read-only database role `tracen_mcp`. The skill for outside agents is generated into [`skills/tracen-public/SKILL.md`](skills/tracen-public/SKILL.md).
+- **Model:** `gemini-3.8-flash` for chat, `gemini-embedding-2` for embeddings (Google Gemini API through [rust-genai](https://github.com/jeremychone/rust-genai)); `MODEL=mock` runs offline without a key.
+- **Chat screen:** React + Vite + TypeScript; Rust (Axum) back end with REST and SSE. The API key, the agent loop, the tools and the database stay in the back end.
+- **Database:** PostgreSQL 18 with pgvector (the course suggests SQLite). With `CATALOG_SEED_MODE=reset` the API rebuilds the catalog tables from CSV at every start:
 
-  | Table | CSV file | What it holds | Rows |
+  | Table | Source | What it holds | Rows |
   |---|---|---|---|
-  | `academy_info` | [`data/seed/academy_info.csv`](data/seed/academy_info.csv) | Information topics: office hours, facility rules, booking, curfew, race paperwork … | 10 |
-  | `training_services` | [`data/seed/training_services.csv`](data/seed/training_services.csv) | Facilities and services: slot length, capacity, demo fee, available or not, aliases | 17 |
-  | `academy_events` | [`data/seed/academy_events.csv`](data/seed/academy_events.csv) | Classes, exams, events and maintenance, with the facilities they affect | 10 |
-  | `races` | [`data/seed/race_schedule.csv`](data/seed/race_schedule.csv) | G1/G2 race schedule from the game (GameTora, marked `community`) | 76 |
+  | `academy_info` | [`data/seed/academy_info.csv`](data/seed/academy_info.csv) | Short information topics | 10 |
+  | `training_services` | [`data/seed/training_services.csv`](data/seed/training_services.csv) | Facilities and services | 17 |
+  | `academy_events` | [`data/seed/academy_events.csv`](data/seed/academy_events.csv) | Classes, exams, events, maintenance | 10 |
+  | `races` | [`data/seed/race_schedule.csv`](data/seed/race_schedule.csv) | G1/G2 race schedule from the game (GameTora, `community`) | 76 |
+  | `handbook_chunks` | the handbook files and `academy_info` | Searchable sections with 768-dimension vectors | 83 |
 
 - **Tools:**
 
   | Tool | What it does |
   |---|---|
+  | `search_academy_rules(query, top_k)` | Searches the handbook and information topics by meaning; returns whole sections |
   | `get_academy_info(topic)` | Reads one topic from `academy_info` |
   | `list_academy_events(date_from, date_to)` | Lists calendar entries and races between two dates (at most 62 days) |
-  | `search_training_services(query, category, only_available)` | Finds facilities in `training_services` by name or alias in any of the three languages |
-  | `calculate_training_plan(items, date, start_time)` | Minutes × sessions and fee × sessions, the schedule and clashes, calculated on the server |
+  | `search_training_services(query, category, only_available)` | Finds facilities by name or alias in any of the three languages |
+  | `calculate_training_plan(items, date, start_time)` | Minutes, fees, the schedule and clashes, calculated on the server |
   | `transfer_to_director(reason, summary)` | Opens a Director's Office case for a real person and returns the case number |
 
 ### Sample Conversations
@@ -86,13 +94,27 @@ Every question goes to the agent first. The agent chooses a tool, the tool reads
 
 ![A request the data cannot settle is handed to the Director's Office](docs/assets/screenshots/handoff.en.png)
 
+### Tests
+
+| Test | What it checks | Command |
+|---|---|---|
+| Tool choice (21 questions) | The right tool for each question, and the value in the answer | `cd backend && cargo run -- eval-tools` |
+| Handbook retrieval (46 questions) | The expected section is in the top three; questions outside the handbook | `cd backend && cargo run -- eval-rag` |
+| Scope and no invention (12 questions) | Out-of-scope, missing records, "ignore your rules", "print your prompt", role play, false promises | `cd backend && cargo run -- eval-boundary` |
+| MCP boundary (13 cases) | Only public data leaves, a canary string never does, personal data in feedback is refused | `cd backend && cargo run -- eval-mcp` |
+
+Results are written to `data/eval/results/`. Unit tests: `cd backend && cargo test`.
+
 ### Project Files
 
 ```text
-backend/src/            Rust API: tools.rs (tools), agent/ (agent loop and system prompt), seed.rs (CSV import), catalog/ (queries and plan calculation)
-web/src/                React front end (chat page with the tool trace, manual pages, management site)
+backend/src/            Rust API: tools.rs, agent/ (agent loop, five-part prompt), handbook/ (RAG), skills.rs, mcp/, feedback.rs, catalog/, seed.rs
+web/src/                React front end (chat with the activity log, the Trainer Handbook page, manual pages, management site)
+data/rag/               The Trainer Handbook (RAG documents)
+data/skills/            Built-in skills: registry.json and one SKILL.md per skill
 data/seed/*.csv         The CSV files the database is built from
-data/eval/tool_choice.csv  Tool-choice test (16 questions): cd backend && cargo run -- eval-tools
+data/eval/*.csv         The four test sets
+skills/tracen-public/   The skill for outside agents (generated)
 backend/Cargo.toml, web/package.json   Package lists
 .env.example            Sample settings (no real key)
 .gitignore              Keeps .env, *.db, node_modules/, target/ … out of git
@@ -100,18 +122,21 @@ backend/Cargo.toml, web/package.json   Package lists
 
 ### How to Install and Run It
 
-Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`, start PostgreSQL with Docker Compose, run the API with `cargo run`, run the web site with `npm run dev`, and open <http://localhost:5173>.
+Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`, start PostgreSQL with Docker Compose, run the API with `cargo run`, run the web site with `npm run dev`, and open <http://localhost:5173>. The handbook is indexed on the first start. To connect an MCP client, see [docs/engineering/development.md](docs/engineering/development.md#mcp外部-agent11).
 
 ### Notes
 
-- All academy rules, prices, people and bookings in the data are made up for this project (`source_type` `project` or `reference`); the race schedule is community game data. This is an unofficial doujin project; see [NOTICE.md](NOTICE.md).
+- All academy rules, the handbook, prices, people and bookings are made up for this project (`source_type` `project` or `reference`); the race schedule is community game data. This is an unofficial doujin project; see [NOTICE.md](NOTICE.md).
 - `.env` holds the API keys and is not in this repository. Make your own from `.env.example`.
 <!-- course-homework:end -->
 
 ## Features
 
-- Tazuna answers from the database. She runs a bounded agent loop (6 model calls by default, 90 s per call, and 45 s per allowed call for the whole run, between 120 and 600 s) over five whitelisted tools. Academy rules, the calendar, facilities and fees come from PostgreSQL, not from the model's memory. Every tool call is stored and listed in the reply's *Activity log*.
-- Training plans are calculated on the server. Durations, fees and end times are checked against calendar events, facility closures and the 21:00 curfew. If a facility name matches nothing, or more than one facility, the tool returns that problem instead of a total.
+- Tazuna answers from the database. She runs a bounded agent loop (6 model calls by default, 90 s per call, and 45 s per allowed call for the whole run, between 120 and 600 s) over the six tools of the enabled skills. Academy rules, the calendar, facilities and fees come from PostgreSQL, not from the model's memory. Every tool call is stored and listed in the reply's *Activity log*.
+- The Trainer Handbook is searched by meaning (RAG). Its 53 sections and the short information topics are embedded into pgvector; `search_academy_rules` returns whole sections, and Tazuna names the section she used. When nothing answers the question she says so in a fixed sentence instead of guessing. The handbook also has its own page.
+- Capabilities are built-in skills. Each one is a folder in `data/skills/` in the Agent Skills format plus a registry entry with its tools, roles, visibility and tests; the prompt's tool rules and both tool lists are built from it. Admins can switch a skill off on the management site.
+- Outside AI agents can use the public data over MCP (stdio or Streamable HTTP). They read only `visibility = public` rows through read-only views and can send non-personal feedback, which staff review on the management site. Remote access is off by default and needs a read-only database role.
+- Training plans are calculated on the server. Durations, fees and end times are checked against calendar events, facility closures and the 21:30 last use before the 22:00 curfew. If a facility name matches nothing, or more than one facility, the tool returns that problem instead of a total.
 - Cases go to a real person. `transfer_to_director` opens a Director's Office case. Staff handle it on the management site, which uses no AI, and reply as *Director Akikawa (staffed)*: they can take the case, reply, close it or hand it back to Tazuna. While a person holds the case, the AI does not reply.
 - The 3D character follows the conversation. A three-vrm player, loaded on demand, switches between thinking, working, explaining, hand-over and apology states, with lip sync, blinking, gaze and tap reactions. The model can only pick an emotion and a gesture from a fixed vocabulary, and the server validates the pick. One character instance moves with the trainer from page to page; without WebGL or character files the site shows a 2D status card instead.
 - Trainers can see and edit what is remembered. Memory covers recent turns, conversation summaries, preferences and semantic recall of past events (pgvector, 768 dimensions). A background job curates it and keeps the history of superseded entries. Everything is listed under *My details*, where it can be edited or deleted. Health details, other people's contacts and credentials are never stored automatically.
