@@ -11,6 +11,17 @@ The data is an unofficial fan project's demo setting, never official Cygames mat
 
 ## Install
 
+### From the zip
+
+`plugins/tracen-academy.zip` (next to this folder in the repository) is the plugin packed with its root at the top level, ready to import without the marketplace:
+
+- Claude apps with plugin upload: choose the zip in the app's plugin upload dialog. Note that the plugin starts a local program (`tracen-api`), so it only works where local MCP servers can run (Claude Code, Claude desktop), not on claude.ai in a browser.
+- Claude Code, one session: unzip it anywhere and run `claude --plugin-dir <that folder>`.
+
+Either way you still need the built `tracen-api` (step 1 below) and pick it when asked for **tracen-api executable** (step 3). The zip is generated, so do not edit it by hand: after changing anything in this folder or the skill, run `python tools/package-plugin/package_plugin.py` (`--check` tells whether it is stale).
+
+### From the marketplace
+
 1. In the clone: start PostgreSQL (`docker compose up -d db`), fill `.env`, and build the API: `cd backend && cargo build --release`.
 2. In Claude Code:
 

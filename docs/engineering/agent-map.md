@@ -31,6 +31,7 @@
 | `data/skills/` | 內建 skills：`registry.json`（我們的欄位）＋每個 skill 一個 `SKILL.md`（Agent Skills 格式） | 可改；啟動時驗證，失敗就不啟動 |
 | `skills/tracen-public/SKILL.md` | 給外部 agent 的 skill（通用 Agent Skills 格式） | **不要手改**，用 `cargo run -- export-skills` 產生 |
 | `plugins/tracen-academy/`、`.claude-plugin/marketplace.json` | Claude Code plugin：同一份 skill＋stdio MCP 伺服器設定 | `plugin.json`、`.mcp.json`、README 可改；`skills/tracen-public/SKILL.md` 由 `export-skills` 產生，**不要手改** |
+| `plugins/tracen-academy.zip` | 可直接匯入 Claude 的 plugin 壓縮檔（plugin 根目錄在 zip 最上層） | 由 `python tools/package-plugin/package_plugin.py` 產生，**不要手改**；改了 plugin 內任何檔案都要重打包 |
 | `assets/characters/<id>/` | 角色清單、動作清單、行為對照、加工紀錄、.vrm／.vrma | `character.json`、`animations.json`、`behavior.json`（情緒 → 表情、手勢替代、動作組的圖）可改；**模型與動畫檔不可覆蓋**，`work/` 是動作擬合中間資料 |
 | `tools/vrm-test-viewer/` | 角色測試頁 | 獨立工具 |
 | `tools/motion-reference/` | 影片動作參考前處理 | 獨立工具，Python，不進容器 |
@@ -94,6 +95,7 @@ cd backend && cargo run -- eval-boundary   # 範圍、提示詞外洩、不編�
 cd backend && cargo run -- eval-mcp     # MCP 界線、金絲雀；設 MCP_DATABASE_URL 時加查唯讀角色
 cd backend && cargo run -- mcp-stdio    # MCP 伺服器（stdio）
 cd backend && cargo run -- export-skills   # 產生 skills/tracen-public/SKILL.md 與 plugin 裡的副本
+python tools/package-plugin/package_plugin.py   # 重打包 plugins/tracen-academy.zip（--check 檢查是否過期）
 cd web && npm run i18n:check         # 三語鍵值一致、無寫死文字
 cd web && npm test                   # 角色規劃層、動作圖、口型（node --test）
 cd web && npm run build              # 文案檢查＋型別檢查＋建置
