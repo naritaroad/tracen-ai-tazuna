@@ -51,3 +51,5 @@ README.txt
 
 # Agent working notes (local paths, hand-over notes) stay on this machine; the repository is public.
 .agent-context/
+
+dome_video/
