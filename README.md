@@ -36,13 +36,14 @@
 > Course homework: Unit H midterm project, Your Own Language Model App (Agent + RAG + LLM), extending the Unit G customer service agent
 > Student: F115118104 張任沂
 
-This section follows the course README template. The rest of this page describes the same project in more detail.
+The Unit G service already looked up academy data, calculated training plans and handed cases to staff. The midterm adds retrieval from the Trainer Handbook and tests for questions the data cannot answer.
 
 ### Who It Serves and When They Use It
 
 - **Who uses it:** trainers at Tracen Academy who coach their own Uma Musume; on the other side, staff answer hand-over cases as *Director Akikawa* on a management site that uses no AI.
 - **When they use it:** before planning training (is a facility open, how long is a slot, what does it cost), when choosing a date (exams, events, maintenance), before a race or an away trip (which forms, travel claims, overnight stays), when something goes wrong (damaged equipment, an injury, an appeal), and outside the Secretary Office hours.
-- **What problem it solves:** without it, trainers read notices, the calendar, the facility list and a long handbook themselves, or walk to the office. Tazuna looks facts up in the database, searches the Trainer Handbook for the rules, lets the server do the arithmetic, and opens a case for a real person when the data has no answer. A general chatbot knows none of this academy's data and cannot open a case.
+
+Trainers can check the handbook, facility list and calendar from the same conversation. A chat service without this project's data and tools cannot check those records or create a Director's Office case.
 
 ### What It Can Do
 
@@ -52,30 +53,30 @@ This section follows the course README template. The rest of this page describes
 | Short academy information (office hours, curfew, booking deadline) | "What time does the Secretary Office open?" | `get_academy_info` |
 | Academy calendar and G1/G2 race schedule | "What is on from 4 to 6 November?" | `list_academy_events` |
 | Find a facility, its slot length, capacity, demo fee and availability | "Can I book pool training now?" | `search_training_services` |
-| Work out a training plan: total minutes, fees, end time and clashes | "From 14:00 on 29 October, two turf basic sessions: does anything clash?" | `calculate_training_plan` |
+| Work out a training plan: total minutes, fees, end time and clashes | "Two pool sessions and one stretching session from 15:00 on 14 November. Does anything clash?" | `calculate_training_plan` |
 | Hand over to a person (exceptions, complaints, on request) | "Please pass this to Director Akikawa." | `transfer_to_director` |
 | Say it is not in the data, or decline jobs outside its role | "How is a trainer's salary worked out?" / "Write me an 800-word essay." | fixed sentences, no guessing |
 | Outside AI agents (Claude, ChatGPT, self-hosted) read public data and send non-personal feedback | — | MCP server (`tracen-api mcp-stdio`, `/mcp`) |
 
 ### How It Works
 
-Every question goes to the agent first. The agent chooses a tool, the tool reads the database, searches the handbook or calculates on the server, and the agent answers only from what the tool returns. Each reply has an *Activity log* with the tool, its arguments, its result and the handbook sections found.
+The agent can look up records, search the handbook or run a calculation on the server. The Activity log shows which tools ran, their arguments and what they returned. The rules require the agent to base academy answers on tool results, say when it cannot find an answer, and leave exceptions to the Director's Office.
 
-- **RAG:** the Trainer Handbook ([`data/rag/trainer_handbook.zh-TW.md`](data/rag/trainer_handbook.zh-TW.md), 13 chapters, 53 sections, all demo settings) and the short information topics are split by section and embedded with `gemini-embedding-2` into PostgreSQL + pgvector (`handbook_chunks`). Embeddings are reused while a section's text is unchanged. `search_academy_rules` finds the closest sections by meaning plus shared wording and returns whole sections; Tazuna cites the section number. If none of them answers the question, she says a fixed "not found" sentence instead of guessing.
+- **RAG.** The [Traditional Chinese Trainer Handbook](data/rag/trainer_handbook.zh-TW.md) has 53 sections. The system embeds those sections and short academy information entries with `gemini-embedding-2` and stores the vectors in PostgreSQL with pgvector. `search_academy_rules` ranks candidates by vector distance and shared wording. The chat interface supports Traditional Chinese, English and Japanese.
 - **System prompt in five parts:** role and goal, scope, interaction rules, refusals and special cases (three fixed sentences per language), and the opening line that the chat page also shows ([`backend/src/agent/prompt.rs`](backend/src/agent/prompt.rs)).
 - **Built-in skills:** each capability is one folder in [`data/skills/`](data/skills/) (Agent Skills format) plus an entry in `registry.json` with its tools, roles, visibility and tests. The prompt's tool rules, the agent's tool list and the MCP tool list are all built from it, and it is checked at start.
-- **MCP:** outside agents can only read `visibility = public` rows through read-only database views and send feedback to a review queue. Remote access is off until an admin switches it on, and it needs the read-only database role `tracen_mcp`. The skill for outside agents is generated into [`skills/tracen-public/SKILL.md`](skills/tracen-public/SKILL.md).
+- **MCP.** External agents use a separate set of tools. They can query public data through read-only views and send non-personal feedback for staff review. They cannot read conversations, memories or cases, or open cases. Remote access is off by default. To enable it, an admin must configure the read-only database role `tracen_mcp` and switch it on. The [generated skill](skills/tracen-public/SKILL.md) lists the public tools.
 - **Model:** `gemini-3.8-flash` for chat, `gemini-embedding-2` for embeddings (Google Gemini API through [rust-genai](https://github.com/jeremychone/rust-genai)); `MODEL=mock` runs offline without a key.
 - **Chat screen:** React + Vite + TypeScript; Rust (Axum) back end with REST and SSE. The API key, the agent loop, the tools and the database stay in the back end.
 - **Database:** PostgreSQL 18 with pgvector (the course suggests SQLite). With `CATALOG_SEED_MODE=reset` the API rebuilds the catalog tables from CSV at every start:
 
   | Table | Source | What it holds | Rows |
   |---|---|---|---|
-  | `academy_info` | [`data/seed/academy_info.csv`](data/seed/academy_info.csv) | Short information topics | 10 |
+  | `academy_info` | [`data/seed/academy_info.csv`](data/seed/academy_info.csv) | Short information topics | 11 |
   | `training_services` | [`data/seed/training_services.csv`](data/seed/training_services.csv) | Facilities and services | 17 |
   | `academy_events` | [`data/seed/academy_events.csv`](data/seed/academy_events.csv) | Classes, exams, events, maintenance | 10 |
   | `races` | [`data/seed/race_schedule.csv`](data/seed/race_schedule.csv) | G1/G2 race schedule from the game (GameTora, `community`) | 76 |
-  | `handbook_chunks` | the handbook files and `academy_info` | Searchable sections with 768-dimension vectors | 83 |
+  | `handbook_chunks` | the handbook file and `academy_info` | Searchable sections with 768-dimension vectors | 86 |
 
 - **Tools:**
 
@@ -90,6 +91,8 @@ Every question goes to the agent first. The agent chooses a tool, the tool reads
 
 ### Sample Conversations
 
+The demo calculates 120 minutes for two pool sessions and one stretching session. The 14 November slot clashes with the Autumn Academy Festival. The server finds no clash for the same slot on 13 November. When Gold Ship damages a vending machine, Tazuna finds the reporting procedure in §5.4. The activity log shows searches, with no report submission. In the cafeteria example, Tazuna cannot find a rule on seconds for Oguri Cap and asks before opening case `DIR-1038`. The screenshots below show separate examples of the same workflows.
+
 ![A training-plan question that uses the calculation tool](docs/assets/screenshots/chat.en.png)
 
 ![A request the data cannot settle is handed to the Director's Office](docs/assets/screenshots/handoff.en.png)
@@ -98,12 +101,12 @@ Every question goes to the agent first. The agent chooses a tool, the tool reads
 
 | Test | What it checks | Command |
 |---|---|---|
-| Tool choice (21 questions) | The right tool for each question, and the value in the answer | `cd backend && cargo run -- eval-tools` |
-| Handbook retrieval (46 questions) | The expected section is in the top three; questions outside the handbook | `cd backend && cargo run -- eval-rag` |
-| Scope and no invention (12 questions) | Out-of-scope, missing records, "ignore your rules", "print your prompt", role play, false promises | `cd backend && cargo run -- eval-boundary` |
-| MCP boundary (13 cases) | Only public data leaves, a canary string never does, personal data in feedback is refused | `cd backend && cargo run -- eval-mcp` |
+| Tool choice (23 questions) | 21/23 matched the allowed tool calls. All 17 cases with an expected string matched it. Six had no string check. | `cd backend && cargo run -- eval-tools` |
+| Handbook retrieval (46 questions) | The expected section was in the top three for 33/36 questions with an answer. The retriever returned candidates for 5/10 questions outside the handbook. | `cd backend && cargo run -- eval-rag` |
+| Conversation boundaries (12 questions) | 12/12 passed checks for missing information, out-of-scope requests and attempts to override rules. | `cd backend && cargo run -- eval-boundary` |
+| MCP boundaries (13 cases) | 13/13 passed on the main connection, including public lookups, probes for non-public records and feedback checks. | `cd backend && cargo run -- eval-mcp` |
 
-Results are written to `data/eval/results/`. Unit tests: `cd backend && cargo test`.
+See the [7 November test records](data/eval/results/). A string match checks only the expected text. The curfew answer contained 22:00 but still gave the old 20:30 threshold for late-return requests. The current threshold is 21:30. Unit tests run with `cd backend && cargo test`.
 
 ### Project Files
 
@@ -126,7 +129,7 @@ Follow [Getting started](#getting-started) below: copy `.env.example` to `.env`,
 
 ### Notes
 
-- All academy rules, the handbook, prices, people and bookings are made up for this project (`source_type` `project` or `reference`); the race schedule is community game data. This is an unofficial doujin project; see [NOTICE.md](NOTICE.md).
+- This is an unofficial fan project. The Trainer Handbook, facility fees and demo events are project settings. Race schedules come from GameTora's community data. The catalog records the provenance of dormitory information in `source_ref`. See [NOTICE.md](NOTICE.md).
 - `.env` holds the API keys and is not in this repository. Make your own from `.env.example`.
 <!-- course-homework:end -->
 
@@ -168,8 +171,8 @@ flowchart LR
   end
   subgraph API["Rust API · Axum"]
     AG["Agent loop<br/>max 6 steps"]
-    TL["Tool registry<br/>5 whitelisted tools"]
-    SV["Services<br/>catalog · plan · handoff · memory"]
+    TL["Tool registry<br/>6 whitelisted tools"]
+    SV["Services<br/>catalog · handbook · plan · handoff · memory"]
     GW["ModelGateway<br/>genai"]
   end
   DB[("PostgreSQL 18<br/>+ pgvector")]
@@ -206,6 +209,7 @@ The Rust API is a modular monolith that serves the built web site and `/api/v1` 
 | Tool | Kind | Returns |
 |---|---|---|
 | `get_academy_info` | Information lookup by topic | Title, content, `source_type`, `source_ref`; or `found: false` with available topics |
+| `search_academy_rules` | Search the handbook and academy information (RAG) | Matching sections with their text, section numbers and sources, or `found: false` |
 | `list_academy_events` | Calendar for a date range (≤ 62 days) | Events and races with the facilities they affect |
 | `search_training_services` | Facility search by name or alias in any of the three languages | Unit length, capacity, fee, availability, location |
 | `calculate_training_plan` | Server-side calculation | Lines, totals, schedule, conflicts and the formula used |

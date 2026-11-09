@@ -36,13 +36,14 @@
 > 課程作業：Unit H 期中專案，做一個自己的語言模型應用（Agent + RAG + LLM），延伸 Unit G 的客服 Agent
 > 學生：F115118104 張任沂
 
-本節依課程的 README 範本撰寫；本頁其他段落是同一個專案更完整的說明。
+第七週的客服作業已能查校務資料、試算訓練和轉交理事長室。期中加入訓練員手冊檢索，也加測資料查不到時系統會怎麼回答。
 
 ### 服務對象與使用時機
 
 - **誰會使用：**特雷森學園中帶領擔當馬娘的訓練員；另一端是理事長室的工作人員，在不使用 AI 的管理站以「秋川理事長」身分接手轉接案件。
 - **什麼時候使用：**排訓練前（設施能不能用、一個時段多久、費用）、挑日期時（考試、活動、維護）、出賽或遠征前（要哪些文件、交通費怎麼報支、外宿怎麼申請）、出狀況時（器材弄壞、受傷、想申訴），以及秘書室不受理的時間。
-- **解決什麼問題：**沒有這個系統時，訓練員得自己翻公告、日曆、設施表和一大本手冊，或跑到秘書室問人。駿川查資料庫裡的事實，在訓練員手冊裡找規定，計算交給伺服器；資料裡沒有的事就建立案件交給真人。一般的聊天 AI 不知道這所學園的任何資料，也不能開案件。
+
+訓練員可以在同一段對話裡查手冊、設施和行事曆。一般聊天服務若未接入本專案的資料與工具，無法查詢這些紀錄或建立理事長室案件。
 
 ### 能做什麼
 
@@ -52,30 +53,30 @@
 | 簡短的校務資訊（受理時間、門禁、預約期限） | 「秘書室的受理時間是幾點到幾點？」 | `get_academy_info` |
 | 校務日曆與 G1／G2 賽事日程 | 「11 月 4 日到 6 日有什麼校務活動？」 | `list_academy_events` |
 | 查詢設施與服務：時段長度、名額、展示費用、是否可用 | 「泳池訓練現在可以預約嗎？」 | `search_training_services` |
-| 試算訓練計畫：總分鐘、費用、結束時間與衝突 | 「10 月 29 日 14:00 開始草地基本訓練 2 次，會撞到什麼嗎？」 | `calculate_training_plan` |
+| 試算訓練計畫：總分鐘、費用、結束時間與衝突 | 「11 月 14 日 15:00 開始，泳池兩次加伸展一次，會撞期嗎？」 | `calculate_training_plan` |
 | 轉接真人（例外申請、申訴、指名找人） | 「請幫我轉給秋川理事長。」 | `transfer_to_director` |
 | 資料裡沒有就說沒有，婉拒業務外的請求 | 「訓練員的薪水怎麼算？」／「幫我寫一篇 800 字的作文。」 | 固定原句，不猜 |
 | 外部 AI agent（Claude、ChatGPT、自架）讀公開資料、送非個人的回饋 | — | MCP 伺服器（`tracen-api mcp-stdio`、`/mcp`） |
 
 ### 運作方式
 
-每個問題都先交給 Agent，由 Agent 選擇工具；工具查資料庫、搜尋手冊或在伺服器端計算，Agent 只依工具回傳的結果回答。對話頁每則回覆下方的「處理紀錄」會列出呼叫的工具、參數、回傳，以及找到的手冊章節。
+對話代理可查資料庫、搜尋手冊，或請伺服器試算。回覆下方的「處理紀錄」會列出用過的工具、參數與回傳內容。校務回答須有工具結果作依據，查無資料時要說明查無，例外則由理事長室決定。
 
-- **RAG：**訓練員手冊（[`data/rag/trainer_handbook.zh-TW.md`](../../data/rag/trainer_handbook.zh-TW.md)，13 章 53 節，全部是展示設定）與簡短的校務資訊依節切塊，用 `gemini-embedding-2` 轉成向量存進 PostgreSQL + pgvector（`handbook_chunks`）；內容沒變就不重新轉。`search_academy_rules` 依語意加上字詞重疊找出最接近的幾節，回傳整節，駿川回答時附上節號。找到的幾節都答不了時，她會說固定的「查不到」原句，不會猜。
+- **手冊檢索（RAG）**。[繁中訓練員手冊](../../data/rag/trainer_handbook.zh-TW.md)共有 53 節。系統用 `gemini-embedding-2` 將手冊各節與短篇校務資訊轉成向量，存進 PostgreSQL 的 pgvector。`search_academy_rules` 依向量距離和字詞重疊排序。聊天介面支援繁中、英文和日文。
 - **分成五部分的系統提示詞：**角色與目標、範圍、互動規則、拒絕與特殊情況（三語各三句固定原句），以及開場白（對話頁顯示同一句），見 [`backend/src/agent/prompt.rs`](../../backend/src/agent/prompt.rs)。
-- **內建 skills：**每項能力是 [`data/skills/`](../../data/skills/) 裡的一個資料夾（Agent Skills 格式），加上 `registry.json` 裡的一筆（工具、角色、可見度、測試題）。提示詞的工具分派、Agent 的工具清單與 MCP 的工具清單都由它產生，啟動時會檢查。
-- **MCP：**外部 agent 只能經由唯讀的資料庫檢視表讀 `visibility = public` 的資料，以及把回饋送進人工審核佇列。遠端存取預設關閉，要由管理員打開，並且必須設定唯讀資料庫角色 `tracen_mcp`。給外部 agent 的 skill 產生在 [`skills/tracen-public/SKILL.md`](../../skills/tracen-public/SKILL.md)。
+- **內建技能**。每項能力是 [`data/skills/`](../../data/skills/) 裡的一個資料夾（Agent Skills 格式），加上 `registry.json` 裡的一筆（工具、角色、可見度、測試題）。系統啟動時檢查這份清單，並據此設定提示詞的工具分派和對內、對外的工具清單。
+- **MCP**。外部代理使用另一組工具，可透過唯讀檢視表查公開資料，也能送不含個資的回饋給工作人員審核。外部代理無權讀取對話、記憶或案件，也無法建案。遠端連線預設關閉，管理員須設定唯讀資料庫角色 `tracen_mcp` 並啟用服務。[自動產生的 skill](../../skills/tracen-public/SKILL.md)列出對外工具。
 - **模型：**對話用 `gemini-3.8-flash`，向量用 `gemini-embedding-2`（Google Gemini API，透過 [rust-genai](https://github.com/jeremychone/rust-genai) 呼叫）；`MODEL=mock` 可不用金鑰離線執行。
 - **聊天畫面：**React + Vite + TypeScript 前端；Rust（Axum）後端以 REST 與 SSE 提供 API。API 金鑰、Agent 迴圈、工具與資料庫都只在後端。
 - **資料庫：**PostgreSQL 18 加 pgvector（課程建議使用 SQLite）。設定 `CATALOG_SEED_MODE=reset` 時，API 每次啟動都由 CSV 重建下列資料表：
 
   | 資料表 | 來源 | 內容 | 筆數 |
   |---|---|---|---|
-  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 簡短的資訊主題 | 10 |
+  | `academy_info` | [`data/seed/academy_info.csv`](../../data/seed/academy_info.csv) | 簡短的資訊主題 | 11 |
   | `training_services` | [`data/seed/training_services.csv`](../../data/seed/training_services.csv) | 設施與服務 | 17 |
   | `academy_events` | [`data/seed/academy_events.csv`](../../data/seed/academy_events.csv) | 課程、考試、活動與維護 | 10 |
   | `races` | [`data/seed/race_schedule.csv`](../../data/seed/race_schedule.csv) | 遊戲中的 G1／G2 賽事日程（GameTora，標示為 `community`） | 76 |
-  | `handbook_chunks` | 手冊檔與 `academy_info` | 可檢索的段落與 768 維向量 | 83 |
+  | `handbook_chunks` | 手冊檔與 `academy_info` | 可檢索的段落與 768 維向量 | 86 |
 
 - **工具：**
 
@@ -90,6 +91,8 @@
 
 ### 對話範例
 
+成片裡的泳池兩次加伸展一次共 120 分鐘。11 月 14 日的時段與秋季學園祭重疊，改到 11 月 13 日同一時間後，試算工具回傳無衝突。黃金船踢壞販賣機那段查到手冊 §5.4 的通報程序，處理紀錄只有查詢，沒有通報送出紀錄。另一段查不到小栗帽的續碗規定，駿川先徵詢同意，才建立 `DIR-1038`。下方截圖是同一流程的另外兩個案例。
+
 ![使用計算工具的訓練計畫問題](../assets/screenshots/chat.zh-TW.png)
 
 ![資料無法處理的例外申請轉交理事長室](../assets/screenshots/handoff.zh-TW.png)
@@ -98,12 +101,12 @@
 
 | 測試 | 檢查什麼 | 指令 |
 |---|---|---|
-| 工具選擇（21 題） | 每題選對工具，回答裡有正確的值 | `cd backend && cargo run -- eval-tools` |
-| 手冊檢索（46 題） | 前三筆有正確章節；手冊裡沒有的問題 | `cd backend && cargo run -- eval-rag` |
-| 範圍與不編造（12 題） | 超出範圍、不存在的資料、叫它忽略規則、叫它印出提示詞、角色扮演、假的承諾 | `cd backend && cargo run -- eval-boundary` |
-| MCP 界線（13 項） | 只有公開資料出得去、金絲雀字串不會出現、回饋含個資會被拒收 | `cd backend && cargo run -- eval-mcp` |
+| 工具選擇（23 題） | 21/23 題符合允許的工具呼叫組合。17 題設定預期字串，全部命中，其餘 6 題未做字串檢查。 | `cd backend && cargo run -- eval-tools` |
+| 手冊檢索（46 題） | 33/36 題手冊內問題的預期節次排進前三筆。10 題手冊外問題有 5 題仍回傳候選段落。 | `cd backend && cargo run -- eval-rag` |
+| 對話邊界（12 題） | 12/12 題通過，涵蓋查無資料、超出範圍及要求忽略規則等情境。 | `cd backend && cargo run -- eval-boundary` |
+| MCP 界線（13 項） | 主連線測試 13/13 項通過，涵蓋公開資料查詢、未公開資料的探測與回饋檢查。 | `cd backend && cargo run -- eval-mcp` |
 
-結果寫到 `data/eval/results/`。單元測試：`cd backend && cargo test`。
+詳見 [11 月 7 日測試紀錄](../../data/eval/results/)。字串命中只表示找到指定文字。門禁題雖命中 22:00，回覆仍沿用舊的 20:30 晚歸申請門檻，現行資料為 21:30。單元測試指令為 `cd backend && cargo test`。
 
 ### 專案檔案
 
@@ -126,7 +129,7 @@ backend/Cargo.toml、web/package.json   套件清單
 
 ### 備註
 
-- 資料中的校規、手冊、價格、人物與預約都是本專案的展示設定（`source_type` 為 `project` 或 `reference`）；賽事日程為社群整理的遊戲資料。本專案為非官方同人作品，詳見 [NOTICE.md](../../NOTICE.md)。
+- 本作是非官方同人專案。訓練員手冊、設施費用與展示活動都是專案設定，遊戲賽事日程來自 [GameTora 的社群整理](https://gametora.com/umamusume/race-scheduler)。宿舍相關資訊的出處記在校務資料的 `source_ref` 欄位。詳見 [NOTICE.md](../../NOTICE.md)。
 - `.env` 存放 API 金鑰，不在此 repository 中，請由 `.env.example` 自行建立。
 <!-- course-homework:end -->
 
@@ -169,8 +172,8 @@ flowchart LR
   end
   subgraph API["Rust API · Axum"]
     AG["Agent 迴圈<br/>最多 6 步"]
-    TL["工具註冊表<br/>5 個白名單工具"]
-    SV["服務層<br/>catalog · plan · handoff · memory"]
+    TL["工具註冊表<br/>6 個白名單工具"]
+    SV["服務層<br/>catalog · handbook · plan · handoff · memory"]
     GW["ModelGateway<br/>genai"]
   end
   DB[("PostgreSQL 18<br/>+ pgvector")]
@@ -205,6 +208,7 @@ Rust API 是模組化單體，同站提供建置好的網站與 `/api/v1`。送�
 | 工具 | 類型 | 回傳 |
 |---|---|---|
 | `get_academy_info` | 依主題查校務資訊 | 標題、內容、`source_type`、`source_ref`；查無時 `found: false` 並列出可用主題 |
+| `search_academy_rules` | 檢索訓練員手冊與校務資訊（RAG） | 相關段落的全文、節號與來源，查無結果時回傳 `found: false` |
 | `list_academy_events` | 查詢日期區間的校務日曆（最多 62 天） | 活動與賽事，以及受影響的設施 |
 | `search_training_services` | 以三語名稱或別名搜尋設施 | 時段長度、名額、費用、可用狀態、地點 |
 | `calculate_training_plan` | 伺服器端計算 | 明細、總計、排程、衝突與所用公式 |

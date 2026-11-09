@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The English, Traditional Chinese and Japanese READMEs now describe handbook search as a sixth tool, the November demo conversations, catalog counts of 11 information topics and 86 handbook chunks, and the 7 November evaluation scores.
 - Version numbers in `backend/Cargo.toml` and `web/package.json` now read 1.1.0-beta, matching this file.
 - Curfew is now 22:00, with no going out until 05:30 (was 21:00). Facilities now close at 21:30 instead of 20:30, and training or activities after 21:30 need a late-return request (`LAST_USE` in the plan calculator follows). Handbook §6.3: trainers do not enter the dorms, and special cases need the dorm leader's approval instead of the Director's Office.
 
