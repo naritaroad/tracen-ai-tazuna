@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Local Gemini TTS module and command-line tool for rendering single-speaker demo audio from text or replaying a saved request with the project API key.
 - Claude Code plugin `plugins/tracen-academy`: the `tracen-public` skill plus the local MCP server (`tracen-api mcp-stdio`), installable through `.claude-plugin/marketplace.json` (`/plugin install tracen-academy@tracen-ai-tazuna`). `export-skills` writes the skill to both `skills/tracen-public/` (kept for other agent systems) and the plugin, and a test checks both copies.
 - `plugins/tracen-academy.zip`: the plugin packed with its root at the top level, importable directly in Claude (plugin upload) or with `claude --plugin-dir`. Built by `python tools/package-plugin/package_plugin.py` (deterministic; `--check` fails when it is stale; it refuses to pack when the plugin's skill copy differs from `skills/tracen-public/`).
 - The API finds `.env` from `TRACEN_HOME` or from the executable's folders when the working directory has none, so an MCP client can start it from anywhere.
