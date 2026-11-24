@@ -28,6 +28,8 @@
 
 ![對話頁：駿川回答訓練計畫問題並指出與跑道維護時段衝突，展開的處理紀錄列出工具呼叫](../assets/screenshots/chat.zh-TW.png)
 
+▶ [在 YouTube 觀看展示影片](https://youtu.be/dlO3MXHuaGQ)
+
 
 
 <!-- course-homework:start — Unit H 期中作業區塊；評分後刪除 -->

@@ -30,6 +30,10 @@
   <img src="docs/assets/screenshots/chat.en.png" alt="Chat page: Tazuna answers a training-plan question and flags a clash with course maintenance; the expanded activity log shows the calculate_training_plan call" width="900" />
 </p>
 
+<p align="center">
+  <a href="https://youtu.be/dlO3MXHuaGQ">▶ Watch the demo video on YouTube</a>
+</p>
+
 <!-- course-homework:start — Unit H midterm section; remove this block after grading -->
 ## Course Homework (Midterm)
 

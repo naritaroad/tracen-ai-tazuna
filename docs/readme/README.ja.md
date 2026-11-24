@@ -30,6 +30,10 @@
   <img src="../assets/screenshots/chat.ja.png" alt="会話ページ：たづながトレーニング計画の質問に答え、コース整備との重なりを指摘している。展開した処理記録に calculate_training_plan の呼び出しが表示されている" width="900" />
 </p>
 
+<p align="center">
+  <a href="https://youtu.be/dlO3MXHuaGQ">▶ YouTube でデモ動画を見る</a>
+</p>
+
 <!-- course-homework:start — Unit H の中間課題セクション。採点後にこのブロックを削除 -->
 ## コース課題（中間）
 
